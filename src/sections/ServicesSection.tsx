@@ -4,7 +4,6 @@ import { useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, useScroll, useTransform } from "framer-motion";
-import Container from "@/components/layout/Container";
 import ScrollReveal from "@/components/animations/ScrollReveal";
 
 // รูปจาก public/Image (ใส่ ?v=2 เพื่อไม่ให้เบราว์เซอร์/Next แคชภาพเก่า)

@@ -40,3 +40,7 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 *.mp4
+# allow project videos
+!public/whoweare.mp4
+!public/Cinematic/cinematic.mp4
+            
