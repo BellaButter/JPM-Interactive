@@ -58,7 +58,15 @@ export default function WorksSection() {
                                         boxShadow: '0 10px 40px rgba(0,0,0,0.08)'
                                     }}
                                 >
-                                    {work.media.type === "video" ? (
+                                    {work.media.type === "youtube" ? (
+                                        <iframe
+                                            src={work.media.src}
+                                            title={work.title}
+                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                            allowFullScreen
+                                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out pointer-events-none"
+                                        />
+                                    ) : work.media.type === "video" ? (
                                         <video
                                             autoPlay
                                             loop

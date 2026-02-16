@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
@@ -8,7 +8,7 @@ import { worksPageData, type Work } from "@/data/worksPageData";
 import PageContainer from "@/components/layout/PageContainer";
 import WorkCardMedia from "@/components/works/WorkCardMedia";
 
-export default function WorksPage() {
+function WorksPageContent() {
     const searchParams = useSearchParams();
     const categoryParam = searchParams.get("category") as Work["category"] | null;
     
@@ -169,5 +169,17 @@ export default function WorksPage() {
                 </AnimatePresence>
             </PageContainer>
         </main>
+    );
+}
+
+export default function WorksPage() {
+    return (
+        <Suspense fallback={
+            <main className="relative min-h-screen bg-gradient-to-b from-[#fafbff] to-[#f3f4ff] w-full flex items-center justify-center" style={{ paddingTop: "10rem" }}>
+                <div className="animate-pulse text-slate-500">Loading...</div>
+            </main>
+        }>
+            <WorksPageContent />
+        </Suspense>
     );
 }

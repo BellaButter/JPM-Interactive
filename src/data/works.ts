@@ -1,3 +1,8 @@
+/** Build YouTube embed URL (use your video ID from share link) */
+export function youtubeEmbedUrl(videoId: string): string {
+    return `https://www.youtube.com/embed/${videoId}`;
+}
+
 export interface Work {
     id: string;
     slug: string;
@@ -5,7 +10,7 @@ export interface Work {
     category: "led" | "touch_screen" | "graphic_design";
     description: string;
     media: {
-        type: "video" | "image";
+        type: "video" | "image" | "youtube";
         src: string;
         thumbnail?: string;
     };
@@ -22,8 +27,8 @@ export const works: Work[] = [
         category: "touch_screen",
         description: "An electrifying interactive guitar game that transforms players into rock stars. Features real-time rhythm gameplay, dynamic visual feedback, and an immersive musical journey that captivates audiences of all ages.",
         media: {
-            type: "video",
-            src: "/video_Featured_innovation/20501002.5_guitarhero.mp4"
+            type: "youtube",
+            src: youtubeEmbedUrl("dQw4w9WgXcQ")
         },
         technologies: ["Unity", "Motion Tracking", "Audio Sync", "Interactive Display"],
         featured: true
@@ -35,8 +40,8 @@ export const works: Work[] = [
         category: "led",
         description: "A stunning large-scale LED wall installation that creates breathtaking visual narratives. Dynamic content flows seamlessly across the massive display, transforming spaces into captivating visual stories that engage and inspire.",
         media: {
-            type: "video",
-            src: "/video_Featured_innovation/20516523.900000095_Immersive wallA.mp4"
+            type: "youtube",
+            src: youtubeEmbedUrl("dQw4w9WgXcQ")
         },
         technologies: ["LED Mapping", "Real-time Rendering", "Content Management", "Visual Design"],
         featured: true
@@ -48,8 +53,8 @@ export const works: Work[] = [
         category: "touch_screen",
         description: "A revolutionary interactive floor system that responds to every movement. Watch as vibrant visuals bloom beneath your feet, creating a magical playground where physical movement meets digital artistry in perfect harmony.",
         media: {
-            type: "video",
-            src: "/video_Featured_innovation/20525218_Immersive floorl.mp4"
+            type: "youtube",
+            src: youtubeEmbedUrl("dQw4w9WgXcQ")
         },
         technologies: ["Motion Sensors", "Projection Mapping", "Real-time Graphics", "Interactive Design"],
         featured: true
@@ -61,8 +66,8 @@ export const works: Work[] = [
         category: "touch_screen",
         description: "An innovative martial arts training experience that combines traditional Muay Thai with cutting-edge technology. Real-time motion tracking and interactive feedback create an engaging workout that's both authentic and futuristic.",
         media: {
-            type: "video",
-            src: "/video_Featured_innovation/20591514.200000286_MuayThai.mp4"
+            type: "youtube",
+            src: youtubeEmbedUrl("dQw4w9WgXcQ")
         },
         technologies: ["Motion Capture", "AI Training", "Gesture Recognition", "Gamification"],
         featured: true
@@ -87,8 +92,8 @@ export const works: Work[] = [
         category: "led",
         description: "A sleek product reveal animation for a cutting-edge smartphone. Features photorealistic rendering, dynamic camera movements, and particle effects.",
         media: {
-            type: "video",
-            src: "/placeholder-video-2.mp4",
+            type: "youtube",
+            src: youtubeEmbedUrl("dQw4w9WgXcQ"),
             thumbnail: "/placeholder-work-5.jpg"
         },
         technologies: ["Blender", "After Effects", "Octane Render"],

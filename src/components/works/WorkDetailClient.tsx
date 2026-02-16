@@ -72,7 +72,15 @@ export default function WorkDetailClient({ work }: { work: Work }) {
                 className="relative w-full mt-16 sm:mt-20 md:mt-24 overflow-hidden bg-gray-900"
             >
                 <div className="relative w-full aspect-video max-h-[50vh] sm:max-h-[60vh] md:max-h-[70vh] flex items-center justify-center">
-                    {work.media?.type === "video" && work.media?.src ? (
+                    {work.media?.type === "youtube" && work.media?.src ? (
+                        <iframe
+                            src={work.media.src}
+                            title={work.title}
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                            className="w-full h-full object-contain"
+                        />
+                    ) : work.media?.type === "video" && work.media?.src ? (
                         <video
                             src={work.media.src}
                             controls

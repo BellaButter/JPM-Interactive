@@ -113,19 +113,17 @@ export default function WhoWeAreSection() {
                                         }}
                                     />
 
-                                    {/* Video element */}
-                                    <motion.video
-                                        autoPlay
-                                        loop
-                                        muted
-                                        playsInline
-                                        className="w-full h-full object-cover relative z-10"
+                                    {/* YouTube embed (แทนที่ VIDEO_ID ด้วย ID จริงจาก YouTube) */}
+                                    <motion.iframe
+                                        src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=0&mute=1&loop=1&playlist=dQw4w9WgXcQ"
+                                        title="Who We Are"
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                        allowFullScreen
+                                        className="w-full h-full object-cover relative z-10 rounded-2xl"
                                         initial={{ scale: 1.1 }}
                                         animate={{ scale: 1 }}
                                         transition={{ duration: 1.5, ease: "easeOut" }}
-                                    >
-                                        <source src="/whoweare.mp4" type="video/mp4" />
-                                    </motion.video>
+                                    />
 
                                     {/* Corner accents */}
                                     <motion.div
