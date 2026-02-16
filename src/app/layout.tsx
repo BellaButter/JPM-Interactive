@@ -15,9 +15,38 @@ const inter = Inter({
   fallback: ["system-ui", "arial"],
 });
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://jpm-interactive.vercel.app";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: "JPM Interactive - Creative Technology Studio",
   description: "High-end interactive programs, mini games, graphic design, and motion graphics for innovative brands.",
+  keywords: [
+    "creative technology",
+    "interactive experiences",
+    "LED visual",
+    "motion graphics",
+    "digital installation",
+    "touch screen",
+    "immersive",
+    "JPM Interactive",
+  ],
+  openGraph: {
+    title: "JPM Interactive - Creative Technology Studio",
+    description: "High-end interactive programs, mini games, graphic design, and motion graphics for innovative brands.",
+    url: siteUrl,
+    siteName: "JPM Interactive",
+    images: [{ url: "/icon.png", width: 512, height: 512, alt: "JPM Interactive" }],
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "JPM Interactive - Creative Technology Studio",
+    description: "High-end interactive programs, mini games, graphic design, and motion graphics for innovative brands.",
+  },
+  icons: {
+    icon: "/icon.png",
+  },
 };
 
 export const viewport = {
