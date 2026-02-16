@@ -43,18 +43,13 @@ export default function Navigation() {
                 className="fixed top-0 left-0 right-0 z-50"
             >
                 <div
-                style={{
-                    width: "100%",
-                    maxWidth: "1600px",
-                    marginLeft: "auto",
-                    marginRight: "auto",
-                    paddingLeft: "clamp(1.5rem, 5vw, 4rem)",
-                    paddingRight: "clamp(1.5rem, 5vw, 4rem)",
-                    boxSizing: "border-box",
-                }}
-                className="w-full"
+                    className="w-full flex justify-center"
+                    style={{
+                        paddingLeft: "clamp(1.5rem, 5vw, 4rem)",
+                        paddingRight: "clamp(1.5rem, 5vw, 4rem)",
+                    }}
                 >
-                        <div className="flex items-center justify-between h-16 sm:h-20">
+                    <div className="w-full max-w-[1600px] flex items-center justify-between h-16 sm:h-20">
                         {/* Logo - Text only, no background */}
                         <Link href="/" onClick={(e) => handleNavClick(e, '/')} className="relative group">
                             <motion.span

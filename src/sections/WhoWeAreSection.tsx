@@ -24,14 +24,14 @@ export default function WhoWeAreSection() {
     return (
         <section
             ref={containerRef}
-            className="relative min-h-[60vh] sm:min-h-[70vh] overflow-hidden flex items-center py-12 sm:py-20 bg-white"
+            className="relative min-h-[60vh] sm:min-h-[70vh] overflow-hidden flex items-center pt-20 sm:pt-28 pb-12 sm:pb-20 bg-white"
             style={{ position: "relative" }}
         >
 
             <Container className="relative z-20 w-full">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-                    {/* ซ้าย: ข้อความ */}
-                    <div className="order-2 lg:order-1">
+                    {/* มือถือ: ข้อความบน | Desktop: ซ้าย */}
+                    <div className="order-1">
                         <ScrollReveal variant="fade" delay={0.1}>
                             <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6 sm:mb-8">
                                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#6B9FF7] via-[#8B9FF8] to-[#B8A9F9]">
@@ -46,8 +46,8 @@ export default function WhoWeAreSection() {
                         </ScrollReveal>
                     </div>
 
-                    {/* ขวา: Video with scroll animations */}
-                    <div className="order-1 lg:order-2 h-[320px] sm:h-[380px] lg:h-[420px]">
+                    {/* มือถือ: วิดีโอล่าง | Desktop: ขวา */}
+                    <div className="order-2 h-[320px] sm:h-[380px] lg:h-[420px]">
                         <ScrollReveal variant="fade" delay={0.15}>
                             <motion.div
                                 ref={videoContainerRef}
@@ -113,12 +113,14 @@ export default function WhoWeAreSection() {
                                         }}
                                     />
 
-                                    {/* YouTube embed (แทนที่ VIDEO_ID ด้วย ID จริงจาก YouTube) */}
-                                    <motion.iframe
-                                        src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=0&mute=1&loop=1&playlist=dQw4w9WgXcQ"
+                                    {/* Local video embed */}
+                                    <motion.video
+                                        src="/whoweare.mp4"
                                         title="Who We Are"
-                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                        allowFullScreen
+                                        autoPlay
+                                        muted
+                                        loop
+                                        playsInline
                                         className="w-full h-full object-cover relative z-10 rounded-2xl"
                                         initial={{ scale: 1.1 }}
                                         animate={{ scale: 1 }}

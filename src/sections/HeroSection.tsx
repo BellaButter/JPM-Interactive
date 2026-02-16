@@ -163,7 +163,13 @@ export default function HeroSection() {
 
             {/* Content - Text */}
             <div className="absolute inset-0 z-50 flex items-center justify-center pointer-events-none">
-                <div className="w-full max-w-[1600px] mx-auto px-6 sm:px-8 md:px-12 lg:px-16">
+                <div
+                    className="w-full max-w-[1600px] mx-auto"
+                    style={{
+                        paddingLeft: "clamp(1.25rem, 5vw, 2rem)",
+                        paddingRight: "clamp(1.25rem, 5vw, 2rem)",
+                    }}
+                >
                     <h1 ref={titleRef} className="text-center pointer-events-auto">
                         <div className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-light tracking-tight text-slate-700 mb-5 sm:mb-8">
                             <span className="word inline-block mr-5 sm:mr-8 md:mr-10">Crafting</span>

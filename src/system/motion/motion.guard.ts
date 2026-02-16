@@ -34,11 +34,8 @@ export function resolveMotionConfig(
         config.enableCursorEffects = true;
     }
 
-    // 4. Upgrade Scroll Pinning: If Not Mobile
-    // Pinning is often janky on touch screens due to address bar resizing.
-    if (!deviceProfile.isMobile) {
-        config.enableScrollPin = true;
-    }
+    // 4. Upgrade Scroll Pinning: Desktop and Mobile (full-screen CTA scroll experience)
+    config.enableScrollPin = true;
 
     // 5. Upgrade Heavy Shaders: Only High Tier
     // Expensive fragment shaders are reserved for powerful devices.

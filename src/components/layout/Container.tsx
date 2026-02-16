@@ -10,8 +10,8 @@ export default function Container({
             className={`w-full mx-auto ${className}`}
             style={{
                 maxWidth: "1600px",
-                paddingLeft: "clamp(1.5rem, 5vw, 4rem)",
-                paddingRight: "clamp(1.5rem, 5vw, 4rem)",
+                paddingLeft: "clamp(1.25rem, 5vw, 2rem)",
+                paddingRight: "clamp(1.25rem, 5vw, 2rem)",
             }}
         >
             {children}

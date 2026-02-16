@@ -26,10 +26,16 @@ export default function WorksSection() {
     return (
         <section 
             ref={sectionRef} 
-            className="relative bg-white overflow-hidden pt-32 sm:pt-40 md:pt-48 lg:pt-56 xl:pt-64 pb-32 sm:pb-40 md:pb-48 lg:pb-56 xl:pb-64"
-            style={{ marginTop: '12rem', position: 'relative' }}
+            className="relative z-[5] bg-white overflow-hidden pt-24 sm:pt-32 md:pt-40 lg:pt-48 xl:pt-56 pb-32 sm:pb-40 md:pb-48 lg:pb-56 xl:pb-64"
+            style={{ marginTop: '6rem', position: 'relative' }}
         >
-            <div className="relative z-10 w-full max-w-[1600px] mx-auto px-6 sm:px-8 md:px-12 lg:px-16 xl:px-24">
+            <div
+                    className="relative z-10 w-full max-w-[1600px] mx-auto"
+                    style={{
+                        paddingLeft: "clamp(1.25rem, 5vw, 2rem)",
+                        paddingRight: "clamp(1.25rem, 5vw, 2rem)",
+                    }}
+                >
                 {/* Header */}
                 <div className="mb-20 sm:mb-24 md:mb-28 lg:mb-32 text-center">
                     <ScrollReveal variant="fade" delay={0.1}>
@@ -58,15 +64,19 @@ export default function WorksSection() {
                                         boxShadow: '0 10px 40px rgba(0,0,0,0.08)'
                                     }}
                                 >
-                                    {work.media.type === "youtube" ? (
-                                        <iframe
-                                            src={work.media.src}
-                                            title={work.title}
-                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                            allowFullScreen
-                                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out pointer-events-none"
-                                        />
-                                    ) : work.media.type === "video" ? (
+                                    {work.media.type === "youtube" ? (() => {
+                                        const videoId = work.media.src.split("/").pop()?.split("?")[0] || "";
+                                        const previewSrc = `${work.media.src}${work.media.src.includes("?") ? "&" : "?"}autoplay=1&mute=1&loop=1&playlist=${videoId}`;
+                                        return (
+                                            <iframe
+                                                src={previewSrc}
+                                                title={work.title}
+                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                                allowFullScreen
+                                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out pointer-events-none"
+                                            />
+                                        );
+                                    })() : work.media.type === "video" ? (
                                         <video
                                             autoPlay
                                             loop

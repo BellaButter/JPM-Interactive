@@ -15,12 +15,12 @@ export const worksPageData: Work[] = [
     {
         id: "p1",
         slug: "interactive-wall-crown-plaza",
-        title: "Interactive Wall at Crown Plaza",
+        title: "Interactive Floor Experience",
         category: "led",
         description: "Large-scale interactive LED wall installation at Crown Plaza. Dynamic visuals and real-time content create an immersive experience for guests and events.",
-        media: { type: "youtube", src: youtubeEmbedUrl(PLACEHOLDER_VIDEO_ID) },
+        media: { type: "youtube", src: youtubeEmbedUrl("8RYdaKQWTMA") },
         cover: coverPath("immersive", "clown-plaza.jpg"),
-        technologies: ["LED Mapping", "Real-time Rendering", "Content Management", "Visual Design"]
+        technologies: ["Motion Sensors", "Projection Mapping", "Real-time Graphics", "Interactive Design"]
     },
     {
         id: "p2",
@@ -28,7 +28,7 @@ export const worksPageData: Work[] = [
         title: "Lazada Run Visual Experience",
         category: "led",
         description: "Vibrant visual experience for Lazada Run event. LED displays and motion graphics that energize the race and engage participants and spectators.",
-        media: { type: "youtube", src: youtubeEmbedUrl(PLACEHOLDER_VIDEO_ID) },
+        media: { type: "youtube", src: youtubeEmbedUrl("wbmkpUw-Hs0") },
         cover: coverPath("immersive", "Lazada.JPG"),
         technologies: ["LED Display", "Event Visuals", "Motion Graphics", "Live Content"]
     },
@@ -38,7 +38,7 @@ export const worksPageData: Work[] = [
         title: "Punthai Visual Experience",
         category: "led",
         description: "Immersive LED visual experience for Punthai. Seamless content and lighting design that transforms the space into a memorable brand experience.",
-        media: { type: "youtube", src: youtubeEmbedUrl(PLACEHOLDER_VIDEO_ID) },
+        media: { type: "youtube", src: youtubeEmbedUrl("eDvniGOWapw") },
         cover: coverPath("cover video_black bg.jpg"),
         technologies: ["LED Mapping", "Brand Experience", "Visual Design", "Content Management"]
     },
@@ -48,7 +48,7 @@ export const worksPageData: Work[] = [
         title: "สักการสถาน นักบุญ Nicolas",
         category: "led",
         description: "Visual experience for สักการสถาน นักบุญ Nicolas. Immersive LED and digital content for a meaningful brand presence.",
-        media: { type: "youtube", src: youtubeEmbedUrl(PLACEHOLDER_VIDEO_ID) },
+        media: { type: "youtube", src: youtubeEmbedUrl("_myfx50xsgg") },
         cover: coverPath("immersive", "Nicholas.JPG"),
         technologies: ["LED Display", "Visual Design", "Content Management", "Brand Experience"]
     },
@@ -146,10 +146,10 @@ export const worksPageData: Work[] = [
     {
         id: "p14",
         slug: "kia-visual-experience",
-        title: "KIA Visual Experience",
+        title: "Immersive Wall Visual Experience",
         category: "led",
-        description: "Immersive visual experience for KIA. LED and digital content that elevates the brand presence at events and showrooms.",
-        media: { type: "youtube", src: youtubeEmbedUrl(PLACEHOLDER_VIDEO_ID) },
+        description: "Immersive wall visual experience. LED and digital content that elevates the brand presence at events and showrooms.",
+        media: { type: "youtube", src: youtubeEmbedUrl("NNEHahAh-C4") },
         cover: coverPath("immersive", "KIA.PNG"),
         technologies: ["LED Display", "Brand Experience", "Visual Design", "Content Management"]
     },
@@ -159,7 +159,7 @@ export const worksPageData: Work[] = [
         title: "Stick Together",
         category: "led",
         description: "Collaborative visual experience that brings people together. Interactive content and dynamic visuals for engagement.",
-        media: { type: "youtube", src: youtubeEmbedUrl(PLACEHOLDER_VIDEO_ID) },
+        media: { type: "youtube", src: youtubeEmbedUrl("Xz0yDLwJ0wY") },
         cover: coverPath("immersive", "Sticktogether.JPG"),
         technologies: ["LED Mapping", "Interactive Display", "Visual Design", "Real-time Content"]
     },

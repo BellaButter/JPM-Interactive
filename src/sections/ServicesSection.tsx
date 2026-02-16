@@ -119,7 +119,15 @@ export default function ServicesSection() {
             </div>
 
             <div className="relative z-20 w-full flex justify-center">
-                <div className="w-full max-w-[1600px] mx-auto px-6 sm:px-8 md:px-12 lg:px-16 xl:px-24" style={{ marginLeft: 'auto', marginRight: 'auto' }}>
+                <div
+                    className="w-full max-w-[1600px] mx-auto"
+                    style={{
+                        marginLeft: "auto",
+                        marginRight: "auto",
+                        paddingLeft: "clamp(1.25rem, 5vw, 2rem)",
+                        paddingRight: "clamp(1.25rem, 5vw, 2rem)",
+                    }}
+                >
                 {/* Header */}
                 <div className="mb-20 sm:mb-24 md:mb-28 lg:mb-32 text-center">
                     <ScrollReveal variant="fade">
@@ -136,8 +144,8 @@ export default function ServicesSection() {
                         return (
                             <ScrollReveal key={service.key} variant="fade" delay={index * 0.1}>
                                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-16 xl:gap-24 items-center">
-                                    {/* คอลัมน์แรก */}
-                                    <div className={imageOnLeft ? "order-1 lg:order-1" : "order-2 lg:order-1"}>
+                                    {/* คอลัมน์แรก — มือถือ: ข้อความบนก่อนภาพ */}
+                                    <div className={imageOnLeft ? "order-2 lg:order-1 mt-8 lg:mt-0" : "order-1 lg:order-1"}>
                                         {imageOnLeft ? (
                                             <div className="flex justify-center lg:justify-start">
                                                 <motion.div
@@ -177,8 +185,8 @@ export default function ServicesSection() {
                                         )}
                                     </div>
 
-                                    {/* คอลัมน์สอง */}
-                                    <div className={imageOnLeft ? "order-2 lg:order-2 mt-8 lg:mt-0" : "order-1 lg:order-2"}>
+                                    {/* คอลัมน์สอง — มือถือ: ข้อความบนก่อนภาพ */}
+                                    <div className={imageOnLeft ? "order-1 lg:order-2" : "order-2 lg:order-2 mt-8 lg:mt-0"}>
                                         {imageOnLeft ? (
                                             <div className="flex flex-col gap-6 sm:gap-8 md:gap-10">
                                                 <span className="block text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold font-mono text-slate-500" style={{ opacity: 0.7 }}>

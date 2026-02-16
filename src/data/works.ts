@@ -41,7 +41,7 @@ export const works: Work[] = [
         description: "A stunning large-scale LED wall installation that creates breathtaking visual narratives. Dynamic content flows seamlessly across the massive display, transforming spaces into captivating visual stories that engage and inspire.",
         media: {
             type: "youtube",
-            src: youtubeEmbedUrl("dQw4w9WgXcQ")
+            src: youtubeEmbedUrl("NNEHahAh-C4")
         },
         technologies: ["LED Mapping", "Real-time Rendering", "Content Management", "Visual Design"],
         featured: true
@@ -54,7 +54,7 @@ export const works: Work[] = [
         description: "A revolutionary interactive floor system that responds to every movement. Watch as vibrant visuals bloom beneath your feet, creating a magical playground where physical movement meets digital artistry in perfect harmony.",
         media: {
             type: "youtube",
-            src: youtubeEmbedUrl("dQw4w9WgXcQ")
+            src: youtubeEmbedUrl("8RYdaKQWTMA")
         },
         technologies: ["Motion Sensors", "Projection Mapping", "Real-time Graphics", "Interactive Design"],
         featured: true
