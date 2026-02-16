@@ -1,0 +1,273 @@
+@import "tailwindcss";
+@source "../";
+
+@theme inline {
+  /* Light Modern Gradient Theme - Clean & Professional */
+  --color-hero-bg: #ffffff;
+  --color-hero-mid: #f8f9ff;
+  --color-dark-bg: #fafbff;
+  --color-dark-surface: #ffffff;
+  --color-dark-border: #e5e7eb;
+  --color-text-primary: #0f172a;
+  --color-text-secondary: #475569;
+  --color-text-muted: #64748b;
+
+  /* Accent - Blue to Purple gradient */
+  --color-accent-blue: #6B9FF7;
+  --color-accent-electric: #8B9FF8;
+  --color-accent-cyan: #7BA5F7;
+  --color-accent-purple: #a78bfa;
+
+  /* Fonts */
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  /* Spacing - responsive friendly */
+  --spacing-section: clamp(3rem, 8vw, 120px);
+  --spacing-container: clamp(1rem, 4vw, 80px);
+
+  /* Animation */
+  --transition-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+:root {
+  --background: var(--color-dark-bg);
+  --foreground: var(--color-text-primary);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  width: 100%;
+  min-width: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: #ffffff;
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+  min-width: 100%;
+  width: 100%;
+  max-width: 100vw;
+  margin: 0;
+  padding: 0;
+  line-height: 1.7;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Responsive: prevent horizontal scroll, ensure full width and centered content */
+main {
+  overflow-x: hidden;
+  max-width: 100vw;
+  width: 100%;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* Performance: GPU acceleration for animations */
+.will-change-transform {
+  will-change: transform;
+}
+
+.will-change-opacity {
+  will-change: opacity;
+}
+
+/* Optimize video performance */
+video {
+  object-fit: cover;
+  will-change: transform;
+}
+
+/* Prevent layout shifts */
+img, video {
+  height: auto;
+  max-width: 100%;
+}
+
+/* Smooth transitions */
+@media (prefers-reduced-motion: no-preference) {
+  * {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Mobile touch optimization */
+@media (hover: none) and (pointer: coarse) {
+  button, a {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+/* Typography improvements */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  font-weight: 700;
+}
+
+p {
+  line-height: 1.8;
+  margin-bottom: 1.5rem;
+}
+
+/* Smooth scrolling for GSAP */
+html.lenis {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-dark-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-dark-border);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-accent-blue);
+}
+
+/* Glitch Text Effects */
+.glitch-text {
+  position: relative;
+}
+
+.glitch-char {
+  position: relative;
+  will-change: transform, text-shadow;
+  transition: text-shadow 0.1s ease;
+}
+
+.glitch-char.glitching {
+  animation: glitch-jitter 0.3s infinite;
+  text-shadow:
+    2px 0 rgba(255, 0, 0, 0.4),
+    -2px 0 rgba(0, 255, 255, 0.4);
+}
+
+.glitch-char.decoded {
+  animation: none;
+  text-shadow: none;
+}
+
+@keyframes glitch-jitter {
+
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+
+  20% {
+    transform: translate(-1px, 1px) scale(1.02);
+  }
+
+  40% {
+    transform: translate(1px, -1px) scale(0.98);
+  }
+
+  60% {
+    transform: translate(-0.5px, -0.5px) scale(1.01);
+  }
+
+  80% {
+    transform: translate(0.5px, 0.5px) scale(0.99);
+  }
+}
+
+@keyframes rgb-split {
+  0% {
+    text-shadow: none;
+  }
+
+  25% {
+    text-shadow:
+      3px 0 rgba(255, 0, 0, 0.6),
+      -3px 0 rgba(0, 255, 255, 0.6);
+  }
+
+  50% {
+    text-shadow:
+      -2px 0 rgba(255, 0, 0, 0.5),
+      2px 0 rgba(0, 255, 255, 0.5);
+  }
+
+  75% {
+    text-shadow:
+      1px 0 rgba(255, 0, 0, 0.4),
+      -1px 0 rgba(0, 255, 255, 0.4);
+  }
+
+  100% {
+    text-shadow: none;
+  }
+}
+
+/* Float Animation for particles */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) translateX(0);
+  }
+  25% {
+    transform: translateY(-20px) translateX(10px);
+  }
+  50% {
+    transform: translateY(-40px) translateX(-10px);
+  }
+  75% {
+    transform: translateY(-20px) translateX(10px);
+  }
+}
+
+/* Gradient utilities */
+.bg-gradient-radial {
+  background-image: radial-gradient(circle, var(--tw-gradient-stops));
+}
+
+/* Fade in up animation for narrative text */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
