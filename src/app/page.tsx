@@ -2,7 +2,7 @@ import HeroSection from "@/sections/HeroSection";
 import WhoWeAreSection from "@/sections/WhoWeAreSection";
 import ServicesSection from "@/sections/ServicesSection";
 import WorksSection from "@/sections/WorksSection";
-import CTASection from "@/sections/CTASection";
+import CTASectionDynamic from "@/components/sections/CTASectionDynamic";
 import ScrollToTop from "@/components/utils/ScrollToTop";
 
 export default function HomePage() {
@@ -29,7 +29,7 @@ export default function HomePage() {
         <WorksSection />
       </div>
       {/* CTA เต็มความกว้าง */}
-      <CTASection />
+      <CTASectionDynamic />
     </main>
   );
 }
