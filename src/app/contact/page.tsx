@@ -206,20 +206,23 @@ export default function ContactPage() {
                     >
                         <div
                             ref={contactInfoRef}
-                            className="relative bg-white rounded-3xl space-y-16 shadow-2xl w-full border-2 border-[var(--color-accent-blue)]/20 overflow-hidden"
-                            style={{ padding: '3rem' }}
+                            className="relative bg-white rounded-3xl shadow-2xl w-full border-2 border-[var(--color-accent-blue)]/20 overflow-hidden"
+                            style={{
+                                padding: "clamp(2rem, 4vw, 3.5rem)",
+                            }}
                         >
                             {/* Decorative gradient background */}
                             <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-[var(--color-accent-blue)]/10 to-transparent rounded-full blur-2xl -z-10" />
                             <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-[var(--color-accent-purple)]/10 to-transparent rounded-full blur-2xl -z-10" />
 
-                            {/* Contact items */}
+                            {/* Contact items - ใช้ inline style ให้ระยะห่างเห็นผลแน่นอน */}
                             <motion.div
                                 className="relative"
+                                style={{ marginBottom: "1.5rem" }}
                                 whileHover={{ x: 2 }}
                                 transition={{ type: "spring", stiffness: 300 }}
                             >
-                                <div className="flex items-center gap-4 mb-5">
+                                <div className="flex items-center gap-4" style={{ marginBottom: "1rem" }}>
                                     <div className="w-12 h-12 rounded-full bg-gradient-to-r from-[var(--color-accent-blue)] to-[var(--color-accent-purple)] flex items-center justify-center shadow-lg">
                                         <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
@@ -228,19 +231,21 @@ export default function ContactPage() {
                                     <h3 className="text-xl md:text-2xl font-bold text-[var(--color-text-primary)] leading-relaxed">Email</h3>
                                 </div>
                                 <a
-                                    href="mailto:hello@jpm-interactive.com"
-                                    className="text-[var(--color-accent-blue)] hover:text-[var(--color-accent-purple)] transition-colors font-medium text-lg md:text-xl block ml-16 mt-1 leading-relaxed"
+                                    href="mailto:jpmgroupteam@gmail.com"
+                                    className="text-[var(--color-accent-blue)] hover:text-[var(--color-accent-purple)] transition-colors font-medium text-lg md:text-xl block ml-16 leading-loose"
+                                    style={{ marginTop: "0.5rem", paddingTop: "0.5rem", paddingBottom: "0.5rem", lineHeight: 1.9 }}
                                 >
-                                    hello@jpm-interactive.com
+                                    jpmgroupteam@gmail.com
                                 </a>
                             </motion.div>
 
                             <motion.div
                                 className="relative"
+                                style={{ marginBottom: "1.5rem" }}
                                 whileHover={{ x: 2 }}
                                 transition={{ type: "spring", stiffness: 300 }}
                             >
-                                <div className="flex items-center gap-4 mb-5">
+                                <div className="flex items-center gap-4" style={{ marginBottom: "1rem" }}>
                                     <div className="w-12 h-12 rounded-full bg-gradient-to-r from-[var(--color-accent-purple)] to-[var(--color-accent-electric)] flex items-center justify-center shadow-lg">
                                         <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
@@ -249,15 +254,16 @@ export default function ContactPage() {
                                     <h3 className="text-xl md:text-2xl font-bold text-[var(--color-text-primary)] leading-relaxed">Phone</h3>
                                 </div>
                                 <a
-                                    href="tel:+6602XXXXXXX"
-                                    className="text-[var(--color-text-secondary)] hover:text-[var(--color-accent-blue)] transition-colors text-lg md:text-xl block ml-16 mt-1 leading-relaxed"
+                                    href="tel:+66822941541"
+                                    className="text-[var(--color-text-secondary)] hover:text-[var(--color-accent-blue)] transition-colors text-lg md:text-xl block ml-16 leading-loose"
+                                    style={{ marginTop: "0.5rem", paddingTop: "0.5rem", paddingBottom: "0.5rem", lineHeight: 1.9 }}
                                 >
-                                    +66 (0) 2-XXX-XXXX
+                                    082-2941541 (Jha)
                                 </a>
                             </motion.div>
 
-                            <div className="pt-14 border-t-2 border-[var(--color-dark-border)]">
-                                <div className="flex items-center gap-4 mb-6">
+                            <div style={{ paddingTop: "1.5rem" }} className="border-t-2 border-[var(--color-dark-border)]">
+                                <div className="flex items-center gap-4" style={{ marginBottom: "1rem" }}>
                                     <div className="w-12 h-12 rounded-full bg-gradient-to-r from-[var(--color-accent-purple)] to-[var(--color-accent-blue)] flex items-center justify-center shadow-lg">
                                         <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
@@ -265,16 +271,18 @@ export default function ContactPage() {
                                     </div>
                                     <h3 className="text-xl md:text-2xl font-bold text-[var(--color-text-primary)] leading-relaxed">Follow Us</h3>
                                 </div>
-                                <div className="flex gap-4 ml-16 mt-1">
+                                <div className="flex flex-wrap items-center gap-4 ml-16" style={{ marginTop: "1rem" }}>
                                     <motion.a
-                                        href="#"
+                                        href="https://line.me/R/ti/p/@jpmgroup"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
                                         whileHover={{ scale: 1.1, y: -2 }}
                                         whileTap={{ scale: 0.95 }}
-                                        className="w-12 h-12 bg-gradient-to-br from-[var(--color-accent-blue)]/10 to-[var(--color-accent-purple)]/10 border-2 border-[var(--color-accent-blue)]/30 rounded-full flex items-center justify-center hover:border-[var(--color-accent-blue)] hover:bg-[var(--color-accent-blue)] hover:text-white transition-all text-[var(--color-accent-blue)] shadow-md"
-                                        aria-label="Instagram"
+                                        className="w-12 h-12 bg-[#00B900]/10 border-2 border-[#00B900]/40 rounded-full flex items-center justify-center hover:bg-[#00B900] hover:border-[#00B900] hover:text-white transition-all text-[#00B900] shadow-md"
+                                        aria-label="LINE @jpmgroup"
                                     >
                                         <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+                                            <path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63h2.386c.346 0 .627.285.627.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63.346 0 .628.285.628.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.349 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.281.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.039 1.085l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314" />
                                         </svg>
                                     </motion.a>
                                     <motion.a

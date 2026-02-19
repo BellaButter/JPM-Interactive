@@ -28,7 +28,7 @@ export const works: Work[] = [
         description: "An electrifying interactive guitar game that transforms players into rock stars. Features real-time rhythm gameplay, dynamic visual feedback, and an immersive musical journey that captivates audiences of all ages.",
         media: {
             type: "youtube",
-            src: youtubeEmbedUrl("dQw4w9WgXcQ")
+            src: youtubeEmbedUrl("rEh-o1srlhQ")
         },
         technologies: ["Unity", "Motion Tracking", "Audio Sync", "Interactive Display"],
         featured: true

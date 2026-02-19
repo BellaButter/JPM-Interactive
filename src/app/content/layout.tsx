@@ -10,5 +10,5 @@ export default function ContentLayout({
 }: {
     children: React.ReactNode;
 }) {
-    return children;
+    return <div className="font-articles">{children}</div>;
 }

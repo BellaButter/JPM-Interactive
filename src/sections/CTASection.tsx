@@ -145,7 +145,8 @@ function CTAButton() {
 }
 
 export default function CTASection() {
-    const { motionConfig, reducedMotion } = useMotion();
+    const { motionConfig, reducedMotion, interactionMode, isReady } = useMotion();
+    const isMobile = interactionMode === "mobile";
 
     const containerRef = useRef<HTMLDivElement>(null);
     const videoContainerRef = useRef<HTMLDivElement>(null);
@@ -161,11 +162,32 @@ export default function CTASection() {
     const [videoReady, setVideoReady] = useState(false);
     const [hasMounted, setHasMounted] = useState(false);
     const [webGLSupported, setWebGLSupported] = useState(false);
+    /** On mobile: defer loading cinematic video until CTA is near viewport. */
+    const [videoShouldLoad, setVideoShouldLoad] = useState(false);
 
     useEffect(() => {
         setHasMounted(true);
         setWebGLSupported(checkWebGLSupport());
     }, []);
+
+    // After device is known: desktop load video immediately; mobile load when CTA near viewport
+    useEffect(() => {
+        if (!isReady) return;
+        if (!isMobile) {
+            setVideoShouldLoad(true);
+            return;
+        }
+        const el = containerRef.current;
+        if (!el) return;
+        const io = new IntersectionObserver(
+            (entries) => {
+                if (entries[0]?.isIntersecting) setVideoShouldLoad(true);
+            },
+            { rootMargin: "100px 0px", threshold: 0 }
+        );
+        io.observe(el);
+        return () => io.disconnect();
+    }, [isReady, isMobile]);
 
     const shouldPin = motionConfig.enableScrollPin && !reducedMotion;
 
@@ -426,10 +448,10 @@ export default function CTASection() {
         >
             <video
                 ref={videoRef}
-                src={CINEMATIC_VIDEO_SRC}
+                src={videoShouldLoad ? CINEMATIC_VIDEO_SRC : undefined}
                 muted
                 playsInline
-                preload="auto"
+                preload={videoShouldLoad ? "auto" : "none"}
                 crossOrigin="anonymous"
                 className="absolute opacity-0 pointer-events-none w-0 h-0"
                 aria-hidden

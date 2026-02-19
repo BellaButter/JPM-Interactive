@@ -58,7 +58,7 @@ export const worksPageData: Work[] = [
         title: "BCC Power Interactive Experience",
         category: "touch_screen",
         description: "Interactive kiosk and display experience for BCC Power. Engaging touch interfaces and real-time information for customers and stakeholders.",
-        media: { type: "youtube", src: youtubeEmbedUrl(PLACEHOLDER_VIDEO_ID) },
+        media: { type: "youtube", src: youtubeEmbedUrl("r_U6rQWPTok") },
         cover: coverPath("Touch screen", "BCC Power.JPG"),
         technologies: ["Touch Screen", "Interactive Kiosk", "UI/UX", "Real-time Data"]
     },
@@ -68,7 +68,7 @@ export const worksPageData: Work[] = [
         title: "Roulette Interactive [Bangchak]",
         category: "touch_screen",
         description: "Interactive roulette experience for Bangchak. Gamified engagement that combines fun mechanics with brand messaging for events and activations.",
-        media: { type: "youtube", src: youtubeEmbedUrl(PLACEHOLDER_VIDEO_ID) },
+        media: { type: "youtube", src: youtubeEmbedUrl("SbUZuFeekPg") },
         cover: coverPath("Touch screen", "BangChak.png"),
         technologies: ["Unity", "Motion Tracking", "Gamification", "Interactive Display"]
     },
@@ -78,7 +78,7 @@ export const worksPageData: Work[] = [
         title: "Tea Machine Interactive [Cafe Amazon]",
         category: "touch_screen",
         description: "Interactive tea machine experience for Cafe Amazon. Touch-driven interface that guides users through selections and creates a memorable brand moment.",
-        media: { type: "youtube", src: youtubeEmbedUrl(PLACEHOLDER_VIDEO_ID) },
+        media: { type: "youtube", src: youtubeEmbedUrl("DvNSUu4t6nM") },
         cover: coverPath("Touch screen", "Amazon.png"),
         technologies: ["Touch Screen", "Interactive Kiosk", "Brand Experience", "UX Design"]
     },
@@ -88,7 +88,7 @@ export const worksPageData: Work[] = [
         title: "Space X Themed Interactive",
         category: "touch_screen",
         description: "Space-themed interactive experience. Immersive visuals and touch interactions that take users on a journey through space and exploration.",
-        media: { type: "youtube", src: youtubeEmbedUrl(PLACEHOLDER_VIDEO_ID) },
+        media: { type: "youtube", src: youtubeEmbedUrl("X0J_rRgeNtY") },
         cover: coverPath("Touch screen", "SpaceX.png"),
         technologies: ["Unity", "Interactive Display", "Motion Graphics", "Immersive Design"]
     },
@@ -170,7 +170,7 @@ export const worksPageData: Work[] = [
         title: "Dynasty Interactive Preview",
         category: "touch_screen",
         description: "Interactive preview experience with immersive gameplay and dynamic visuals. Engaging interface for events and activations.",
-        media: { type: "youtube", src: youtubeEmbedUrl(PLACEHOLDER_VIDEO_ID) },
+        media: { type: "youtube", src: youtubeEmbedUrl("hNnWcigg-0E") },
         cover: coverPath("Touch screen", "Dynasty.JPG"),
         technologies: ["Unity", "Interactive Display", "Real-time Rendering", "Gamification"]
     },
@@ -180,17 +180,17 @@ export const worksPageData: Work[] = [
         title: "Kepler Interactive Preview",
         category: "touch_screen",
         description: "Interactive preview with cutting-edge visuals and smooth gameplay. Designed for high-impact brand experiences.",
-        media: { type: "youtube", src: youtubeEmbedUrl(PLACEHOLDER_VIDEO_ID) },
+        media: { type: "youtube", src: youtubeEmbedUrl("I_mPohA1MuU") },
         cover: coverPath("Touch screen", "Kepler.JPG"),
         technologies: ["Unity", "Motion Graphics", "Interactive Design", "Real-time 3D"]
     },
     {
         id: "p27",
         slug: "guitar-hero-pttep",
-        title: "Guitar Hero ในงาน IPTC จัดโดย PTTEP",
+        title: "Guitar Hero Interactive Experience",
         category: "touch_screen",
         description: "Guitar Hero interactive experience at IPTC event by PTTEP. Rhythm gameplay and immersive visuals for engagement.",
-        media: { type: "youtube", src: youtubeEmbedUrl(PLACEHOLDER_VIDEO_ID) },
+        media: { type: "youtube", src: youtubeEmbedUrl("rEh-o1srlhQ") },
         cover: coverPath("Touch screen", "guitarHero.PNG"),
         technologies: ["Unity", "Motion Tracking", "Audio Sync", "Interactive Display"]
     },
@@ -210,7 +210,7 @@ export const worksPageData: Work[] = [
         title: "Crab Life – พิพิธภัณฑ์ ม.วลัยลักษณ์",
         category: "touch_screen",
         description: "Interactive Crab Life experience for Walailak University Museum. Educational and engaging content.",
-        media: { type: "youtube", src: youtubeEmbedUrl(PLACEHOLDER_VIDEO_ID) },
+        media: { type: "youtube", src: youtubeEmbedUrl("WWAB9q_axjY") },
         cover: coverPath("Touch screen", "Crab Life .JPG"),
         technologies: ["Interactive Display", "Educational Content", "Museum Experience"]
     },
@@ -220,7 +220,7 @@ export const worksPageData: Work[] = [
         title: "Fish Interactive – พิพิธภัณฑ์ ม.วลัยลักษณ์",
         category: "touch_screen",
         description: "Fish-themed interactive video sample for Walailak University Museum.",
-        media: { type: "youtube", src: youtubeEmbedUrl(PLACEHOLDER_VIDEO_ID) },
+        media: { type: "youtube", src: youtubeEmbedUrl("_MvjVS97jTU") },
         cover: coverPath("immersive", "Fish Tank .JPG"),
         technologies: ["Interactive Display", "Visual Design", "Museum Experience"]
     },
@@ -230,7 +230,7 @@ export const worksPageData: Work[] = [
         title: "History Preview – พิพิธภัณฑ์ ม.วลัยลักษณ์",
         category: "touch_screen",
         description: "History-themed interactive preview for Walailak University Museum.",
-        media: { type: "youtube", src: youtubeEmbedUrl(PLACEHOLDER_VIDEO_ID) },
+        media: { type: "youtube", src: youtubeEmbedUrl("E6oJrFkVNBE") },
         cover: coverPath("Touch screen", "History.JPG"),
         technologies: ["Unity", "Interactive Display", "Museum Experience"]
     },

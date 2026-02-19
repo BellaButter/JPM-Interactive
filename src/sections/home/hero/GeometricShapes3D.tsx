@@ -5,9 +5,6 @@ import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Float } from "@react-three/drei";
 import * as THREE from "three";
 
-// Device orientation for mobile AR (alpha, beta, gamma in degrees)
-export type DeviceOrientationState = { alpha: number; beta: number; gamma: number } | null;
-
 // Physics-enabled shape wrapper
 function PhysicsShape({
     children,
@@ -334,7 +331,7 @@ function Scene({ isMobile = false }: { isMobile?: boolean }) {
 
     const mobileScale = 0.42;
     const mobilePosScale = 0.65;
-    const mobileShapes = desktopShapes.slice(0, 6).map((s, i) => ({
+    const mobileShapes = desktopShapes.slice(0, 4).map((s, i) => ({
         ...s,
         id: s.id,
         position: [s.position[0] * mobilePosScale, s.position[1] * mobilePosScale, s.position[2]] as [number, number, number],
@@ -399,37 +396,8 @@ function Scene({ isMobile = false }: { isMobile?: boolean }) {
     );
 }
 
-// Mobile AR: apply device orientation to camera (tilt to look around)
-function DeviceOrientationCamera({ orientation }: { orientation: DeviceOrientationState }) {
-    const { camera } = useThree();
-    const smoothRef = useRef({ y: 0, x: 0 });
-    const deg2rad = Math.PI / 180;
-
-    useFrame(() => {
-        if (!orientation) return;
-        const { alpha, beta, gamma } = orientation;
-        // Gamma = left/right tilt -> yaw (Y). Beta = front/back -> pitch (X).
-        const targetY = (gamma ?? 0) * deg2rad;
-        const targetX = ((beta ?? 0) - 90) * deg2rad;
-        const smooth = 0.08;
-        smoothRef.current.y += (targetY - smoothRef.current.y) * smooth;
-        smoothRef.current.x += (targetX - smoothRef.current.x) * smooth;
-        camera.rotation.order = "YXZ";
-        camera.rotation.y = smoothRef.current.y;
-        camera.rotation.x = smoothRef.current.x;
-    });
-
-    return null;
-}
-
 // Main component
-export default function GeometricShapes3D({
-    isMobile = false,
-    deviceOrientation = null
-}: {
-    isMobile?: boolean;
-    deviceOrientation?: DeviceOrientationState;
-}) {
+export default function GeometricShapes3D({ isMobile = false }: { isMobile?: boolean }) {
     const cameraZ = isMobile ? 12 : 8;
     const cameraFov = isMobile ? 48 : 50;
 
@@ -437,9 +405,10 @@ export default function GeometricShapes3D({
         <div className="absolute inset-0">
             <Canvas
                 camera={{ position: [0, 0, cameraZ], fov: cameraFov }}
-                shadows
+                shadows={!isMobile}
+                dpr={isMobile ? [1, 1] : undefined}
                 gl={{
-                    antialias: true,
+                    antialias: !isMobile,
                     alpha: true,
                     toneMapping: THREE.ACESFilmicToneMapping,
                     toneMappingExposure: 1.55
@@ -447,7 +416,6 @@ export default function GeometricShapes3D({
             >
                 {/* ไม่ใส่ background เพื่อให้โปร่งใส — gradient fixed ของหน้าโผล่ผ่าน ไม่มีเส้นรอยต่อ */}
                 <Scene isMobile={isMobile} />
-                {deviceOrientation && <DeviceOrientationCamera orientation={deviceOrientation} />}
             </Canvas>
         </div>
     );

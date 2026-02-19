@@ -118,9 +118,9 @@ export default function WorkDetailClient({ work }: { work: Work }) {
                         {categoryLabels[work.category]}
                     </span>
 
-                    {/* Title - บรรทัดเดียวเมื่อมีพื้นที่ (ไม่ขึ้นบรรทัดสอง) */}
+                    {/* Title - แสดงเต็ม ไม่ตัดด้วย ellipsis */}
                     <h1
-                        className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold bg-gradient-to-r from-[#5B8DEF] via-[#8B5CF6] to-[#C084FC] bg-clip-text text-transparent leading-tight tracking-tight lg:whitespace-nowrap lg:overflow-hidden lg:text-ellipsis"
+                        className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold bg-gradient-to-r from-[#5B8DEF] via-[#8B5CF6] to-[#C084FC] bg-clip-text text-transparent leading-tight tracking-tight"
                         style={{ marginBottom: "0.75rem" }}
                     >
                         {work.title}

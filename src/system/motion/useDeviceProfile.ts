@@ -12,6 +12,8 @@ export type PerformanceTier = "low" | "medium" | "high";
 
 export interface DeviceProfile {
     isMobile: boolean;
+    isTablet: boolean;
+    isPhone: boolean;
     isLowEnd: boolean;
     hasFinePointer: boolean;
     performanceTier: PerformanceTier;
@@ -20,10 +22,10 @@ export interface DeviceProfile {
 }
 
 // Conservative SSR defaults to avoid hydration mismatch
-// We assume a 'capable' desktop initially to render full content for SEO/SSR,
-// then degrade gracefully on client if needed.
 const defaultProfile: DeviceProfile = {
     isMobile: false,
+    isTablet: false,
+    isPhone: false,
     isLowEnd: false,
     hasFinePointer: true,
     performanceTier: "high",
@@ -53,6 +55,12 @@ export function useDeviceProfile(): DeviceProfile {
         const isMobileUA = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(nav.userAgent);
 
         const isMobile = isMobileUA || hasCoarsePointer;
+
+        // Tablet: iPad or large touch screen (treat like desktop for Hero 3D + full CTA)
+        const isIpad = /iPad|Macintosh.*Mac OS X.*Safari/i.test(nav.userAgent) || (nav.platform === "MacIntel" && typeof navigator.maxTouchPoints === "number" && navigator.maxTouchPoints > 1);
+        const isLargeTouch = isMobile && typeof window !== "undefined" && window.innerWidth >= 768;
+        const isTablet = isIpad || isLargeTouch;
+        const isPhone = isMobile && !isTablet;
 
         // --- 2. Hardware Detection ---
         // deviceMemory is in GB (RAM)
@@ -89,6 +97,8 @@ export function useDeviceProfile(): DeviceProfile {
         // --- 4. State Update ---
         setProfile({
             isMobile,
+            isTablet,
+            isPhone,
             isLowEnd: lowEnd,
             hasFinePointer,
             performanceTier: tier,

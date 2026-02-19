@@ -5,11 +5,43 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 const navItems = [
-    { name: "Home", path: "/" },
-    { name: "Works", path: "/works" },
-    { name: "Articles", path: "/content" },
-    { name: "Contact", path: "/contact" },
+    { name: "Home", path: "/", icon: "home" },
+    { name: "Works", path: "/works", icon: "works" },
+    { name: "Articles", path: "/content", icon: "articles" },
+    { name: "Contact", path: "/contact", icon: "contact" },
 ];
+
+function NavIcon({ type, className }: { type: string; className?: string }) {
+    const c = className ?? "w-5 h-5";
+    switch (type) {
+        case "home":
+            return (
+                <svg className={c} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                </svg>
+            );
+        case "works":
+            return (
+                <svg className={c} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.655M9 10a.75.75 0 100-1.5.75.75 0 000 1.5zm0 0v-3.675A55.378 55.378 0 0112 8.443m-7.007 11.55A5.981 5.981 0 006.75 15.75v-1.5" />
+                </svg>
+            );
+        case "articles":
+            return (
+                <svg className={c} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+                </svg>
+            );
+        case "contact":
+            return (
+                <svg className={c} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+            );
+        default:
+            return null;
+    }
+}
 
 export default function Navigation() {
     const [scrolled, setScrolled] = useState(false);
@@ -132,23 +164,32 @@ export default function Navigation() {
                             className="fixed inset-0 bg-black/40 backdrop-blur-sm z-40 md:hidden"
                         />
 
-                        {/* Menu */}
+                        {/* Menu - gradient/glass drawer with blue-purple tint */}
                         <motion.div
                             initial={{ x: "100%" }}
                             animate={{ x: 0 }}
                             exit={{ x: "100%" }}
                             transition={{ type: "spring", damping: 30, stiffness: 300 }}
-                            className="fixed top-0 right-0 bottom-0 w-[85vw] max-w-sm bg-white/95 backdrop-blur-2xl border-l border-gray-200 z-50 md:hidden shadow-2xl"
+                            className="fixed top-0 right-0 bottom-0 w-[85vw] max-w-sm z-50 md:hidden backdrop-blur-2xl border-l border-[#7BA9F7]/30 shadow-[ -4px_0_24px_rgba(123,169,247,0.18) ]"
+                            style={{
+                                background: "linear-gradient(160deg, #f0f4ff 0%, #e8f0ff 45%, #f3e8ff 100%)",
+                            }}
                         >
-                            <div className="flex flex-col h-full p-8 pt-24">
+                            <div className="flex flex-col h-full p-6 pt-20">
+                                {/* Drawer header */}
+                                <div className="mb-8 px-2">
+                                    <span className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">Menu</span>
+                                    <div className="h-0.5 w-16 mt-2 rounded-full bg-gradient-to-r from-[#7BA9F7] to-[#8B5CF6]" />
+                                </div>
+
                                 {navItems.map((item, index) => {
                                     const isActive = pathname === item.path;
                                     return (
                                         <motion.div
                                             key={item.path}
-                                            initial={{ opacity: 0, x: 50 }}
-                                            animate={{ opacity: 1, x: 0 }}
-                                            transition={{ delay: index * 0.1 }}
+                                            initial={{ opacity: 0, y: 20 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            transition={{ type: "spring", damping: 24, stiffness: 300, delay: index * 0.06 }}
                                         >
                                             <Link
                                                 href={item.path}
@@ -158,21 +199,20 @@ export default function Navigation() {
                                                 }}
                                             >
                                                 <motion.div
-                                                    whileTap={{ scale: 0.95 }}
-                                                    className={`py-4 px-6 mb-2 rounded-xl transition-all duration-300 ${isActive
-                                                        ? "bg-gradient-to-r from-[#6B9FF7]/20 to-[#8B9FF8]/20 text-gray-900"
-                                                        : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
-                                                        }`}
+                                                    whileTap={{ scale: 0.98 }}
+                                                    transition={{ duration: 0.15 }}
+                                                    className={`flex items-center gap-4 py-5 px-5 mb-2 rounded-2xl transition-colors duration-300 touch-manipulation ${
+                                                        isActive
+                                                            ? "bg-gradient-to-r from-[#7BA9F7] to-[#8B9FF8] text-white shadow-lg shadow-[#7BA9F7]/30"
+                                                            : "text-slate-600 active:bg-slate-100 hover:bg-white/60 hover:text-slate-900 hover:shadow-sm"
+                                                    }`}
                                                 >
-                                                    <span className="text-lg font-medium">
+                                                    <span className={isActive ? "text-white" : "text-slate-500"}>
+                                                        <NavIcon type={item.icon} />
+                                                    </span>
+                                                    <span className="text-lg font-semibold">
                                                         {item.name}
                                                     </span>
-                                                    {isActive && (
-                                                        <motion.div
-                                                            layoutId="mobileActiveIndicator"
-                                                            className="h-1 w-12 bg-gradient-to-r from-[#6B9FF7] to-[#8B9FF8] rounded-full mt-2"
-                                                        />
-                                                    )}
                                                 </motion.div>
                                             </Link>
                                         </motion.div>

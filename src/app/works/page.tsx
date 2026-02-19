@@ -41,7 +41,7 @@ function WorksPageContent() {
 
     return (
         <main
-            className="relative min-h-screen bg-gradient-to-b from-[#fafbff] to-[#f3f4ff] w-full flex flex-col items-center"
+            className="relative min-h-screen bg-gradient-to-b from-[#fafbff] to-[#f3f4ff] w-full flex flex-col items-center overflow-x-hidden"
             style={{
                 paddingTop: '10rem',
                 paddingBottom: '10rem'

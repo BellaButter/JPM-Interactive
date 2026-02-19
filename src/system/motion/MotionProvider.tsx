@@ -11,7 +11,8 @@ interface MotionContextValue {
     deviceProfile: DeviceProfile;
     motionConfig: MotionConfig;
     interactionMode: "desktop" | "mobile";
-    isReady: boolean; // Flag to indicate if client-side detection is complete
+    isReady: boolean;
+    isPhone: boolean; // true only for phones (not tablet) — use for lightweight CTA / 3D count
 }
 
 const MotionContext = createContext<MotionContextValue | undefined>(undefined);
@@ -40,13 +41,15 @@ export function MotionProvider({ children }: { children: ReactNode }) {
     const interactionMode = (deviceProfile.isMobile ? "mobile" : "desktop") as "desktop" | "mobile";
 
     // 5. Memoize Context Value
+    const isPhone = deviceProfile.isPhone;
     const value = useMemo<MotionContextValue>(() => ({
         reducedMotion,
         deviceProfile,
         motionConfig: finalConfig,
         interactionMode,
-        isReady
-    }), [reducedMotion, deviceProfile, finalConfig, interactionMode, isReady]);
+        isReady,
+        isPhone
+    }), [reducedMotion, deviceProfile, finalConfig, interactionMode, isReady, isPhone]);
 
     return (
         <MotionContext.Provider value={value}>

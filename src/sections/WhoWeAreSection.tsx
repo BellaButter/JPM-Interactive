@@ -1,13 +1,30 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import Container from "@/components/layout/Container";
 import ScrollReveal from "@/components/animations/ScrollReveal";
 
+const WHO_WE_ARE_VIDEO_SRC = "/whoweare.mp4";
+
 export default function WhoWeAreSection() {
     const containerRef = useRef<HTMLDivElement>(null);
     const videoContainerRef = useRef<HTMLDivElement>(null);
+    const [videoSrc, setVideoSrc] = useState<string | null>(null);
+
+    // Defer video load until section is near viewport (reduces initial bandwidth)
+    useEffect(() => {
+        const el = containerRef.current;
+        if (!el) return;
+        const io = new IntersectionObserver(
+            (entries) => {
+                if (entries[0]?.isIntersecting) setVideoSrc(WHO_WE_ARE_VIDEO_SRC);
+            },
+            { rootMargin: "150px 0px", threshold: 0 }
+        );
+        io.observe(el);
+        return () => io.disconnect();
+    }, []);
 
     // Scroll-based animations
     const { scrollYProgress } = useScroll({
@@ -113,19 +130,23 @@ export default function WhoWeAreSection() {
                                         }}
                                     />
 
-                                    {/* Local video embed */}
-                                    <motion.video
-                                        src="/whoweare.mp4"
-                                        title="Who We Are"
-                                        autoPlay
-                                        muted
-                                        loop
-                                        playsInline
-                                        className="w-full h-full object-cover relative z-10 rounded-2xl"
-                                        initial={{ scale: 1.1 }}
-                                        animate={{ scale: 1 }}
-                                        transition={{ duration: 1.5, ease: "easeOut" }}
-                                    />
+                                    {/* Local video embed - src set when section in viewport */}
+                                    {videoSrc ? (
+                                        <motion.video
+                                            src={videoSrc}
+                                            title="Who We Are"
+                                            autoPlay
+                                            muted
+                                            loop
+                                            playsInline
+                                            className="w-full h-full object-cover relative z-10 rounded-2xl"
+                                            initial={{ scale: 1.1 }}
+                                            animate={{ scale: 1 }}
+                                            transition={{ duration: 1.5, ease: "easeOut" }}
+                                        />
+                                    ) : (
+                                        <div className="w-full h-full bg-gradient-to-br from-[#e8f0ff] to-[#f0e8ff] rounded-2xl relative z-10" aria-hidden />
+                                    )}
 
                                     {/* Corner accents */}
                                     <motion.div
