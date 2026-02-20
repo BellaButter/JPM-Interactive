@@ -7,7 +7,7 @@ import PageContainer from "@/components/layout/PageContainer";
 import { ArticleNavNext } from "./ArticleNav";
 import type { ContentPost } from "@/types/content";
 
-const easing = [0.22, 1, 0.36, 1];
+const easing = [0.22, 1, 0.36, 1] as const;
 
 type Props = {
     post: ContentPost;
