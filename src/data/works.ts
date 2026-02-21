@@ -67,9 +67,22 @@ export const works: Work[] = [
         description: "An innovative martial arts training experience that combines traditional Muay Thai with cutting-edge technology. Real-time motion tracking and interactive feedback create an engaging workout that's both authentic and futuristic.",
         media: {
             type: "youtube",
-            src: youtubeEmbedUrl("dQw4w9WgXcQ")
+            src: youtubeEmbedUrl("qfBKHXQnQWs")
         },
-        technologies: ["Motion Capture", "AI Training", "Gesture Recognition", "Gamification"],
+        technologies: ["Motion Capture", "Motion Tracking", "Gesture Recognition", "Interactive Display"],
+        featured: false
+    },
+    {
+        id: "7",
+        slug: "color-remember",
+        title: "Color Remember – Interactive Floor Game",
+        category: "led",
+        description: "Interactive floor game where players remember and match color positions. Perfect for team-building and events: participants follow cues, step on the right spots, and work together under time pressure. Combines physical movement with memory challenge for engaging activations.",
+        media: {
+            type: "youtube",
+            src: youtubeEmbedUrl("oUsOBoEixwo")
+        },
+        technologies: ["Interactive Floor", "Motion Sensors", "Real-time Feedback", "Group Activity"],
         featured: true
     },
     {

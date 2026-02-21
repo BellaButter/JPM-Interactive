@@ -98,7 +98,7 @@ export const worksPageData: Work[] = [
         title: "Opening Multimedia Design",
         category: "graphic_design",
         description: "Opening sequence and multimedia design for events and installations. Bold visuals and motion that set the tone and capture attention.",
-        media: { type: "youtube", src: youtubeEmbedUrl(PLACEHOLDER_VIDEO_ID) },
+        media: { type: "youtube", src: youtubeEmbedUrl("-K9_uWWH008") },
         cover: coverPath("cover video_black bg.jpg"),
         technologies: ["After Effects", "Motion Design", "Visual Design", "Content Creation"]
     },
@@ -138,7 +138,7 @@ export const worksPageData: Work[] = [
         title: "Oishi Card (RFID) Interactive",
         category: "touch_screen",
         description: "RFID-integrated interactive experience for Oishi Card. Seamless identification and personalized content for loyalty and engagement.",
-        media: { type: "youtube", src: youtubeEmbedUrl(PLACEHOLDER_VIDEO_ID) },
+        media: { type: "youtube", src: youtubeEmbedUrl("rRi3UNUPQ5M") },
         cover: coverPath("Other", "Oishi.png"),
         technologies: ["RFID", "Touch Screen", "Loyalty Integration", "Interactive Kiosk"]
     },
@@ -200,7 +200,7 @@ export const worksPageData: Work[] = [
         title: "Muay Thai Learning Media",
         category: "touch_screen",
         description: "Interactive learning experience for Muay Thai. Combines motion tracking and educational content for training and engagement.",
-        media: { type: "youtube", src: youtubeEmbedUrl(PLACEHOLDER_VIDEO_ID) },
+        media: { type: "youtube", src: youtubeEmbedUrl("qfBKHXQnQWs") },
         cover: coverPath("Touch screen", "MuayThai.png"),
         technologies: ["Motion Tracking", "Educational Content", "Interactive Kiosk", "Gamification"]
     },
@@ -240,7 +240,7 @@ export const worksPageData: Work[] = [
         title: "Research Preview – พิพิธภัณฑ์ ม.วลัยลักษณ์",
         category: "touch_screen",
         description: "Research-themed interactive preview for Walailak University Museum.",
-        media: { type: "youtube", src: youtubeEmbedUrl(PLACEHOLDER_VIDEO_ID) },
+        media: { type: "youtube", src: youtubeEmbedUrl("GmNWbK7d-CQ") },
         cover: coverPath("Touch screen", "Research.JPG"),
         technologies: ["Unity", "Interactive Display", "Museum Experience"]
     },
@@ -250,9 +250,29 @@ export const worksPageData: Work[] = [
         title: "เกมล้วงทรัพยากร – พิพิธภัณฑ์ ม.วลัยลักษณ์",
         category: "touch_screen",
         description: "เกมล้วงทรัพยากร interactive experience for Walailak University Museum.",
-        media: { type: "youtube", src: youtubeEmbedUrl(PLACEHOLDER_VIDEO_ID) },
+        media: { type: "youtube", src: youtubeEmbedUrl("0dM25H7_sbc") },
         cover: coverPath("Touch screen", "Resource.JPG"),
         technologies: ["Interactive Display", "Gamification", "Museum Experience"]
+    },
+    {
+        id: "p34",
+        slug: "color-remember",
+        title: "Color Remember – Interactive Floor Game",
+        category: "led",
+        description: "Interactive floor game where players remember and match color positions. Perfect for team-building and events: participants follow cues, step on the right spots, and work together under time pressure.",
+        media: { type: "youtube", src: youtubeEmbedUrl("oUsOBoEixwo") },
+        cover: coverPath("cover video_black bg.jpg"),
+        technologies: ["Interactive Floor", "Motion Sensors", "Real-time Feedback", "Group Activity"]
+    },
+    {
+        id: "p35",
+        slug: "bombbomb",
+        title: "BombBomb",
+        category: "led",
+        description: "BombBomb brings high-energy interactive gameplay to events and brand activations. Quick, engaging sessions that get audiences moving and competing—ideal for exhibitions, roadshows, and experiential campaigns.",
+        media: { type: "youtube", src: youtubeEmbedUrl("TBl3z27W1NA") },
+        cover: coverPath("cover video_black bg.jpg"),
+        technologies: ["Visual Design", "Interactive Display", "Real-time Content", "Event Experience"]
     },
     // 3. Multimedia Design - เพิ่ม
     {
