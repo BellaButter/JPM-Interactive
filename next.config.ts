@@ -1,6 +1,16 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Redirect blog to content (article)
+  async redirects() {
+    return [
+      { source: "/en/blog", destination: "/en/content", permanent: true },
+      { source: "/th/blog", destination: "/th/content", permanent: true },
+      { source: "/en/blog/:path*", destination: "/en/content", permanent: true },
+      { source: "/th/blog/:path*", destination: "/th/content", permanent: true },
+    ];
+  },
+
   // Performance optimizations
   reactStrictMode: true,
   poweredByHeader: false,

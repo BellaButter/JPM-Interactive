@@ -1,0 +1,37 @@
+---
+description: วิธีแก้ไข content ไม่กลางจอ / content shift ซ้ายเมื่อขยายจอ
+globs: **/services/**/*.tsx, **/sections/**/*.tsx
+alwaysApply: false
+---
+
+# Layout Centering Fix
+
+## ปัญหา
+- เนื้อหา shift ไปด้านซ้ายเมื่อขยายจอใหญ่
+- ใช้ `mx-auto` + `max-w-[1600px]` แล้วยังไม่กลางจอ
+
+## วิธีแก้ (ใช้โครงสร้างเดียวกับ Navigation)
+
+ใช้ **flex justify-center** แทน mx-auto:
+
+```tsx
+<main className="relative ... w-full">
+  {/* Outer: padding + flex center */}
+  <div className="w-full flex justify-center" style={{
+    paddingLeft: "clamp(1.75rem, 6vw, 4rem)",
+    paddingRight: "clamp(1.75rem, 6vw, 4rem)",
+  }}>
+    <div className="w-full max-w-[1600px] flex flex-col">
+      {/* เนื้อหาทั้งหมด */}
+    </div>
+  </div>
+</main>
+```
+
+## สิ่งที่ควรหลีกเลี่ยง
+- `items-center` บน flex column container อาจทำให้ children ไม่ stretch เต็มความกว้าง → content เลื่อนซ้าย
+- ใช้ `PageContainer` (mx-auto) แยกในแต่ละ section อาจ centering ไม่สม่ำเสมอบนจอใหญ่
+
+## อ้างอิง
+- Navigation: `src/components/layout/Navigation.tsx`
+- Services: `src/app/services/ServicesOverviewContent.tsx`, `ServicePageContent.tsx`

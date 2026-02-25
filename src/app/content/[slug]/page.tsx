@@ -2,47 +2,38 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getAllPosts, getPostBySlug, getNextPost, getPreviousPost } from "@/data/content";
 import ContentDetailClient from "./ContentDetailClient";
-
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://jpm-interactive.vercel.app";
+import { generatePageMetadata, siteUrl } from "@/lib/seo";
 
 export function generateStaticParams() {
-    return getAllPosts().map((post) => ({ slug: post.slug }));
+  return getAllPosts().map((post) => ({ slug: post.slug }));
 }
 
 export async function generateMetadata({
-    params,
+  params,
 }: {
-    params: Promise<{ slug: string }>;
+  params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
-    const { slug } = await params;
-    const post = getPostBySlug(slug);
-    if (!post) return { title: "Post Not Found" };
+  const { slug } = await params;
+  const post = getPostBySlug(slug);
+  if (!post) return { title: "Post Not Found" };
 
-    const title = `${post.title} - JPM Interactive`;
-    const description = post.description;
-    const url = `${siteUrl}/content/${slug}`;
-    const images = post.coverImage
-        ? [{ url: `${siteUrl}${post.coverImage.startsWith("/") ? "" : "/"}${post.coverImage}`, width: 1200, height: 630, alt: post.title }]
-        : undefined;
+  const title = `${post.title} - JPM Interactive`;
+  const description = post.description;
+  const image = post.coverImage
+    ? `${siteUrl}${post.coverImage.startsWith("/") ? "" : "/"}${post.coverImage}`
+    : undefined;
 
-    return {
-        title,
-        description,
-        alternates: { canonical: url },
-        openGraph: {
-            title,
-            description,
-            url,
-            siteName: "JPM Interactive",
-            images,
-            locale: "en_US",
-        },
-        twitter: {
-            card: "summary_large_image",
-            title,
-            description,
-        },
-    };
+  return generatePageMetadata({
+    title,
+    description,
+    path: `/content/${slug}`,
+    locale: "en_US",
+    image,
+    alternates: {
+      "en-US": `${siteUrl}/en/content/${slug}`,
+      "th-TH": `${siteUrl}/th/content/${slug}`,
+    },
+  });
 }
 
 export default async function ContentDetailPage({

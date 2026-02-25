@@ -4,8 +4,8 @@
 @theme inline {
   /* Light Modern Gradient Theme - Clean & Professional */
   --color-hero-bg: #ffffff;
-  --color-hero-mid: #f8f9ff;
-  --color-dark-bg: #fafbff;
+  --color-hero-mid: #ffffff;
+  --color-dark-bg: #ffffff;
   --color-dark-surface: #ffffff;
   --color-dark-border: #e5e7eb;
   --color-text-primary: #0f172a;
@@ -18,13 +18,17 @@
   --color-accent-cyan: #7BA5F7;
   --color-accent-purple: #a78bfa;
 
-  /* Fonts */
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-thai: "Google Sans", var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  /* Fonts: ทั้งไทยและอังกฤษใช้ LINE Seed (อังกฤษ = Sans, ไทย = Sans TH) */
+  --font-sans: var(--font-line-seed), ui-sans-serif, system-ui, sans-serif;
+  --font-thai: var(--font-line-seed-th), Thonburi, ui-sans-serif, sans-serif;
 
   /* Spacing - responsive friendly */
   --spacing-section: clamp(3rem, 8vw, 120px);
   --spacing-container: clamp(1rem, 4vw, 80px);
+
+  /* Line height - ระยะห่างระหว่างบรรทัดของ content */
+  --line-height-body: 1.85;
+  --line-height-content: 1.9;
 
   /* Animation */
   --transition-smooth: cubic-bezier(0.4, 0, 0.2, 1);
@@ -45,6 +49,8 @@ html {
   scroll-behavior: smooth;
   width: 100%;
   min-width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
   -webkit-text-size-adjust: 100%;
 }
 
@@ -58,11 +64,19 @@ body {
   max-width: 100vw;
   margin: 0;
   padding: 0;
-  line-height: 1.7;
+  line-height: var(--line-height-body);
   font-weight: 400;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+}
+
+/* ภาษาไทย → LINE Seed TH | ภาษาอังกฤษ → LINE Seed (ตัวแปรฟอนต์อยู่ที่ html) */
+html.locale-th body {
+  font-family: var(--font-thai);
+}
+html[lang="th"] body {
+  font-family: var(--font-thai);
 }
 
 /* Responsive: prevent horizontal scroll, ensure full width and centered content */
@@ -73,6 +87,7 @@ main {
   margin-left: 0;
   margin-right: 0;
 }
+
 
 /* Performance: GPU acceleration for animations */
 .will-change-transform {
@@ -109,12 +124,15 @@ img, video {
   }
 }
 
-/* Articles (Thai) typography – Prompt for readable Thai + Latin */
+/* Articles: ข้อความในบทความ (รวมไทยบนหน้า EN) ใช้ LINE Seed TH เสมอ */
 .font-articles {
   font-family: var(--font-thai);
 }
+.article-body {
+  font-family: var(--font-thai);
+}
 .font-articles .article-body {
-  line-height: 1.85;
+  line-height: var(--line-height-content);
 }
 
 /* Typography improvements */
@@ -130,7 +148,7 @@ h6 {
 }
 
 p {
-  line-height: 1.8;
+  line-height: var(--line-height-content);
   margin-bottom: 1.5rem;
 }
 

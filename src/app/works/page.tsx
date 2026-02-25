@@ -7,8 +7,11 @@ import Link from "next/link";
 import { worksPageData, type Work } from "@/data/worksPageData";
 import PageContainer from "@/components/layout/PageContainer";
 import WorkCardMedia from "@/components/works/WorkCardMedia";
+import { useLocale } from "@/context/LocaleContext";
+import { prefixPath } from "@/i18n/config";
 
 function WorksPageContent() {
+    const { t, locale } = useLocale();
     const searchParams = useSearchParams();
     const categoryParam = searchParams.get("category") as Work["category"] | null;
     
@@ -33,18 +36,18 @@ function WorksPageContent() {
     const categories: Array<Work["category"] | "all"> = ["all", "led", "touch_screen", "graphic_design"];
 
     const categoryLabels = {
-        all: "All",
-        led: "Visual Experience",
-        touch_screen: "Interactive Solutions",
-        graphic_design: "Multimedia Design"
+        all: t("works.all"),
+        led: t("works.visualExperience"),
+        touch_screen: t("works.interactiveSolutions"),
+        graphic_design: t("works.multimediaDesign"),
     };
 
     return (
         <main
-            className="relative min-h-screen bg-gradient-to-b from-[#fafbff] to-[#f3f4ff] w-full flex flex-col items-center overflow-x-hidden"
+            className="relative min-h-screen bg-gradient-to-b from-[#fafbff] to-[#f3f4ff] w-full max-w-[100vw] min-w-0 flex flex-col items-center overflow-x-hidden"
             style={{
-                paddingTop: '10rem',
-                paddingBottom: '10rem'
+                paddingTop: "clamp(6rem, 12vw, 10rem)",
+                paddingBottom: "clamp(4rem, 10vw, 10rem)",
             }}
         >
             <PageContainer className="w-full">
@@ -55,10 +58,10 @@ function WorksPageContent() {
                     transition={{ duration: 0.5, ease: "easeOut" }}
                 >
                     <h1
-                        className="text-5xl md:text-6xl lg:text-7xl font-bold py-5 bg-gradient-to-r from-[#1e293b] via-[#334155] to-[#475569] bg-clip-text text-transparent tracking-tight leading-tight"
+                        className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold py-5 bg-gradient-to-r from-[#1e293b] via-[#334155] to-[#475569] bg-clip-text text-transparent tracking-tight leading-tight"
                         style={{ marginBottom: "clamp(2rem, 5vw, 4rem)" }}
                     >
-                        Featured Innovations
+                        {t("works.featuredInnovations")}
                     </h1>
                 </motion.div>
 
@@ -113,7 +116,7 @@ function WorksPageContent() {
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: Math.min(index * 0.05, 0.5), duration: 0.35 }}
                             >
-                                <Link href={`/works/${work.slug}`}>
+                                <Link href={prefixPath(locale, `/case-studies/${work.slug}`)}>
                                     <motion.div
                                         whileHover={{ y: -12, scale: 1.02 }}
                                         transition={{ type: "spring", stiffness: 300, damping: 20 }}

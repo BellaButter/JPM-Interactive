@@ -5,13 +5,9 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import Container from "@/components/layout/Container";
 import ScrollReveal from "@/components/animations/ScrollReveal";
+import { useLocale } from "@/context/LocaleContext";
+import { prefixPath } from "@/i18n/config";
 import { getFeaturedWorks } from "@/data/works";
-
-const categoryLabels = {
-    touch_screen: "Interactive Solutions",
-    led: "Visual Experience",
-    graphic_design: "Multimedia Design"
-};
 
 const categoryColors = {
     touch_screen: "from-[#3b82f6] to-[#06b6d4]",
@@ -20,13 +16,19 @@ const categoryColors = {
 };
 
 export default function WorksSection() {
+    const { t, locale } = useLocale();
     const sectionRef = useRef<HTMLElement>(null);
     const featuredWorks = getFeaturedWorks();
+    const categoryLabels = {
+        touch_screen: t("works.interactiveSolutions"),
+        led: t("works.visualExperience"),
+        graphic_design: t("works.multimediaDesign"),
+    };
 
     return (
         <section 
             ref={sectionRef} 
-            className="relative z-[5] bg-white overflow-hidden pt-24 sm:pt-32 md:pt-40 lg:pt-48 xl:pt-56 pb-32 sm:pb-40 md:pb-48 lg:pb-56 xl:pb-64"
+            className="relative z-[5] bg-white overflow-x-hidden pt-20 sm:pt-28 md:pt-36 lg:pt-44 xl:pt-52 pb-24 sm:pb-32 md:pb-40 lg:pb-48 xl:pb-56"
             style={{ marginTop: '6rem', position: 'relative' }}
         >
             <div
@@ -40,7 +42,7 @@ export default function WorksSection() {
                 <div className="mb-20 sm:mb-24 md:mb-28 lg:mb-32 text-center">
                     <ScrollReveal variant="fade" delay={0.1}>
                         <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-gray-900 tracking-tight leading-none">
-                            Featured Work
+                            {t("sections.featuredWork")}
                         </h2>
                     </ScrollReveal>
                 </div>
@@ -48,7 +50,7 @@ export default function WorksSection() {
                 {/* Grid - 2 Columns Equal */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 sm:gap-12 md:gap-16 lg:gap-20 xl:gap-24 mb-20 sm:mb-24 md:mb-28">
                     {featuredWorks.map((work, index) => (
-                        <Link key={work.id} href={`/works/${work.slug}`}>
+                        <Link key={work.id} href={prefixPath(locale, `/case-studies/${work.slug}`)}>
                             <motion.div
                                 initial={{ opacity: 0, y: 40 }}
                                 whileInView={{ opacity: 1, y: 0 }}
@@ -115,13 +117,13 @@ export default function WorksSection() {
 
                 {/* View All Button */}
                 <div className="text-center" style={{ marginTop: '5rem' }}>
-                    <Link href="/works">
+                    <Link href={prefixPath(locale, "/case-studies")}>
                         <motion.div
                             whileHover={{ y: -2 }}
                             className="inline-block group cursor-pointer"
                         >
                             <div className="flex items-center gap-3 text-xl md:text-2xl text-gray-600 group-hover:text-[#6B9FF7] transition-colors duration-300">
-                                <span className="font-medium">See all projects</span>
+                                <span className="font-medium">{t("common.seeAllProjects")}</span>
                                 <motion.div
                                     animate={{ x: [0, 4, 0] }}
                                     transition={{ duration: 1.5, repeat: Infinity }}

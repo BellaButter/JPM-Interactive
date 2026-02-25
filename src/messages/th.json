@@ -1,0 +1,115 @@
+{
+  "nav": {
+    "home": "หน้าแรก",
+    "about": "เกี่ยวกับเรา",
+    "works": "ผลงาน",
+    "caseStudies": "ผลงาน",
+    "projects": "โปรเจกต์",
+    "services": "บริการ",
+    "articles": "บทความ",
+    "industries": "อุตสาหกรรม",
+    "contact": "ติดต่อเรา",
+    "letsTalk": "คุยกัน",
+    "menu": "เมนู"
+  },
+  "hero": {
+    "crafting": "Crafting",
+    "interactive": "Interactive",
+    "experiences": "Experiences",
+    "scrollToExplore": "เลื่อนเพื่อสำรวจ"
+  },
+  "sections": {
+    "ourServices": "บริการของเรา",
+    "featuredWork": "ผลงานเด่น",
+    "whoWeAre": "เราเป็นใคร",
+    "whoWeAreDesc": "เราเป็นทีมนักสร้างสรรค์ที่มุ่งมั่นขยายขอบเขตของประสบการณ์ดิจิทัล ภารกิจของเราคือการสร้างประสบการณ์ที่ดื่มด่ำ มีส่วนร่วม และจุดประกายแรงบันดาลใจ",
+    "getInTouch": "ติดต่อเรา",
+    "scrollToExploreMore": "เลื่อนเพื่อสำรวจเพิ่มเติม →",
+    "scrollPrompt": "เลื่อนเพื่อสำรวจ",
+    "letsWorkTogether": "พร้อมสร้างประสบการณ์ที่แตกต่างให้กับองค์กรของคุณ?",
+    "bigIdeaWaiting": "ติดต่อทีม JPM Interactive เพื่อปรึกษาแนวทางพัฒนา Interactive และ Immersive Solution ที่เหมาะสมกับโปรเจกต์ของคุณ",
+    "cta": {
+      "journey": {
+        "idea": "ไอเดียของคุณ",
+        "design": "ออกแบบ",
+        "build": "พัฒนา",
+        "launch": "เปิดตัว"
+      },
+      "singleAct": {
+        "headlinePart1": "พร้อมสร้าง",
+        "headlineHighlight": "Immersive Experience",
+        "headlinePart3": "ที่แตกต่างให้กับองค์กรของคุณ?",
+        "subtitle": "ติดต่อทีม JPM Interactive เพื่อวางแผนและออกแบบระบบที่เหมาะสมกับพื้นที่และเป้าหมายทางธุรกิจของคุณ"
+      }
+    },
+    "stats": {
+      "projects": "โปรเจกต์ที่ส่งมอบ",
+      "years": "ปีแห่งประสบการณ์",
+      "clients": "ลูกค้าและพันธมิตร"
+    },
+    "values": {
+      "creativity": {
+        "title": "ความคิดสร้างสรรค์",
+        "description": "เราเชื่อในไอเดียที่กล้าหาญและภาพที่ตราตรึงใจ"
+      },
+      "technology": {
+        "title": "เทคโนโลยี",
+        "description": "เรานำเทคโนโลยีชั้นนำมาผสานกับประสบการณ์ผู้ใช้ที่ราบรื่น"
+      },
+      "experience": {
+        "title": "ประสบการณ์",
+        "description": "ทุกโปรเจกต์ถูกออกแบบมาเพื่อดึงดูดและจุดประกาย"
+      },
+      "impact": {
+        "title": "ผลกระทบ",
+        "description": "เราส่งมอบผลลัพธ์ที่สร้างคุณค่าจริงให้แบรนด์และผู้ชม"
+      }
+    }
+  },
+  "footer": {
+    "tagline": "สตูดิโอครีเอทีฟเทคโนโลยี",
+    "copyright": "สงวนลิขสิทธิ์"
+  },
+  "common": {
+    "close": "ปิด",
+    "readArticle": "อ่านบทความ",
+    "backToArticles": "กลับไปบทความ",
+    "back": "กลับ",
+    "featured": "เด่น",
+    "seeAllProjects": "ดูโปรเจกต์ทั้งหมด",
+    "viewProject": "ดูโปรเจกต์",
+    "technologiesUsed": "เทคโนโลยีที่ใช้",
+    "interestedInProject": "สนใจโปรเจกต์แบบนี้?",
+    "discussVision": "มาคุยกันว่าเราจะทำให้วิสัยทัศน์ของคุณเป็นจริงได้อย่างไร",
+    "soundOn": "เปิดเสียง",
+    "soundOff": "ปิดเสียง"
+  },
+  "works": {
+    "featuredInnovations": "ผลงานนวัตกรรม",
+    "all": "ทั้งหมด",
+    "visualExperience": "ประสบการณ์เชิงภาพ",
+    "interactiveSolutions": "โซลูชันเชิงโต้ตอบ",
+    "multimediaDesign": "มัลติมีเดียดีไซน์"
+  },
+  "content": {
+    "nextArticle": "บทความถัดไป",
+    "tableOfContents": "สารบัญ",
+    "insightsAndStories": "ไอเดียและเรื่องราว",
+    "articles": "บทความ",
+    "articlesSub": "เทคโนโลยีเชิงสร้างสรรค์ ประสบการณ์ดิจิทัล และสิ่งที่เรากำลังสร้างที่ JPM Interactive",
+    "noArticles": "ยังไม่มีบทความ รอติดตามได้เลย"
+  },
+  "contact": {
+    "getInTouch": "ติดต่อเรา",
+    "discussProject": "มาคุยโปรเจกต์ถัดไปของคุณกัน",
+    "yourName": "ชื่อของคุณ",
+    "emailAddress": "อีเมล",
+    "message": "ข้อความ",
+    "messageLabel": "บอกเราเกี่ยวกับโปรเจกต์ของคุณ",
+    "sendMessage": "ส่งข้อความ",
+    "thankYou": "ขอบคุณ! เราจะติดต่อกลับโดยเร็ว",
+    "email": "อีเมล",
+    "phone": "โทรศัพท์",
+    "followUs": "ติดตามเรา"
+  }
+}

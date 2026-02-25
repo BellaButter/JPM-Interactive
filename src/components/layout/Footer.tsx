@@ -1,10 +1,15 @@
+"use client";
+
 import PageContainer from "@/components/layout/PageContainer";
+import { useLocale } from "@/context/LocaleContext";
+import LanguageSwitcher from "./LanguageSwitcher";
 
 export default function Footer() {
+    const { t } = useLocale();
     const currentYear = new Date().getFullYear();
 
     return (
-        <footer className="w-full bg-white border-t border-gray-200 py-10 sm:py-12 flex flex-col items-center">
+        <footer className="w-full max-w-[100vw] overflow-x-hidden bg-white border-t border-gray-200 flex flex-col items-center" style={{ padding: "clamp(2rem, 5vw, 4rem) clamp(1rem, 4vw, 2.5rem)" }}>
             <PageContainer className="w-full">
                 <div className="flex flex-col md:flex-row items-center justify-between gap-6 w-full">
                     <div className="text-center md:text-left">
@@ -13,8 +18,10 @@ export default function Footer() {
                                 JPM Interactive
                             </span>
                         </div>
-                        <p className="text-sm text-gray-600">Creative Technology Studio</p>
+                        <p className="text-sm text-gray-600">{t("footer.tagline")}</p>
                     </div>
+
+                    <LanguageSwitcher variant="minimal" />
 
                     {/* Social Links */}
                     <div className="flex items-center gap-6">
@@ -51,7 +58,7 @@ export default function Footer() {
 
                     {/* Copyright */}
                     <div className="text-sm text-gray-500 text-center md:text-right">
-                        © {currentYear} JPM Interactive. All rights reserved.
+                        © {currentYear} JPM Interactive. {t("footer.copyright")}
                     </div>
                 </div>
             </PageContainer>

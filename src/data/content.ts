@@ -1,4 +1,6 @@
 import type { ContentPost } from "@/types/content";
+import type { Locale } from "@/types/locale";
+import { contentEnMap } from "./contentEn";
 
 export const contentPosts: ContentPost[] = [
     {
@@ -297,27 +299,36 @@ export const contentPosts: ContentPost[] = [
     },
 ];
 
-export function getAllPosts(): ContentPost[] {
-    return contentPosts.sort(
-        (a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
-    );
+function localizePost(post: ContentPost, locale: Locale): ContentPost {
+    if (locale !== "en") return post;
+    const en = contentEnMap[post.slug];
+    if (!en) return post;
+    return { ...post, title: en.title, description: en.description, body: en.body };
 }
 
-export function getPostBySlug(slug: string): ContentPost | undefined {
-    return contentPosts.find((post) => post.slug === slug);
+export function getAllPosts(locale: Locale = "th"): ContentPost[] {
+    const sorted = [...contentPosts].sort(
+        (a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
+    );
+    return sorted.map((p) => localizePost(p, locale));
+}
+
+export function getPostBySlug(slug: string, locale: Locale = "th"): ContentPost | undefined {
+    const post = contentPosts.find((p) => p.slug === slug);
+    return post ? localizePost(post, locale) : undefined;
 }
 
 /** บทความถัดไป (เรียงตาม publishedAt ล่าสุดก่อน) */
-export function getNextPost(slug: string): ContentPost | undefined {
-    const posts = getAllPosts();
+export function getNextPost(slug: string, locale: Locale = "th"): ContentPost | undefined {
+    const posts = getAllPosts(locale);
     const index = posts.findIndex((p) => p.slug === slug);
     if (index === -1 || index >= posts.length - 1) return undefined;
     return posts[index + 1];
 }
 
 /** บทความก่อนหน้า */
-export function getPreviousPost(slug: string): ContentPost | undefined {
-    const posts = getAllPosts();
+export function getPreviousPost(slug: string, locale: Locale = "th"): ContentPost | undefined {
+    const posts = getAllPosts(locale);
     const index = posts.findIndex((p) => p.slug === slug);
     if (index <= 0) return undefined;
     return posts[index - 1];

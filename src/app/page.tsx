@@ -1,5 +1,5 @@
-import HomePageContent from "./HomePageContent";
+import { redirect } from "next/navigation";
 
-export default function HomePage() {
-  return <HomePageContent />;
+export default function RootPage() {
+  redirect("/en");
 }

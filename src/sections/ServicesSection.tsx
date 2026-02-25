@@ -5,47 +5,13 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion, useScroll, useTransform } from "framer-motion";
 import ScrollReveal from "@/components/animations/ScrollReveal";
-
-// รูปจาก public/Image (ใส่ ?v=2 เพื่อไม่ให้เบราว์เซอร์/Next แคชภาพเก่า)
-const VISUAL_EXPERIENCE_IMAGE = "/Image/Visual%20Experience.png?v=2";
-
-const services = [
-    {
-        key: "led",
-        id: "01",
-        title: "Visual Experience",
-        description: "Immersive room experiences powered by sensors and 3D content—wrap-around visuals, interactive environments, and spatial storytelling that fully engage your audience.",
-        gradient: "linear-gradient(135deg, #38bdf8 0%, #06b6d4 50%, #3b82f6 100%)",
-        color: "#38bdf8",
-        href: "/works?category=led",
-        image: VISUAL_EXPERIENCE_IMAGE,
-        imageAlt: "Visual Experience - immersive room, curved display, interactive visuals",
-    },
-    {
-        key: "touch_screen",
-        id: "02",
-        title: "Interactive Solutions",
-        description: "Engaging touch screen and sensor-based applications that tell stories, present product information, and captivate audiences through interactive gameplay.",
-        gradient: "linear-gradient(135deg, #3b82f6 0%, #6366f1 50%, #8b5cf6 100%)",
-        color: "#3b82f6",
-        href: "/works?category=touch_screen",
-        image: "/Image/Interactive%20Solutions.png",
-        imageAlt: "Interactive Solutions - touch screen and sensor-based applications",
-    },
-    {
-        key: "graphic_design",
-        id: "03",
-        title: "Multimedia Design",
-        description: "Comprehensive creative production including 3D assets, mood & tone direction, sound design, and cinematic motion graphics for opening sequences.",
-        gradient: "linear-gradient(135deg, #0ea5e9 0%, #6366f1 100%)",
-        color: "#0ea5e9",
-        href: "/works?category=graphic_design",
-        image: "/Image/Multimedia%20Design.png",
-        imageAlt: "Multimedia Design - 3D assets, sound design, and motion graphics",
-    },
-];
+import { useLocale } from "@/context/LocaleContext";
+import { prefixPath } from "@/i18n/config";
+import { getHomeServices } from "@/data/homeServices";
 
 export default function ServicesSection() {
+    const { t, locale } = useLocale();
+    const services = getHomeServices(locale);
     const containerRef = useRef<HTMLDivElement>(null);
     const { scrollYProgress } = useScroll({
         target: containerRef,
@@ -66,8 +32,8 @@ export default function ServicesSection() {
     return (
         <section
             ref={containerRef}
-            className="relative w-full bg-white pt-32 sm:pt-40 md:pt-48 lg:pt-56 xl:pt-64 pb-56 sm:pb-64 md:pb-80 lg:pb-96 xl:pb-[28rem] overflow-visible"
-            style={{ marginBottom: '10rem', position: 'relative' }}
+            className="relative w-full overflow-x-hidden bg-white pt-24 sm:pt-32 md:pt-40 lg:pt-48 xl:pt-56 pb-40 sm:pb-56 md:pb-64 lg:pb-80 xl:pb-96"
+            style={{ marginBottom: "clamp(4rem, 10vw, 10rem)", position: "relative" }}
         >
             {/* เส้นโค้ง abstract - เต็มความกว้างจอ เริ่มจากขอบซ้ายจบขอบขวา */}
             <div 
@@ -131,7 +97,7 @@ export default function ServicesSection() {
                 <div className="mb-20 sm:mb-24 md:mb-28 lg:mb-32 text-center">
                     <ScrollReveal variant="fade">
                         <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-gray-900 tracking-tight">
-                            OUR SERVICES
+                            {t("sections.ourServices")}
                         </h2>
                     </ScrollReveal>
                 </div>
@@ -171,14 +137,14 @@ export default function ServicesSection() {
                                                 <h3 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 tracking-tight" style={{ lineHeight: 1.3 }}>
                                                     {service.title}
                                                 </h3>
-                                                <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-xl" style={{ lineHeight: 1.9 }}>
+                                                <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-xl" style={{ lineHeight: 2 }}>
                                                     {service.description}
                                                 </p>
                                                 <Link
-                                                    href={service.href}
+                                                    href={prefixPath(locale, service.href)}
                                                     className="inline-block text-base md:text-lg font-medium text-[#6B9FF7] hover:text-[#8B9FF8] border-b-2 border-[#6B9FF7]/50 hover:border-[#8B9FF8] transition-all"
                                                 >
-                                                    VIEW PROJECT
+                                                    {t("common.viewProject")}
                                                 </Link>
                                             </div>
                                         )}
@@ -194,14 +160,14 @@ export default function ServicesSection() {
                                                 <h3 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 tracking-tight" style={{ lineHeight: 1.3 }}>
                                                     {service.title}
                                                 </h3>
-                                                <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-xl" style={{ lineHeight: 1.9 }}>
+                                                <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-xl" style={{ lineHeight: 2 }}>
                                                     {service.description}
                                                 </p>
                                                 <Link
-                                                    href={service.href}
+                                                    href={prefixPath(locale, service.href)}
                                                     className="inline-block text-base md:text-lg font-medium text-[#6B9FF7] hover:text-[#8B9FF8] border-b-2 border-[#6B9FF7]/50 hover:border-[#8B9FF8] transition-all"
                                                 >
-                                                    VIEW PROJECT
+                                                    {t("common.viewProject")}
                                                 </Link>
                                             </div>
                                         ) : (

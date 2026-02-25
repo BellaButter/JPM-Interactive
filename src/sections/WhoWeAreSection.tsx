@@ -1,14 +1,19 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, type ReactNode } from "react";
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import Container from "@/components/layout/Container";
 import ScrollReveal from "@/components/animations/ScrollReveal";
+import { useLocale } from "@/context/LocaleContext";
 
-const STATS = [
-    { end: 50, suffix: "+", label: "Projects Delivered" },
-    { end: 5, suffix: "+", label: "Years Experience" },
-    { end: 30, suffix: "+", label: "Clients & Partners" },
+/** Padding การ์ด — ใช้ inline เพื่อให้เห็นผลทั้ง TH/EN */
+const STAT_CARD_PADDING = "clamp(1rem, 3vw, 1.5rem)";
+const VALUE_CARD_PADDING = "clamp(1.25rem, 4vw, 2.25rem)";
+
+const STATS_CONFIG = [
+    { end: 50, suffix: "+", labelKey: "sections.stats.projects" },
+    { end: 5, suffix: "+", labelKey: "sections.stats.years" },
+    { end: 30, suffix: "+", labelKey: "sections.stats.clients" },
 ];
 
 function useCountUp(end: number, inView: boolean, duration = 1200) {
@@ -31,9 +36,11 @@ function useCountUp(end: number, inView: boolean, duration = 1200) {
 
 function StatCard({
     stat,
+    label,
     index,
 }: {
-    stat: { end: number; suffix: string; label: string };
+    stat: { end: number; suffix: string };
+    label: string;
     index: number;
 }) {
     const ref = useRef<HTMLDivElement>(null);
@@ -58,7 +65,8 @@ function StatCard({
                 transition: { duration: 0.2 },
             }}
             whileTap={{ scale: 0.98 }}
-            className="text-center p-4 sm:p-5 rounded-2xl border border-[#7BA9F7]/25 bg-gradient-to-br from-[#f8faff] to-[#f3efff] shadow-sm cursor-default relative overflow-hidden"
+            className="text-center rounded-2xl border border-[#7BA9F7]/25 bg-gradient-to-br from-[#f8faff] to-[#f3efff] shadow-sm cursor-default relative overflow-hidden"
+            style={{ padding: STAT_CARD_PADDING }}
         >
             <motion.div
                 className="absolute inset-0 rounded-2xl opacity-0 hover:opacity-100 transition-opacity duration-300"
@@ -74,53 +82,40 @@ function StatCard({
                 {stat.suffix}
             </motion.div>
             <div className="relative text-xs sm:text-sm text-gray-600 mt-1 font-medium">
-                {stat.label}
+                {label}
             </div>
         </motion.div>
     );
 }
 
-const VALUES = [
-    {
-        title: "Creativity",
-        description: "We push boundaries with bold ideas and memorable visuals.",
-        icon: (
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
-            </svg>
-        ),
-    },
-    {
-        title: "Technology",
-        description: "We blend cutting-edge tech with seamless user experiences.",
-        icon: (
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-            </svg>
-        ),
-    },
-    {
-        title: "Experience",
-        description: "Every project is crafted to engage and inspire audiences.",
-        icon: (
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-            </svg>
-        ),
-    },
-    {
-        title: "Impact",
-        description: "We deliver results that matter for brands and their audiences.",
-        icon: (
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-            </svg>
-        ),
-    },
-];
+const VALUE_ICONS: Record<string, ReactNode> = {
+    creativity: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+        </svg>
+    ),
+    technology: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+        </svg>
+    ),
+    experience: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+        </svg>
+    ),
+    impact: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+        </svg>
+    ),
+};
+
+const VALUE_KEYS = ["creativity", "technology", "experience", "impact"] as const;
 
 export default function WhoWeAreSection() {
+    const { t } = useLocale();
     const containerRef = useRef<HTMLDivElement>(null);
 
     const { scrollYProgress } = useScroll({
@@ -137,7 +132,7 @@ export default function WhoWeAreSection() {
     return (
         <section
             ref={containerRef}
-            className="relative min-h-[60vh] sm:min-h-[70vh] overflow-hidden flex items-center pt-20 sm:pt-28 pb-12 sm:pb-20 bg-white"
+            className="relative min-h-[60vh] sm:min-h-[70vh] overflow-x-hidden flex items-center pt-16 sm:pt-24 md:pt-28 pb-12 sm:pb-16 md:pb-20 bg-white"
         >
             {/* Subtle floating orbs - ลูกเล่นพื้นหลัง */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden>
@@ -166,19 +161,20 @@ export default function WhoWeAreSection() {
                                 transition={{ type: "spring", stiffness: 120, damping: 20 }}
                             >
                                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#6B9FF7] via-[#8B9FF8] to-[#B8A9F9]">
-                                    WHO WE ARE
+                                    {t("sections.whoWeAre")}
                                 </span>
                             </motion.h2>
                         </ScrollReveal>
                         <ScrollReveal variant="slide" delay={0.2}>
                             <motion.p
-                                className="text-base sm:text-lg md:text-xl text-gray-700 leading-relaxed max-w-xl font-normal"
+                                className="text-base sm:text-lg md:text-xl text-gray-700 max-w-xl font-normal"
+                                style={{ lineHeight: 1.95 }}
                                 initial={{ opacity: 0, y: 16 }}
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ type: "spring", stiffness: 100, damping: 22, delay: 0.15 }}
                             >
-                                We are a team of visionaries and creators dedicated to pushing the boundaries of digital interaction. Our mission is to craft immersive experiences that engage, inspire, and perform.
+                                {t("sections.whoWeAreDesc")}
                             </motion.p>
                         </ScrollReveal>
                     </motion.div>
@@ -190,16 +186,22 @@ export default function WhoWeAreSection() {
                     >
                         {/* A: Stats row - ตัวเลขวิ่ง (count-up) ตอน scroll มา */}
                         <div className="grid grid-cols-3 gap-4 sm:gap-6">
-                            {STATS.map((stat, i) => (
-                                <StatCard key={stat.label} stat={stat} index={i} />
+                            {STATS_CONFIG.map((stat, i) => (
+                                <StatCard
+                                    key={stat.labelKey}
+                                    stat={{ end: stat.end, suffix: stat.suffix }}
+                                    label={t(stat.labelKey)}
+                                    index={i}
+                                />
                             ))}
                         </div>
 
-                        {/* B: Values cards - hover ขยับ ไอคอนหมุน เงา */}
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                            {VALUES.map((item, i) => (
+                        {/* B: Values cards - hover ขยับ ไอคอนหมุน เงา (h-full ให้การ์ดสูงเท่ากัน) */}
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 items-stretch">
+                            {VALUE_KEYS.map((key, i) => (
                                 <motion.div
-                                    key={item.title}
+                                    key={key}
+                                    className="h-full"
                                     initial={{ opacity: 0, x: i % 2 === 0 ? -20 : 20, y: 16 }}
                                     whileInView={{ opacity: 1, x: 0, y: 0 }}
                                     viewport={{ once: true, margin: "-10px" }}
@@ -211,7 +213,8 @@ export default function WhoWeAreSection() {
                                     }}
                                 >
                                     <motion.div
-                                        className="flex gap-4 p-6 sm:p-8 rounded-2xl border border-[#7BA9F7]/20 bg-white/80 shadow-sm relative overflow-hidden"
+                                        className="flex gap-4 rounded-2xl border border-[#7BA9F7]/20 bg-white/80 shadow-sm relative overflow-hidden h-full"
+                                        style={{ padding: VALUE_CARD_PADDING }}
                                         whileHover={{
                                             y: -6,
                                             scale: 1.02,
@@ -226,14 +229,14 @@ export default function WhoWeAreSection() {
                                             whileHover={{ rotate: [0, -8, 8, 0], scale: 1.1 }}
                                             transition={{ duration: 0.4 }}
                                         >
-                                            {item.icon}
+                                            {VALUE_ICONS[key]}
                                         </motion.div>
                                         <div className="space-y-2">
                                             <h3 className="font-bold text-gray-900 text-sm sm:text-base leading-snug">
-                                                {item.title}
+                                                {t(`sections.values.${key}.title`)}
                                             </h3>
-                                            <p className="text-xs sm:text-sm text-gray-600 leading-loose">
-                                                {item.description}
+                                            <p className="text-xs sm:text-sm text-gray-600" style={{ lineHeight: 1.9 }}>
+                                                {t(`sections.values.${key}.description`)}
                                             </p>
                                         </div>
                                     </motion.div>

@@ -13,10 +13,10 @@ export default function PageContainer({
 }) {
     return (
         <div
-            className={`w-full max-w-[1600px] mx-auto ${className}`.trim()}
+            className={`w-full max-w-[1600px] min-w-0 mx-auto ${className}`.trim()}
             style={{
-                paddingLeft: "clamp(1.25rem, 5vw, 2rem)",
-                paddingRight: "clamp(1.25rem, 5vw, 2rem)",
+                paddingLeft: "clamp(1rem, 4vw, 4rem)",
+                paddingRight: "clamp(1rem, 4vw, 4rem)",
             }}
         >
             {children}

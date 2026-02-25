@@ -1,579 +1,300 @@
 "use client";
 
-import { useRef, useLayoutEffect, useState, useEffect } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
-import { Canvas } from "@react-three/fiber";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useMotion } from "@/system/motion/useMotion";
-import Container from "@/components/layout/Container";
-import { CTAVideoScene } from "@/sections/cta/CTAVideoScene";
+import { motion, useScroll } from "framer-motion";
+import { useRef } from "react";
+import dynamic from "next/dynamic";
+import { useLocale } from "@/context/LocaleContext";
+import { prefixPath } from "@/i18n/config";
 
-if (typeof window !== "undefined") {
-    gsap.registerPlugin(ScrollTrigger);
-}
-
-const CINEMATIC_VIDEO_SRC = "/Cinematic/cinematic.mp4";
-const CINEMATIC_POSTER_SRC = "/Cinematic/frame_0080.jpg";
-
-const PHASE1_END = 0.3;
-const PHASE2_END = 0.85;
-const PHASE3_START = 0.85;
-const SCROLL_TRIGGER_END = "+=300%";
-const SCRUB_VALUE = 1;
-const SCROLL_PROMPT_TEXT = "Scroll to explore";
-const SCROLL_PROMPT_FADE_END = 0.12;
-
-const INITIAL_LEFT_PERCENT = 8;
-const INITIAL_WIDTH_VW = 42;
-const INITIAL_HEIGHT_VH = 65;
-const INITIAL_TOP_PERCENT = 78;
-const INITIAL_TOP_OFFSET = "5rem";
-
-const narrativeBlocks = [
-    {
-        id: "intro",
-        headline: "JPM Interactive",
-        subtext: "Where Technology Meets Creativity",
-        sideText: {
-            title: "Creative Digital Experiences",
-            description: "At JPM Interactive, we don't follow trends for the sake of it. We believe in a different approach - one that's centered around you, your audience, and the art of creating a memorable, personalized experience."
-        }
-    }
-];
-
-function checkWebGLSupport(): boolean {
-    if (typeof window === "undefined") return false;
-    try {
-        const canvas = document.createElement("canvas");
-        const gl = canvas.getContext("webgl") ?? canvas.getContext("experimental-webgl");
-        return Boolean(gl);
-    } catch {
-        return false;
-    }
-}
-
-function CTAEndingOverlay({
-    endingTextRef,
-    children,
-}: {
-    endingTextRef: React.RefObject<HTMLDivElement | null>;
-    children: React.ReactNode;
-}) {
-    return (
-        <div
-            ref={endingTextRef}
-            className="absolute inset-0 flex flex-col items-center justify-center opacity-0 z-30"
-            style={{
-                willChange: "opacity",
-                background: "radial-gradient(circle at center, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.7) 100%)",
-                pointerEvents: "none"
-            }}
-        >
-            <div className="text-center px-8 flex flex-col items-center pointer-events-auto">
-                {children}
-            </div>
+/* ─── Lazy-load 3D ────────────────────────────────────────────── */
+const CTAScene3D = dynamic(() => import("@/sections/cta/CTAScene3D"), {
+    ssr: false,
+    loading: () => (
+        <div className="w-full h-full flex items-center justify-center">
+            <div className="w-12 h-12 rounded-full border-4 border-[#6B9FF7]/30 border-t-[#6B9FF7] animate-spin" />
         </div>
+    ),
+});
+
+const BG = "#ffffff";
+
+/* ─── Decorative background ───────────────────────────────────── */
+function Background() {
+    return (
+        <>
+            {/* Subtle dot-grid only */}
+            <div className="absolute inset-0 opacity-[0.09]" aria-hidden
+                style={{
+                    backgroundImage: "radial-gradient(rgba(107,159,247,.7) 1px, transparent 1px)",
+                    backgroundSize: "clamp(24px,4vw,40px) clamp(24px,4vw,40px)",
+                }} />
+        </>
     );
 }
 
-function CTAButton() {
+/* ─── Floating badge pill ─────────────────────────────────────── */
+function FloatingBadge({
+    label, x, y, delay, color,
+}: {
+    label: string; x: string; y: string; delay: number; color: string;
+}) {
     return (
-        <Link href="/contact" className="inline-block pointer-events-auto">
+        // Outer: entrance only (spring ok — only 2 keyframes: initial→whileInView)
+        <motion.div
+            className="absolute hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap pointer-events-none select-none"
+            style={{
+                left: x, top: y,
+                background: `${color}18`,
+                border: `1px solid ${color}55`,
+                color,
+                boxShadow: `0 4px 18px ${color}22`,
+            }}
+            initial={{ opacity: 0, scale: 0.6 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.55, delay, type: "spring", stiffness: 200 }}
+            viewport={{ once: true }}
+        >
+            {/* Inner: continuous float — use ease, NOT spring */}
+            <motion.span
+                className="flex items-center gap-1.5"
+                animate={{ y: [0, -7, 0] }}
+                transition={{ duration: 3 + delay * 0.5, repeat: Infinity, ease: "easeInOut", repeatType: "loop" }}
+            >
+                <span className="text-[10px]">✦</span>
+                {label}
+            </motion.span>
+        </motion.div>
+    );
+}
+
+/* ─── Sparkle / star accent ───────────────────────────────────── */
+function Sparkle({ x, y, size = 6, delay = 0 }: { x: string; y: string; size?: number; delay?: number }) {
+    return (
+        /* Entrance wrapper — tween only, 2 keyframes */
+        <motion.div
+            className="absolute pointer-events-none hidden sm:block"
+            style={{ left: x, top: y, width: size, height: size }}
+            initial={{ opacity: 0, scale: 0 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, delay, ease: "easeOut" }}
+            viewport={{ once: true }}
+        >
+            {/* Continuous spin + pulse — ease only, no spring */}
+            <motion.svg
+                viewBox="0 0 24 24" fill="currentColor"
+                style={{ color: "#9C84F7", width: "100%", height: "100%" }}
+                animate={{ rotate: 360, opacity: [1, 0.32, 1] }}
+                transition={{
+                    rotate: { duration: 5 + delay, repeat: Infinity, ease: "linear" },
+                    opacity: { duration: 2.5, repeat: Infinity, ease: "easeInOut", delay },
+                }}
+            >
+                <path d="M12 2 L13.5 10.5 L22 12 L13.5 13.5 L12 22 L10.5 13.5 L2 12 L10.5 10.5 Z" />
+            </motion.svg>
+        </motion.div>
+    );
+}
+
+/* ─── CTA button ──────────────────────────────────────────────── */
+function CTAButton() {
+    const { t, locale } = useLocale();
+    return (
+        <Link href={prefixPath(locale, "/contact")} className="inline-block">
             <motion.button
-                className="group relative inline-flex items-center justify-center gap-3 sm:gap-4 text-base sm:text-lg md:text-xl lg:text-2xl font-bold rounded-full overflow-hidden min-w-[12rem] sm:min-w-[14rem] px-8 sm:px-10 md:px-12 py-4 sm:py-5 md:py-6 border-2 border-[#6192F8]/25 bg-white touch-manipulation"
-                style={{
-                    cursor: "pointer",
-                    WebkitTapHighlightColor: "rgba(97, 146, 248, 0.2)"
-                }}
-                variants={{
-                    rest: { scale: 1, y: 0 },
-                    hover: { scale: 1.06, y: -2 },
-                    tap: { scale: 0.97 },
-                }}
-                initial="rest"
-                whileHover="hover"
-                whileTap="tap"
+                className="relative group inline-flex items-center gap-3 font-bold rounded-full overflow-hidden"
+                style={{ cursor: "pointer", padding: "16px 36px", fontSize: "1rem" }}
+                whileHover={{ scale: 1.05, y: -3 }}
+                whileTap={{ scale: 0.97 }}
                 transition={{ type: "spring", stiffness: 400, damping: 22 }}
             >
-                <div className="absolute inset-0 rounded-full bg-white" />
-                <motion.div
-                    className="absolute inset-0 rounded-full pointer-events-none overflow-hidden"
-                    variants={{ rest: {}, hover: {} }}
-                >
-                    <motion.div
-                        className="absolute inset-y-0 w-1/2"
-                        variants={{
-                            rest: { x: "-100%" },
-                            hover: { x: "200%" },
-                        }}
-                        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                        style={{
-                            background: "linear-gradient(90deg, transparent, rgba(97,146,248,0.12), transparent)",
-                        }}
-                    />
-                </motion.div>
-                <motion.div
-                    className="absolute inset-0 rounded-full pointer-events-none"
-                    style={{ boxShadow: "inset 0 0 0 rgba(0,0,0,0.04)" }}
-                    variants={{
-                        rest: {},
-                        hover: { boxShadow: "inset 0 0 30px rgba(97,146,248,0.08)" },
-                    }}
-                    transition={{ duration: 0.3 }}
+                <span className="absolute inset-0 bg-gradient-to-r from-[#6B9FF7] via-[#8B6CF7] to-[#C084FC]" />
+                <motion.span
+                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
+                    initial={{ x: "-100%" }} whileHover={{ x: "100%" }}
+                    transition={{ duration: 0.5, ease: "easeInOut" }}
                 />
-                <motion.span
-                    className="relative z-10 text-[#6192F8]"
-                    variants={{ rest: { letterSpacing: "0em" }, hover: { letterSpacing: "0.05em" } }}
-                    transition={{ duration: 0.2 }}
-                >
-                    Get In Touch
-                </motion.span>
-                <motion.span
-                    className="relative z-10 text-[#6192F8] flex items-center"
-                    variants={{ rest: { x: 0 }, hover: { x: 6 } }}
-                    transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                >
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
+                <span className="relative z-10 text-white">{t("sections.getInTouch")}</span>
+                <span className="relative z-10 text-white">
+                    <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
                     </svg>
-                </motion.span>
+                </span>
             </motion.button>
         </Link>
     );
 }
 
+/* ─── Ghost secondary link ────────────────────────────────────── */
+function GhostLink() {
+    const { locale } = useLocale();
+    return (
+        <Link href={prefixPath(locale, "/case-studies")}
+            className="inline-flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-[#6B9FF7] transition-colors duration-200 group">
+            <span>See our work</span>
+            <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+        </Link>
+    );
+}
+
+/* ─── Service tags ────────────────────────────────────────────── */
+const SERVICES = ["Interactive Installation", "Immersive Experience", "Multimedia & Creative Technology"];
+
+/* ═══════════════════════════════════════════════════════════════ */
+/* MAIN CTA SECTION                                                 */
+/* 200vh sticky — scroll spins the 3D character                    */
+/* ═══════════════════════════════════════════════════════════════ */
 export default function CTASection() {
-    const { motionConfig, reducedMotion, interactionMode, isReady } = useMotion();
-    const isMobile = interactionMode === "mobile";
+    const sectionRef = useRef<HTMLDivElement>(null);
+    const scrollProgressRef = useRef(0);
+    const { t } = useLocale();
 
-    const containerRef = useRef<HTMLDivElement>(null);
-    const videoContainerRef = useRef<HTMLDivElement>(null);
-    const videoRef = useRef<HTMLVideoElement>(null);
-    const sideTextRef = useRef<HTMLDivElement>(null);
-    const endingTextRef = useRef<HTMLDivElement>(null);
-    const scrollPromptRef = useRef<HTMLParagraphElement>(null);
-    const panelsRef = useRef<(HTMLDivElement | null)[]>([]);
-    const mobileCinematicWrapRef = useRef<HTMLDivElement>(null);
-    const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
-    const scrollEndTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const { scrollYProgress } = useScroll({
+        target: sectionRef,
+        offset: ["start start", "end end"],
+    });
 
-    const [videoReady, setVideoReady] = useState(false);
-    const [hasMounted, setHasMounted] = useState(false);
-    const [webGLSupported, setWebGLSupported] = useState(false);
-    /** On mobile: defer loading cinematic video until CTA is near viewport. */
-    const [videoShouldLoad, setVideoShouldLoad] = useState(false);
-
-    useEffect(() => {
-        setHasMounted(true);
-        setWebGLSupported(checkWebGLSupport());
-    }, []);
-
-    // After device is known: desktop load video immediately; mobile load when CTA near viewport
-    useEffect(() => {
-        if (!isReady) return;
-        if (!isMobile) {
-            setVideoShouldLoad(true);
-            return;
-        }
-        const el = containerRef.current;
-        if (!el) return;
-        const io = new IntersectionObserver(
-            (entries) => {
-                if (entries[0]?.isIntersecting) setVideoShouldLoad(true);
-            },
-            { rootMargin: "100px 0px", threshold: 0 }
-        );
-        io.observe(el);
-        return () => io.disconnect();
-    }, [isReady, isMobile]);
-
-    const shouldPin = motionConfig.enableScrollPin && !reducedMotion;
-
-    useEffect(() => {
-        const video = videoRef.current;
-        if (!video) return;
-        const onCanPlay = () => setVideoReady(true);
-        video.addEventListener("canplay", onCanPlay);
-        if (video.readyState >= 2) setVideoReady(true);
-        return () => video.removeEventListener("canplay", onCanPlay);
-    }, []);
-
-    useEffect(() => {
-        if (!videoReady || typeof window === "undefined") return;
-        const t = setTimeout(() => ScrollTrigger.refresh(), 300);
-        const onResize = () => ScrollTrigger.refresh();
-        window.addEventListener("resize", onResize);
-        return () => {
-            clearTimeout(t);
-            window.removeEventListener("resize", onResize);
-        };
-    }, [videoReady]);
-
-    useLayoutEffect(() => {
-        if (!containerRef.current || typeof window === "undefined") return;
-
-        const onVideoEnded = () => {
-            if (endingTextRef.current) gsap.set(endingTextRef.current, { opacity: 1, pointerEvents: "auto" });
-        };
-
-        const ctx = gsap.context(() => {
-            if (!shouldPin) {
-                panelsRef.current.forEach((panel) => {
-                    if (!panel) return;
-                    gsap.fromTo(
-                        panel,
-                        { opacity: 0, y: 20 },
-                        {
-                            opacity: 1,
-                            y: 0,
-                            duration: 0.8,
-                            ease: "power2.out",
-                            scrollTrigger: {
-                                trigger: panel,
-                                start: "top 80%",
-                                toggleActions: "play none none reverse"
-                            }
-                        }
-                    );
-                });
-
-                const wrap = mobileCinematicWrapRef.current;
-                const video = videoRef.current;
-                if (wrap && video && videoReady) {
-                    const st = ScrollTrigger.create({
-                        trigger: wrap,
-                        start: "top bottom",
-                        end: "bottom top",
-                        scrub: 1,
-                        onUpdate: (self) => {
-                            const progress = self.progress;
-                            if (!isNaN(video.duration)) {
-                                video.currentTime = progress * video.duration;
-                            }
-                        }
-                    });
-                    scrollTriggerRef.current = st;
-                    requestAnimationFrame(() => ScrollTrigger.refresh());
-                }
-                return;
-            }
-
-            const video = videoRef.current;
-            const videoContainer = videoContainerRef.current;
-            const sideText = sideTextRef.current;
-            const endingText = endingTextRef.current;
-            const scrollPrompt = scrollPromptRef.current;
-
-            if (!video || !videoContainer || !sideText || !endingText || !videoReady) return;
-
-            gsap.set(endingText, { opacity: 0 });
-            if (scrollPrompt) gsap.set(scrollPrompt, { opacity: 1 });
-
-            const vw = window.innerWidth;
-            const vh = window.innerHeight;
-            const rem = parseFloat(getComputedStyle(document.documentElement).fontSize);
-            const initW = (INITIAL_WIDTH_VW / 100) * vw;
-            const initH = (INITIAL_HEIGHT_VH / 100) * vh;
-            const initLeft = (INITIAL_LEFT_PERCENT / 100) * vw;
-            const initTop = (INITIAL_TOP_PERCENT / 100) * vh + 5 * rem;
-
-            gsap.set(videoContainer, {
-                position: "absolute",
-                left: initLeft,
-                top: initTop,
-                width: initW,
-                height: initH,
-                borderRadius: 24,
-                x: 0,
-                y: -initH * 0.5,
-                boxShadow: "0 25px 80px rgba(123, 169, 247, 0.3)"
-            });
-            gsap.set(sideText, { opacity: 1, x: 0, top: initTop, y: -initH * 0.5 });
-
-            video.addEventListener("ended", onVideoEnded);
-
-            const st = ScrollTrigger.create({
-                trigger: containerRef.current,
-                pin: true,
-                pinSpacing: true,
-                start: "top top",
-                end: SCROLL_TRIGGER_END,
-                scrub: SCRUB_VALUE,
-                invalidateOnRefresh: true,
-                anticipatePin: 1,
-                markers: false,
-                onUpdate: (self) => {
-                    const progress = self.progress;
-
-                    if (scrollPrompt) {
-                        const promptOpacity = progress < SCROLL_PROMPT_FADE_END
-                            ? 1 - progress / SCROLL_PROMPT_FADE_END
-                            : 0;
-                        gsap.set(scrollPrompt, { opacity: promptOpacity });
-                    }
-
-                    if (progress <= PHASE1_END) {
-                        const t = progress / PHASE1_END;
-                        const vw = window.innerWidth;
-                        const vh = window.innerHeight;
-                        const rem = parseFloat(getComputedStyle(document.documentElement).fontSize);
-                        const startW = (INITIAL_WIDTH_VW / 100) * vw;
-                        const startH = (INITIAL_HEIGHT_VH / 100) * vh;
-                        const w = startW + (vw - startW) * t;
-                        const h = startH + (vh - startH) * t;
-                        const leftPx = (INITIAL_LEFT_PERCENT / 100) * vw * (1 - t);
-                        const startTopPx = (INITIAL_TOP_PERCENT / 100) * vh + 5 * rem;
-                        const topPx = startTopPx * (1 - t);
-                        const yPx = (-0.5 * h) * (1 - t);
-                        const borderRadius = 24 * (1 - t);
-                        gsap.set(videoContainer, {
-                            position: "absolute",
-                            left: leftPx,
-                            top: topPx,
-                            y: yPx,
-                            width: w,
-                            height: h,
-                            borderRadius: `${borderRadius}px`,
-                            x: 0,
-                            boxShadow: t >= 1 ? "none" : "0 25px 80px rgba(123, 169, 247, 0.3)"
-                        });
-                        gsap.set(sideText, { opacity: 1 - t, x: 100 * t, top: startTopPx, y: -startH * 0.5 });
-                    } else {
-                        gsap.set(videoContainer, {
-                            position: "absolute",
-                            left: 0,
-                            top: 0,
-                            width: window.innerWidth,
-                            height: window.innerHeight,
-                            x: 0,
-                            y: 0,
-                            zIndex: 5,
-                            borderRadius: 0,
-                            boxShadow: "none"
-                        });
-                        const sideTopPx = (INITIAL_TOP_PERCENT / 100) * window.innerHeight + 5 * parseFloat(getComputedStyle(document.documentElement).fontSize);
-                        gsap.set(sideText, { opacity: 0, x: 100, top: sideTopPx, y: -(INITIAL_HEIGHT_VH / 100) * window.innerHeight * 0.5 });
-                    }
-
-                    if (progress > PHASE1_END && progress <= PHASE2_END && !isNaN(video.duration)) {
-                        const videoProgress = (progress - PHASE1_END) / (PHASE2_END - PHASE1_END);
-                        const targetTime = Math.min(videoProgress * video.duration, video.duration);
-                        video.pause();
-                        video.currentTime = targetTime;
-
-                        if (scrollEndTimeoutRef.current) clearTimeout(scrollEndTimeoutRef.current);
-                        scrollEndTimeoutRef.current = setTimeout(() => {
-                            scrollEndTimeoutRef.current = null;
-                            if (video.paused && !isNaN(video.duration)) video.play();
-                        }, 120);
-                    } else {
-                        if (scrollEndTimeoutRef.current) {
-                            clearTimeout(scrollEndTimeoutRef.current);
-                            scrollEndTimeoutRef.current = null;
-                        }
-                        video.pause();
-                        if (progress <= PHASE1_END && !isNaN(video.duration)) video.currentTime = 0;
-                        if (progress > PHASE2_END && !isNaN(video.duration)) video.currentTime = video.duration;
-                    }
-
-                    if (progress >= PHASE3_START) {
-                        const t = (progress - PHASE3_START) / (1 - PHASE3_START);
-                        const raw = 1 - Math.pow(1 - Math.min(1, t), 2);
-                        const opacity = raw < 0.01 ? 0 : raw > 0.99 ? 1 : raw;
-                        gsap.set(endingText, { opacity, pointerEvents: opacity > 0.5 ? "auto" : "none" });
-                    } else {
-                        gsap.set(endingText, { opacity: 0, pointerEvents: "none" });
-                    }
-                }
-            });
-
-            scrollTriggerRef.current = st;
-            requestAnimationFrame(() => {
-                requestAnimationFrame(() => ScrollTrigger.refresh());
-            });
-        }, containerRef);
-
-        return () => {
-            const video = videoRef.current;
-            if (video) {
-                video.removeEventListener("ended", onVideoEnded);
-                video.pause();
-            }
-            if (scrollEndTimeoutRef.current) {
-                clearTimeout(scrollEndTimeoutRef.current);
-                scrollEndTimeoutRef.current = null;
-            }
-            if (scrollTriggerRef.current) {
-                scrollTriggerRef.current.kill();
-                scrollTriggerRef.current = null;
-            }
-            ctx.revert();
-        };
-    }, [shouldPin, reducedMotion, videoReady]);
-
-    const renderCinematicContent = (className?: string) => {
-        if (!hasMounted || !webGLSupported) {
-            return (
-                <img
-                    src={CINEMATIC_POSTER_SRC}
-                    alt="JPM Interactive Showcase"
-                    className={className ?? "w-full h-full object-cover"}
-                />
-            );
-        }
-        return (
-            <Canvas
-                dpr={[1, 2]}
-                gl={{ antialias: false, alpha: false }}
-                camera={{ position: [0, 0, 5], fov: 50 }}
-                style={{
-                    position: "absolute",
-                    inset: 0,
-                    width: "100%",
-                    height: "100%",
-                    display: "block"
-                }}
-            >
-                <CTAVideoScene videoRef={videoRef} videoReady={videoReady} />
-            </Canvas>
-        );
-    };
+    scrollYProgress.on("change", (v) => { scrollProgressRef.current = v; });
 
     return (
-        <section
-            ref={containerRef}
-            className={`relative z-30 isolate w-full min-w-full max-w-none text-gray-900 ${shouldPin ? "min-h-screen overflow-hidden bg-white" : "pt-16 sm:pt-24 pb-12 sm:pb-20 bg-white"}`}
-        >
-            <video
-                ref={videoRef}
-                src={videoShouldLoad ? CINEMATIC_VIDEO_SRC : undefined}
-                muted
-                playsInline
-                preload={videoShouldLoad ? "auto" : "none"}
-                crossOrigin="anonymous"
-                className="absolute opacity-0 pointer-events-none w-0 h-0"
-                aria-hidden
-            />
+        <section ref={sectionRef} className="relative w-full" style={{ height: "100vh", background: BG }}>
+            <div className="h-full w-full overflow-hidden
+                            flex flex-col-reverse lg:flex-row items-stretch">
+                <Background />
 
-            {shouldPin && videoReady ? (
-                <div className="relative w-full h-screen overflow-hidden">
-                    <div
-                        ref={videoContainerRef}
-                        className="overflow-hidden bg-black"
-                        style={{
-                            position: "absolute",
-                            willChange: "transform, width, height, border-radius, left, top"
-                        }}
+                {/* LEFT / BOTTOM — Text content */}
+                <div
+                    className="relative z-10
+                               flex-none lg:flex-1
+                               flex flex-col justify-center items-center lg:items-start
+                               text-center lg:text-left"
+                    style={{
+                        paddingLeft: "clamp(2.5rem, 8vw, 7.5rem)",
+                        paddingRight: "clamp(1rem,   4vw, 4rem)",
+                        paddingBottom: "3rem",
+                        gap: "clamp(1.5rem, 3vw, 2.5rem)",
+                    }}
+                >
+
+
+                    {/* Headline */}
+                    <motion.h2
+                        initial={{ opacity: 0, y: 40 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.85, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+                        viewport={{ once: true }}
+                        className="font-bold tracking-tight"
+                        style={{ fontSize: "clamp(2rem, 5.5vw, 4.2rem)", lineHeight: 1.6 }}
                     >
-                        <div
-                            style={{
-                                position: "absolute",
-                                inset: 0,
-                                width: "100%",
-                                height: "100%"
-                            }}
-                        >
-                            {renderCinematicContent()}
-                        </div>
-
-                        <CTAEndingOverlay endingTextRef={endingTextRef}>
-                            <h2
-                                className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold text-white mb-6 sm:mb-8 leading-tight tracking-tight"
+                        <span className="text-slate-800">{t("sections.cta.singleAct.headlinePart1")}</span><br />
+                        <span style={{ display: "inline-flex", flexDirection: "column", gap: "5px", verticalAlign: "bottom" }}>
+                            <span className="bg-gradient-to-r from-[#6B9FF7] to-[#C084FC] bg-clip-text text-transparent">
+                                {t("sections.cta.singleAct.headlineHighlight")}
+                            </span>
+                            <motion.span
+                                initial={{ scaleX: 0 }}
+                                whileInView={{ scaleX: 1 }}
+                                transition={{ duration: 0.75, delay: 0.9, ease: "easeOut" }}
+                                viewport={{ once: true }}
                                 style={{
-                                    textShadow: "0 4px 40px rgba(0, 0, 0, 0.9), 0 2px 20px rgba(0, 0, 0, 0.8)"
+                                    display: "block",
+                                    height: "3px",
+                                    borderRadius: "9999px",
+                                    background: "linear-gradient(to right, #6B9FF7, #C084FC)",
+                                    originX: 0,
+                                }}
+                            />
+                        </span><br />
+                        <span className="text-slate-800" style={{ whiteSpace: "nowrap" }}>
+                            {t("sections.cta.singleAct.headlinePart3")}
+                        </span>
+                    </motion.h2>
+
+                    {/* Sub */}
+                    <motion.p
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.65, delay: 0.28 }}
+                        viewport={{ once: true }}
+                        className="text-sm sm:text-base lg:text-lg text-slate-500 leading-relaxed max-w-[30rem]"
+                    >
+                        {t("sections.cta.singleAct.subtitle")}
+                    </motion.p>
+
+                    {/* Service tags row */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 16 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6, delay: 0.4 }}
+                        viewport={{ once: true }}
+                        className="flex flex-wrap justify-center lg:justify-start gap-3"
+                    >
+                        {SERVICES.map((svc, i) => (
+                            <motion.span
+                                key={svc}
+                                initial={{ opacity: 0, scale: 0.8 }}
+                                whileInView={{ opacity: 1, scale: 1 }}
+                                transition={{ duration: 0.4, delay: 0.45 + i * 0.07 }}
+                                viewport={{ once: true }}
+                                className="rounded-full font-medium text-slate-600"
+                                style={{
+                                    background: "rgba(107,159,247,.09)",
+                                    border: "1px solid rgba(107,159,247,.2)",
+                                    padding: "10px 20px",
+                                    fontSize: "0.8rem",
+                                    letterSpacing: "0.01em",
                                 }}
                             >
-                                Let&apos;s work
-                                <br />
-                                together!
-                            </h2>
-                            <p
-                                className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-white/80 max-w-2xl mx-auto mb-8 sm:mb-10"
-                                style={{ textShadow: "0 2px 24px rgba(0, 0, 0, 0.8)" }}
-                            >
-                                Is your big idea waiting to build?
-                            </p>
-                            <CTAButton />
-                        </CTAEndingOverlay>
-                    </div>
-
-                    <div
-                        ref={sideTextRef}
-                        className="absolute right-8 lg:right-16 w-full lg:w-5/12 z-20 pointer-events-none hidden md:block"
-                        style={{ willChange: "opacity, transform", maxWidth: "36rem" }}
-                    >
-                        <div className="space-y-6">
-                            <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-800 leading-tight">
-                                {narrativeBlocks[0].sideText?.title}
-                            </h3>
-                            <p className="text-base sm:text-lg text-slate-600 leading-relaxed">
-                                {narrativeBlocks[0].sideText?.description}
-                            </p>
-                            <div className="pt-4">
-                                <p className="text-sm text-slate-500 italic">Scroll to explore more →</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <p
-                        ref={scrollPromptRef}
-                        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 pointer-events-none text-sm sm:text-base text-slate-500 tracking-wider uppercase"
-                        style={{ willChange: "opacity" }}
-                    >
-                        {SCROLL_PROMPT_TEXT} →
-                    </p>
-                </div>
-            ) : (
-                <Container className="h-full py-16 sm:py-20">
-                    <div className="relative w-full h-full flex flex-col gap-16 sm:gap-20">
-                        {narrativeBlocks.map((block, index) => (
-                            <div
-                                key={block.id}
-                                ref={(el) => { panelsRef.current[index] = el; }}
-                                className="flex flex-col items-center text-center max-w-4xl mx-auto px-4 relative opacity-0"
-                            >
-                                <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-tight mb-4 sm:mb-6">
-                                    {block.headline}
-                                </h2>
-                                <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-2xl leading-relaxed font-light mb-8">
-                                    {block.subtext}
-                                </p>
-
-                                <div
-                                    ref={mobileCinematicWrapRef}
-                                    className="relative w-full mb-8 sm:mb-12 rounded-2xl shadow-2xl overflow-hidden bg-black aspect-video"
-                                    style={{ maxWidth: "48rem" }}
-                                >
-                                    <div
-                                        style={{
-                                            position: "absolute",
-                                            inset: 0,
-                                            width: "100%",
-                                            height: "100%"
-                                        }}
-                                    >
-                                        {renderCinematicContent()}
-                                    </div>
-                                </div>
-
-                                <div className="mt-8 sm:mt-12 flex flex-col items-center gap-8">
-                                    <div className="text-center max-w-md">
-                                        <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                                            Let&apos;s work together!
-                                        </h3>
-                                        <p className="text-base sm:text-lg text-gray-600 mb-8">
-                                            Is your big idea waiting to build?
-                                        </p>
-                                    </div>
-                                    <CTAButton />
-                                </div>
-                            </div>
+                                {svc}
+                            </motion.span>
                         ))}
-                    </div>
-                </Container>
-            )}
+                    </motion.div>
+
+                    {/* Actions */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 16 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6, delay: 0.55 }}
+                        viewport={{ once: true }}
+                        className="flex flex-col sm:flex-row items-center gap-5"
+                    >
+                        <CTAButton />
+                        <GhostLink />
+                    </motion.div>
+
+
+                </div>
+
+                {/*
+                    RIGHT / TOP — 3D Scene + floating badges
+                ══════════════════════════════════════════════ */}
+                <div className="relative z-10
+                                flex-1 lg:flex-1 w-full
+                                h-[58vw] sm:h-[52vw] lg:h-full
+                                min-h-[250px] max-h-[500px] lg:max-h-none">
+
+                    {/* Purple halo behind character */}
+                    <div className="absolute inset-0 pointer-events-none"
+                        style={{ background: "radial-gradient(ellipse 70% 60% at 50% 55%,rgba(139,156,248,.18) 0%,transparent 70%)" }} />
+
+                    {/* 3D Canvas */}
+                    <CTAScene3D scrollProgress={scrollProgressRef} />
+
+                    {/* Sparkle accents */}
+                    <Sparkle x="12%" y="18%" size={8} delay={0} />
+                    <Sparkle x="78%" y="12%" size={6} delay={0.4} />
+                    <Sparkle x="88%" y="72%" size={10} delay={0.9} />
+                    <Sparkle x="6%" y="80%" size={5} delay={1.4} />
+
+                    {/* Floating service badges around character */}
+                    <FloatingBadge label="Interactive Installation" x="2%" y="22%" delay={0.2} color="#6B9FF7" />
+                    <FloatingBadge label="Immersive Experience" x="2%" y="65%" delay={0.5} color="#9C84F7" />
+                    <FloatingBadge label="Multimedia & Creative" x="64%" y="8%" delay={0.35} color="#B57CF7" />
+                    <FloatingBadge label="Creative Technology" x="60%" y="82%" delay={0.7} color="#C084FC" />
+                </div>
+            </div>
         </section>
     );
 }

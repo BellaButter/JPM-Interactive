@@ -3,9 +3,12 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { useLocale } from "@/context/LocaleContext";
+import { prefixPath } from "@/i18n/config";
 import type { ContentPost } from "@/types/content";
 
 export function ArticleNavNext({ nextPost }: { nextPost: ContentPost | null }) {
+    const { locale, t } = useLocale();
     const [show, setShow] = useState(false);
 
     useEffect(() => {
@@ -29,10 +32,10 @@ export function ArticleNavNext({ nextPost }: { nextPost: ContentPost | null }) {
             transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
         >
             <Link
-                href={`/content/${nextPost.slug}`}
+                href={prefixPath(locale, `/content/${nextPost.slug}`)}
                 className="inline-flex items-center gap-2 rounded-full bg-white border-2 border-gray-200 px-6 py-3 text-sm font-semibold text-gray-800 shadow-lg hover:border-[#6B9FF7] hover:text-[#6B9FF7] hover:shadow-xl transition-all duration-300"
             >
-                <span>บทความถัดไป</span>
+                <span>{t("content.nextArticle")}</span>
                 <span className="line-clamp-1 max-w-[180px] sm:max-w-[240px]" title={nextPost.title}>
                     {nextPost.title}
                 </span>

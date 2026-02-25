@@ -4,8 +4,10 @@ import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { gsap } from "gsap";
 import PageContainer from "@/components/layout/PageContainer";
+import { useLocale } from "@/context/LocaleContext";
 
 export default function ContactPage() {
+    const { t } = useLocale();
     const [formData, setFormData] = useState({
         name: "",
         email: "",
@@ -69,10 +71,10 @@ export default function ContactPage() {
 
     return (
         <main
-            className="relative min-h-screen w-full overflow-hidden flex flex-col items-center bg-white"
+            className="relative min-h-screen w-full overflow-x-hidden max-w-[100vw] min-w-0 flex flex-col items-center bg-white"
             style={{
-                paddingTop: '10rem',
-                paddingBottom: '10rem'
+                paddingTop: "clamp(6rem, 12vw, 10rem)",
+                paddingBottom: "clamp(4rem, 10vw, 10rem)",
             }}
         >
 
@@ -84,10 +86,10 @@ export default function ContactPage() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, ease: "easeOut" }}
                     >
-                        <h1 ref={titleRef} className="text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold mb-6 bg-gradient-to-r from-[var(--color-accent-blue)] via-[var(--color-accent-electric)] to-[var(--color-accent-purple)] bg-clip-text text-transparent">
-                            Get In Touch
+                        <h1 ref={titleRef} className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold mb-6 bg-gradient-to-r from-[var(--color-accent-blue)] via-[var(--color-accent-electric)] to-[var(--color-accent-purple)] bg-clip-text text-transparent px-4">
+                            {t("contact.getInTouch")}
                         </h1>
-                        <p className="text-xl md:text-2xl lg:text-3xl font-light text-[var(--color-text-secondary)]">Let's discuss your next project</p>
+                        <p className="text-xl md:text-2xl lg:text-3xl font-light text-[var(--color-text-secondary)]">{t("contact.discussProject")}</p>
                     </motion.div>
                 </div>
 
@@ -103,7 +105,7 @@ export default function ContactPage() {
                         <form ref={formRef} onSubmit={handleSubmit} className="space-y-6 bg-white rounded-3xl p-8 md:p-10 lg:p-12">
                             <div>
                                 <label htmlFor="name" className="block text-base md:text-lg font-bold mb-3 text-[var(--color-text-primary)]">
-                                    Your Name
+                                    {t("contact.yourName")}
                                 </label>
                                 <input
                                     type="text"
@@ -120,7 +122,7 @@ export default function ContactPage() {
 
                             <div>
                                 <label htmlFor="email" className="block text-base md:text-lg font-bold mb-3 text-[var(--color-text-primary)]">
-                                    Email Address
+                                    {t("contact.emailAddress")}
                                 </label>
                                 <input
                                     type="email"
@@ -137,7 +139,7 @@ export default function ContactPage() {
 
                             <div>
                                 <label htmlFor="message" className="block text-base md:text-lg font-bold mb-3 text-[var(--color-text-primary)]">
-                                    Tell us about your project
+                                    {t("contact.messageLabel")}
                                 </label>
                                 <textarea
                                     id="message"
@@ -166,7 +168,7 @@ export default function ContactPage() {
                                     transition={{ duration: 0.5, ease: "easeInOut" }}
                                 />
                                 <span className="relative z-10 flex items-center justify-center gap-2">
-                                    Send Message
+                                    {t("contact.sendMessage")}
                                     <motion.svg
                                         className="w-5 h-5"
                                         fill="none"
@@ -191,7 +193,7 @@ export default function ContactPage() {
                                     animate={{ opacity: 1, y: 0 }}
                                     className="p-6 bg-gradient-to-r from-[var(--color-accent-blue)]/10 to-[var(--color-accent-purple)]/10 border-2 border-[var(--color-accent-blue)] rounded-xl text-center text-[var(--color-accent-blue)] font-semibold text-lg"
                                 >
-                                    ✓ Thank you! We'll get back to you soon.
+                                    ✓ {t("contact.thankYou")}
                                 </motion.div>
                             )}
                         </form>
@@ -228,7 +230,7 @@ export default function ContactPage() {
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                                         </svg>
                                     </div>
-                                    <h3 className="text-xl md:text-2xl font-bold text-[var(--color-text-primary)] leading-relaxed">Email</h3>
+                                    <h3 className="text-xl md:text-2xl font-bold text-[var(--color-text-primary)] leading-relaxed">{t("contact.email")}</h3>
                                 </div>
                                 <a
                                     href="mailto:jpmgroupteam@gmail.com"
@@ -251,7 +253,7 @@ export default function ContactPage() {
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                                         </svg>
                                     </div>
-                                    <h3 className="text-xl md:text-2xl font-bold text-[var(--color-text-primary)] leading-relaxed">Phone</h3>
+                                    <h3 className="text-xl md:text-2xl font-bold text-[var(--color-text-primary)] leading-relaxed">{t("contact.phone")}</h3>
                                 </div>
                                 <a
                                     href="tel:+66822941541"
@@ -269,7 +271,7 @@ export default function ContactPage() {
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                                         </svg>
                                     </div>
-                                    <h3 className="text-xl md:text-2xl font-bold text-[var(--color-text-primary)] leading-relaxed">Follow Us</h3>
+                                    <h3 className="text-xl md:text-2xl font-bold text-[var(--color-text-primary)] leading-relaxed">{t("contact.followUs")}</h3>
                                 </div>
                                 <div className="flex flex-wrap items-center gap-4 ml-16" style={{ marginTop: "1rem" }}>
                                     <motion.a

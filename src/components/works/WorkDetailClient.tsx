@@ -5,14 +5,16 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { gsap } from "gsap";
 import { type Work } from "@/data/works";
-
-const categoryLabels = {
-    touch_screen: "Interactive Solutions",
-    led: "Visual Experience",
-    graphic_design: "Multimedia Design"
-};
+import { useLocale } from "@/context/LocaleContext";
+import { prefixPath } from "@/i18n/config";
 
 export default function WorkDetailClient({ work }: { work: Work }) {
+    const { t, locale } = useLocale();
+    const categoryLabels = {
+        touch_screen: t("works.interactiveSolutions"),
+        led: t("works.visualExperience"),
+        graphic_design: t("works.multimediaDesign"),
+    };
     const heroRef = useRef<HTMLDivElement>(null);
     const contentRef = useRef<HTMLDivElement>(null);
 
@@ -38,11 +40,11 @@ export default function WorkDetailClient({ work }: { work: Work }) {
     }, []);
 
     return (
-        <main className="w-full min-h-screen bg-gradient-to-b from-[#fafbff] to-[#f3f4ff]">
+        <main className="w-full min-h-screen overflow-x-hidden max-w-[100vw] min-w-0 bg-gradient-to-b from-[#fafbff] to-[#f3f4ff]">
             {/* Back Button - aligned with content */}
             <div className="fixed top-24 sm:top-28 left-0 right-0 z-50 flex justify-center pointer-events-none">
                 <div className="w-full max-w-7xl px-6 sm:px-8 md:px-10 lg:px-12 xl:px-16 2xl:px-20 pointer-events-auto">
-                    <Link href="/works" className="inline-block">
+                    <Link href={prefixPath(locale, "/case-studies")} className="inline-block">
                         <motion.button
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
@@ -142,7 +144,7 @@ export default function WorkDetailClient({ work }: { work: Work }) {
                                 className="text-xl font-semibold text-slate-800 whitespace-nowrap"
                                 style={{ marginBottom: "0.75rem" }}
                             >
-                                Technologies Used
+                                {t("common.technologiesUsed")}
                             </h2>
                             <div className="flex flex-wrap" style={{ gap: "0.75rem" }}>
                                 {work.technologies.map((tech, index) => (
@@ -169,15 +171,15 @@ export default function WorkDetailClient({ work }: { work: Work }) {
                             className="text-2xl sm:text-3xl font-bold text-slate-800 whitespace-nowrap"
                             style={{ marginBottom: "0.5rem" }}
                         >
-                            Interested in a similar project?
+                            {t("common.interestedInProject")}
                         </h2>
                         <p
                             className="text-slate-600 text-base sm:text-lg leading-relaxed"
                             style={{ marginBottom: "1.5rem" }}
                         >
-                            Let's discuss how we can bring your vision to life.
+                            {t("common.discussVision")}
                         </p>
-                        <Link href="/contact" className="inline-block">
+                        <Link href={prefixPath(locale, "/contact")} className="inline-block">
                             <motion.button
                                 type="button"
                                 whileHover={{ scale: 1.03 }}
@@ -185,7 +187,7 @@ export default function WorkDetailClient({ work }: { work: Work }) {
                                 className="inline-flex items-center justify-center gap-2 text-base sm:text-lg font-semibold text-white rounded-full bg-gradient-to-r from-[#7BA9F7] via-[#8B9FF8] to-[#a78bfa] shadow-lg shadow-[#7BA9F7]/30 hover:shadow-[#7BA9F7]/50 transition-shadow"
                                 style={{ padding: "1rem 2rem" }}
                             >
-                                Get In Touch
+                                {t("sections.getInTouch")}
                             </motion.button>
                         </Link>
                     </section>

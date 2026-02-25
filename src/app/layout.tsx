@@ -1,53 +1,63 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import localFont from "next/font/local";
 import Navigation from "@/components/layout/Navigation";
 import Footer from "@/components/layout/Footer";
 import ScrollProgress from "@/components/ui/ScrollProgress";
 import FloatingElements from "@/components/effects/FloatingElements";
+import { generateLayoutMetadata, siteUrl } from "@/lib/seo";
 import "./globals.css";
 
-const inter = Inter({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700", "800"],
-  variable: "--font-inter",
+/** English / Latin: LINE Seed Sans (LINESeedSans_W_*) */
+const lineSeed = localFont({
+  src: [
+    { path: "../fonts/LINESeedSans_W_Th.woff2", weight: "100" },
+    { path: "../fonts/LINESeedSans_W_Rg.woff2", weight: "400" },
+    { path: "../fonts/LINESeedSans_W_Bd.woff2", weight: "700" },
+    { path: "../fonts/LINESeedSans_W_XBd.woff2", weight: "800" },
+    { path: "../fonts/LINESeedSans_W_He.woff2", weight: "900" },
+  ],
+  variable: "--font-line-seed",
   display: "swap",
   preload: true,
-  fallback: ["system-ui", "arial"],
+  fallback: ["ui-sans-serif", "system-ui", "sans-serif"],
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://jpm-interactive.vercel.app";
-
-export const metadata: Metadata = {
-  metadataBase: new URL(siteUrl),
-  title: "JPM Interactive - Creative Technology Studio",
-  description: "High-end interactive programs, mini games, graphic design, and motion graphics for innovative brands.",
-  keywords: [
-    "creative technology",
-    "interactive experiences",
-    "LED visual",
-    "motion graphics",
-    "digital installation",
-    "touch screen",
-    "immersive",
-    "JPM Interactive",
+/** Thai: LINE Seed Sans TH (LINESeedSansTH_W_*) */
+const lineSeedTH = localFont({
+  src: [
+    { path: "../fonts/LINESeedSansTH_W_Th.woff2", weight: "100" },
+    { path: "../fonts/LINESeedSansTH_W_Rg.woff2", weight: "400" },
+    { path: "../fonts/LINESeedSansTH_W_Bd.woff2", weight: "700" },
+    { path: "../fonts/LINESeedSansTH_W_XBd.woff2", weight: "800" },
+    { path: "../fonts/LINESeedSansTH_W_He.woff2", weight: "900" },
   ],
-  openGraph: {
-    title: "JPM Interactive - Creative Technology Studio",
-    description: "High-end interactive programs, mini games, graphic design, and motion graphics for innovative brands.",
-    url: siteUrl,
-    siteName: "JPM Interactive",
-    images: [{ url: "/icon.png", width: 512, height: 512, alt: "JPM Interactive" }],
-    locale: "en_US",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "JPM Interactive - Creative Technology Studio",
-    description: "High-end interactive programs, mini games, graphic design, and motion graphics for innovative brands.",
-  },
-  icons: {
-    icon: "/icon.png",
-  },
-};
+  variable: "--font-line-seed-th",
+  display: "swap",
+  preload: true,
+  fallback: ["Thonburi", "Tahoma", "sans-serif"],
+});
+
+const ROOT_TITLE = "JPM Interactive - Creative Technology Studio";
+const ROOT_DESCRIPTION =
+  "High-end interactive programs, mini games, graphic design, and motion graphics for innovative brands.";
+const ROOT_KEYWORDS = [
+  "creative technology",
+  "interactive experiences",
+  "LED visual",
+  "motion graphics",
+  "digital installation",
+  "touch screen",
+  "immersive",
+  "JPM Interactive",
+];
+
+export const metadata = generateLayoutMetadata({
+  title: ROOT_TITLE,
+  description: ROOT_DESCRIPTION,
+  locale: "en_US",
+  iconPath: "/icon.png",
+  url: siteUrl,
+  keywords: ROOT_KEYWORDS,
+});
 
 export const viewport = {
   width: "device-width",
@@ -58,10 +68,12 @@ export const viewport = {
 
 import { MotionProvider } from "@/system/motion/MotionProvider";
 import { RouteTransitionProvider } from "@/context/RouteTransitionContext";
+import { LocaleProvider } from "@/context/LocaleContext";
 import PageLoader from "@/components/ui/PageLoader";
 import ScrollToTop from "@/components/utils/ScrollToTop";
 import RouteTransitionOverlay from "@/components/ui/RouteTransitionOverlay";
 import CursorTrail from "@/components/cursor/CursorTrail";
+import BackgroundMusic from "@/components/ui/BackgroundMusic";
 
 export default function RootLayout({
   children,
@@ -69,28 +81,24 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className="min-h-full">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&display=swap"
-          rel="stylesheet"
-        />
-      </head>
-      <body className={`${inter.variable} antialiased min-h-full w-full max-w-[100vw] overflow-x-hidden`}>
-        <MotionProvider>
-          <RouteTransitionProvider>
-            <ScrollToTop />
-            <PageLoader />
-            <RouteTransitionOverlay />
-            <ScrollProgress />
-            <CursorTrail />
-            <Navigation />
-          {children}
-          <Footer />
-          </RouteTransitionProvider>
-        </MotionProvider>
+    <html lang="en" suppressHydrationWarning className={`min-h-full ${lineSeed.variable} ${lineSeedTH.variable}`}>
+      <head />
+      <body className="antialiased min-h-full w-full max-w-[100vw] overflow-x-hidden">
+        <LocaleProvider>
+            <MotionProvider>
+              <RouteTransitionProvider>
+                <ScrollToTop />
+                <PageLoader />
+                <RouteTransitionOverlay />
+                <ScrollProgress />
+                <CursorTrail />
+                <BackgroundMusic />
+                <Navigation />
+                {children}
+                <Footer />
+              </RouteTransitionProvider>
+            </MotionProvider>
+          </LocaleProvider>
       </body>
     </html>
   );

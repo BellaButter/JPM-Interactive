@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import WhoWeAreSection from "@/sections/WhoWeAreSection";
 import ServicesSection from "@/sections/ServicesSection";
 import WorksSection from "@/sections/WorksSection";
+import EnHomeMiddleSections from "@/sections/home/EnHomeMiddleSections";
 import ScrollToTop from "@/components/utils/ScrollToTop";
 import HeroPlaceholder from "@/components/placeholders/HeroPlaceholder";
 import CTAPlaceholder from "@/components/placeholders/CTAPlaceholder";
@@ -19,16 +20,11 @@ const CTASection = dynamic(
   { ssr: false, loading: () => <CTAPlaceholder /> }
 );
 
-const CTASectionMobile = dynamic(
-  () => import("@/sections/CTASectionMobile"),
-  { ssr: false, loading: () => <CTAPlaceholder /> }
-);
-
 export default function HomePageContent() {
-  const { isReady, isPhone } = useMotion();
+  const { isReady } = useMotion();
 
   return (
-    <main className="relative min-h-full w-full max-w-[100vw] overflow-x-hidden flex flex-col items-center">
+    <main className="relative min-h-full w-full max-w-[100vw] overflow-x-hidden flex flex-col items-center min-w-0">
       {/* พื้นหลัง fixed — สีขาวทั้งหมด */}
       <div
         className="fixed inset-0 w-full h-full bg-white -z-[1]"
@@ -48,15 +44,10 @@ export default function HomePageContent() {
         <WhoWeAreSection />
         <ServicesSection />
         <WorksSection />
+        <EnHomeMiddleSections />
       </div>
-      {/* CTA: phone = lightweight (no Canvas/GSAP), PC/iPad = full */}
-      {!isReady ? (
-        <CTAPlaceholder />
-      ) : isPhone ? (
-        <CTASectionMobile />
-      ) : (
-        <CTASection />
-      )}
+      {/* CTA: unified responsive section (no video) */}
+      {!isReady ? <CTAPlaceholder /> : <CTASection />}
     </main>
   );
 }

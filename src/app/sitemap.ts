@@ -2,8 +2,7 @@ import type { MetadataRoute } from "next";
 import { works } from "@/data/works";
 import { worksPageData } from "@/data/worksPageData";
 import { getAllPosts } from "@/data/content";
-
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://jpm-interactive.vercel.app";
+import { siteUrl } from "@/lib/seo";
 
 function getAllWorkSlugs(): string[] {
     const fromWorks = works.map((w) => w.slug);
@@ -12,31 +11,43 @@ function getAllWorkSlugs(): string[] {
     return Array.from(set);
 }
 
+const locales = ["en", "th"] as const;
+
 export default function sitemap(): MetadataRoute.Sitemap {
     const workSlugs = getAllWorkSlugs();
     const contentPosts = getAllPosts();
     const now = new Date();
 
+    const staticPaths = ["", "/about", "/contact", "/case-studies", "/content", "/services/interactive-installation", "/services/immersive-experience", "/services/multimedia-systems"];
     const staticPages: MetadataRoute.Sitemap = [
         { url: siteUrl, lastModified: now, changeFrequency: "weekly", priority: 1 },
-        { url: `${siteUrl}/contact`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
-        { url: `${siteUrl}/works`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
-        { url: `${siteUrl}/content`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
+        ...locales.flatMap((locale) =>
+            staticPaths.map((path) => ({
+                url: `${siteUrl}/${locale}${path}`,
+                lastModified: now,
+                changeFrequency: (path === "/contact" ? "monthly" : "weekly") as "monthly" | "weekly",
+                priority: path === "" ? 1 : path === "/about" || path === "/case-studies" ? 0.9 : 0.8,
+            }))
+        ),
     ];
 
-    const workPages: MetadataRoute.Sitemap = workSlugs.map((slug) => ({
-        url: `${siteUrl}/works/${slug}`,
-        lastModified: now,
-        changeFrequency: "monthly" as const,
-        priority: 0.7,
-    }));
+    const workPages: MetadataRoute.Sitemap = locales.flatMap((locale) =>
+        workSlugs.map((slug) => ({
+            url: `${siteUrl}/${locale}/case-studies/${slug}`,
+            lastModified: now,
+            changeFrequency: "monthly" as const,
+            priority: 0.7,
+        }))
+    );
 
-    const contentPages: MetadataRoute.Sitemap = contentPosts.map((post) => ({
-        url: `${siteUrl}/content/${post.slug}`,
-        lastModified: post.updatedAt ? new Date(post.updatedAt) : now,
-        changeFrequency: "monthly" as const,
-        priority: 0.7,
-    }));
+    const contentPages: MetadataRoute.Sitemap = locales.flatMap((locale) =>
+        contentPosts.map((post) => ({
+            url: `${siteUrl}/${locale}/content/${post.slug}`,
+            lastModified: post.updatedAt ? new Date(post.updatedAt) : now,
+            changeFrequency: "monthly" as const,
+            priority: 0.7,
+        }))
+    );
 
     return [...staticPages, ...workPages, ...contentPages];
 }

@@ -1,14 +1,20 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
+import { useLocale } from "@/context/LocaleContext";
+import { getLocaleFromPathname, pathnames, prefixPath } from "@/i18n/config";
+
 const navItems = [
-    { name: "Home", path: "/", icon: "home" },
-    { name: "Works", path: "/works", icon: "works" },
-    { name: "Articles", path: "/content", icon: "articles" },
-    { name: "Contact", path: "/contact", icon: "contact" },
+    { key: "home", path: "/", icon: "home" },
+    { key: "about", path: pathnames.about, icon: "about" },
+    { key: "services", path: "/services", icon: "works" },
+    { key: "projects", path: "/case-studies", icon: "works" },
+    { key: "articles", path: "/content", icon: "articles" },
+    { key: "industries", path: "/industries", icon: "works" },
+    { key: "contact", path: "/contact", icon: "contact" },
 ];
 
 function NavIcon({ type, className }: { type: string; className?: string }) {
@@ -38,15 +44,27 @@ function NavIcon({ type, className }: { type: string; className?: string }) {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
             );
+        case "about":
+            return (
+                <svg className={c} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+            );
         default:
             return null;
     }
 }
 
 export default function Navigation() {
+    const { t } = useLocale();
     const [scrolled, setScrolled] = useState(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const [menuDropdownOpen, setMenuDropdownOpen] = useState(false);
+    const menuButtonRef = useRef<HTMLButtonElement>(null);
+    const [menuPanelMarginRight, setMenuPanelMarginRight] = useState(88);
     const pathname = usePathname();
+    const locale = getLocaleFromPathname(pathname) ?? "en";
+    const contactHref = prefixPath(locale, "/contact");
 
     useEffect(() => {
         const handleScroll = () => {
@@ -57,105 +75,248 @@ export default function Navigation() {
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
-    // Close mobile menu on route change
+    // Close menus on route change
     useEffect(() => {
         setMobileMenuOpen(false);
+        setMenuDropdownOpen(false);
     }, [pathname]);
 
-    const handleNavClick = (e: React.MouseEvent, path: string) => {
-        if (pathname === "/" && path === "/") {
+    // Lusion-style: align menu panel right edge with Menu/Close button
+    useEffect(() => {
+        if (!menuDropdownOpen || typeof window === "undefined") return;
+        const measure = () => {
+            const btn = menuButtonRef.current;
+            if (!btn) return;
+            const btnRight = btn.getBoundingClientRect().right;
+            const paddingRight = Math.min(64, Math.max(24, window.innerWidth * 0.05));
+            const containerRight = window.innerWidth - paddingRight;
+            setMenuPanelMarginRight(Math.max(0, containerRight - btnRight));
+        };
+        const t = setTimeout(measure, 50);
+        window.addEventListener("resize", measure);
+        return () => {
+            clearTimeout(t);
+            window.removeEventListener("resize", measure);
+        };
+    }, [menuDropdownOpen]);
+
+
+    const homeHref = prefixPath(locale, "/");
+    const handleNavClick = (e: React.MouseEvent, path: string, href: string) => {
+        if (path === "/" && pathname === homeHref) {
             e.preventDefault();
             window.scrollTo({ top: 0, behavior: "smooth" });
         }
         setMobileMenuOpen(false);
+        setMenuDropdownOpen(false);
+    };
+
+    const isActive = (itemPath: string) => {
+        const href = prefixPath(locale, itemPath);
+        if (itemPath === "/") return pathname === href || pathname === `/${locale}`;
+        return pathname === href || pathname.startsWith(href + "/");
     };
 
     return (
         <>
             <nav
-                className="fixed top-0 left-0 right-0 z-50"
+                className="fixed top-0 left-0 right-0 z-[100]"
             >
                 <div
-                    className="w-full flex justify-center"
+                    className="w-full flex justify-center min-w-0"
                     style={{
-                        paddingLeft: "clamp(1.5rem, 5vw, 4rem)",
-                        paddingRight: "clamp(1.5rem, 5vw, 4rem)",
+                        paddingLeft: "clamp(1rem, 4vw, 4rem)",
+                        paddingRight: "clamp(1rem, 4vw, 4rem)",
                     }}
                 >
                     <div className="w-full max-w-[1600px] flex items-center justify-between h-16 sm:h-20">
                         {/* Logo - Text only, no background */}
-                        <Link href="/" onClick={(e) => handleNavClick(e, '/')} className="relative group">
+                        <Link href={homeHref} onClick={(e) => handleNavClick(e, "/", homeHref)} className="relative group">
                             <motion.span
                                 whileHover={{ scale: 1.05 }}
                                 transition={{ type: "spring", stiffness: 400 }}
-                                className="text-xl font-bold tracking-tight bg-gradient-to-r from-[#6B9FF7] to-[#8B9FF8] bg-clip-text text-transparent"
+                                className="text-lg sm:text-xl md:text-2xl font-bold tracking-tight bg-gradient-to-r from-[#6B9FF7] to-[#8B9FF8] bg-clip-text text-transparent"
                             >
                                 JPM Interactive
                             </motion.span>
                         </Link>
 
-                        {/* Desktop Navigation - Floating Pill */}
-                        <motion.div 
+                        {/* Desktop Navigation - Lusion style: CTA pill + MENU dropdown + Language */}
+                        <motion.div
                             initial={{ opacity: 0, y: -20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            className="hidden md:flex items-center bg-white/90 backdrop-blur-md shadow-lg rounded-full border border-gray-200/50"
-                            style={{ gap: '6px', padding: '8px 10px' }}
+                            className="hidden md:flex items-center gap-3"
                         >
-                            {navItems.map((item) => {
-                                const isActive = pathname === item.path;
-                                return (
-                                    <Link key={item.path} href={item.path} onClick={(e) => handleNavClick(e, item.path)}>
-                                        <motion.div
-                                            whileHover={{ scale: 1.05 }}
-                                            whileTap={{ scale: 0.95 }}
-                                            className={`rounded-full text-sm font-medium transition-all duration-300 cursor-pointer ${
-                                                isActive 
-                                                    ? "bg-gradient-to-r from-[#7BA9F7] to-[#8B9FF8] text-white shadow-md" 
-                                                    : "text-gray-700 hover:bg-gray-100"
-                                            }`}
-                                            style={{ padding: '10px 24px' }}
-                                        >
-                                            {item.name}
-                                        </motion.div>
-                                    </Link>
-                                );
-                            })}
+                            {/* Let's Talk - CTA pill (theme gradient, padding เท่าเมนู) */}
+                            <Link
+                                href={contactHref}
+                                onClick={(e) => handleNavClick(e, "/contact", contactHref)}
+                                style={{ padding: "0.5rem 1rem" }}
+                                className="group inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#6B9FF7] to-[#8B5CF6] text-white text-base font-semibold uppercase tracking-wider shadow-lg shadow-[#6B9FF7]/25 hover:shadow-xl hover:shadow-[#6B9FF7]/30 hover:-translate-y-0.5 transition-all duration-300"
+                            >
+                                <span>{t("nav.letsTalk")}</span>
+                                <span className="w-1.5 h-1.5 rounded-full bg-white/90 group-hover:bg-white transition-colors" aria-hidden />
+                            </Link>
+
+                            {/* MENU / CLOSE - light pill, opens overlay panel; เมื่อเปิดเมนู แสดง Close ตรงตำแหน่งเดียวกัน */}
+                            <motion.button
+                                ref={menuButtonRef}
+                                type="button"
+                                onClick={() => setMenuDropdownOpen((v) => !v)}
+                                whileHover={{ scale: 1.02 }}
+                                whileTap={{ scale: 0.98 }}
+                                style={{ padding: "0.5rem 1rem" }}
+                                className={`inline-flex items-center gap-2 rounded-full text-base font-semibold uppercase tracking-wider transition-all duration-300 ${menuDropdownOpen
+                                        ? "bg-[#6B9FF7]/10 text-[#6B9FF7] border-2 border-[#6B9FF7]/30 shadow-md"
+                                        : "bg-white/90 text-slate-700 border-2 border-[#7BA9F7]/20 hover:border-[#6B9FF7]/40 hover:bg-[#f8faff] shadow-sm"
+                                    }`}
+                            >
+                                {menuDropdownOpen ? (
+                                    <>
+                                        <span>{t("common.close")}</span>
+                                        <span className="text-slate-400" aria-hidden>:</span>
+                                    </>
+                                ) : (
+                                    <>
+                                        <span>{t("nav.menu")}</span>
+                                        <span className="flex gap-0.5" aria-hidden>
+                                            <span className="w-1.5 h-1.5 rounded-full bg-slate-500" />
+                                            <span className="w-1.5 h-1.5 rounded-full bg-slate-500" />
+                                        </span>
+                                    </>
+                                )}
+                            </motion.button>
                         </motion.div>
 
-                        {/* Mobile Menu Button - Floating */}
-                        <motion.button
-                            whileTap={{ scale: 0.9 }}
-                            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                            className="md:hidden p-3 text-gray-900 bg-white/90 backdrop-blur-md rounded-full shadow-lg"
-                        >
-                            <motion.svg
-                                className="w-6 h-6"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                                animate={mobileMenuOpen ? "open" : "closed"}
+                        {/* Mobile: Let's Talk + Menu (hamburger) - theme style */}
+                        <div className="flex md:hidden items-center gap-2">
+                            <Link
+                                href={contactHref}
+                                onClick={(e) => handleNavClick(e, "/contact", contactHref)}
+                                className="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-[#6B9FF7] to-[#8B5CF6] text-white text-sm font-semibold uppercase tracking-wider px-3 py-2 shadow-md shadow-[#6B9FF7]/20"
                             >
-                                <motion.path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    variants={{
-                                        closed: { d: "M4 6h16M4 12h16M4 18h16" },
-                                        open: { d: "M6 18L18 6M6 6l12 12" },
-                                    }}
-                                    transition={{ duration: 0.3 }}
-                                />
-                            </motion.svg>
-                        </motion.button>
+                                <span>{t("nav.letsTalk")}</span>
+                                <span className="w-1 h-1 rounded-full bg-white/90" aria-hidden />
+                            </Link>
+                            <motion.button
+                                whileTap={{ scale: 0.9 }}
+                                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                                className="p-3 text-slate-700 bg-white/90 border-2 border-[#7BA9F7]/20 rounded-full shadow-sm hover:border-[#6B9FF7]/40 transition-colors"
+                            >
+                                <motion.svg
+                                    className="w-6 h-6"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                    animate={mobileMenuOpen ? "open" : "closed"}
+                                >
+                                    <motion.path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        variants={{
+                                            closed: { d: "M4 6h16M4 12h16M4 18h16" },
+                                            open: { d: "M6 18L18 6M6 6l12 12" },
+                                        }}
+                                        transition={{ duration: 0.3 }}
+                                    />
+                                </motion.svg>
+                            </motion.button>
+                        </div>
                     </div>
                 </div>
             </nav>
+
+            {/* Desktop Menu Overlay - card style (reference) */}
+            <AnimatePresence>
+                {menuDropdownOpen && (
+                    <>
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.2 }}
+                            onClick={() => setMenuDropdownOpen(false)}
+                            className="fixed inset-0 bg-black/30 backdrop-blur-sm z-[90] hidden md:block"
+                            aria-hidden
+                        />
+                        <motion.div
+                            initial={{ x: "100%" }}
+                            animate={{ x: 0 }}
+                            exit={{ x: "100%" }}
+                            transition={{ type: "spring", damping: 28, stiffness: 300 }}
+                            className="fixed top-20 left-0 right-0 bottom-0 z-[100] hidden md:flex overflow-y-auto"
+                        >
+                            {/* คลิกด้านนอก (ซ้าย) เพื่อปิดเมนู */}
+                            <div
+                                className="flex-1 min-w-0 cursor-pointer"
+                                onClick={() => setMenuDropdownOpen(false)}
+                                aria-label={t("common.close")}
+                            />
+                            <div
+                                className="flex justify-end flex-shrink-0 min-h-0"
+                                onClick={(e) => e.stopPropagation()}
+                                style={{
+                                    paddingLeft: "clamp(1.75rem, 6vw, 4rem)",
+                                    paddingRight: "clamp(1.75rem, 6vw, 4rem)",
+                                }}
+                            >
+                                <div className="w-full max-w-[1600px] flex justify-end">
+                                    <div
+                                        className="w-full max-w-[420px] flex flex-col bg-transparent"
+                                        style={{ marginRight: menuPanelMarginRight }}
+                                    >
+                                        <div className="p-6 flex flex-col gap-6 flex-1">
+                                            {/* Card: Nav links - แบบ Lusion: การ์ดใหญ่ ตัวหนังสือใหญ่ ระยะห่างเยอะ */}
+                                            <div
+                                                className="rounded-2xl bg-white border-2 border-[#7BA9F7]/15 overflow-hidden"
+                                                style={{
+                                                    paddingTop: "2.5rem",
+                                                    paddingBottom: "2.5rem",
+                                                    paddingLeft: "3rem",
+                                                    paddingRight: "2.5rem",
+                                                }}
+                                            >
+                                                <div className="flex flex-col gap-6">
+                                                    {navItems.map((item) => {
+                                                        const href = prefixPath(locale, item.path);
+                                                        const active = isActive(item.path);
+                                                        const isContact = item.path === "/contact";
+                                                        return (
+                                                            <Link
+                                                                key={item.path}
+                                                                href={href}
+                                                                onClick={(e) => handleNavClick(e, item.path, href)}
+                                                                className={`group flex items-center justify-between gap-4 mx-3 px-6 py-5 text-xl font-bold uppercase tracking-[0.12em] leading-relaxed transition-colors rounded-xl hover:bg-[#6B9FF7]/5 active:bg-[#6B9FF7]/10 active:scale-[0.99] touch-manipulation ${isContact
+                                                                        ? "text-[#6B9FF7]"
+                                                                        : active
+                                                                            ? "text-[#6B9FF7]"
+                                                                            : "text-slate-700 hover:text-[#6B9FF7]"
+                                                                    }`}
+                                                            >
+                                                                <span className="flex items-center gap-3 leading-relaxed">
+                                                                    {active && !isContact && <span className="w-1.5 h-1.5 rounded-full bg-[#6B9FF7]" aria-hidden />}
+                                                                    {t(`nav.${item.key}`)}
+                                                                </span>
+                                                            </Link>
+                                                        );
+                                                    })}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </motion.div>
+                    </>
+                )}
+            </AnimatePresence>
 
             {/* Mobile Menu Overlay */}
             <AnimatePresence>
                 {mobileMenuOpen && (
                     <>
-            {/* Backdrop */}
+                        {/* Backdrop */}
                         <motion.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
@@ -178,12 +339,13 @@ export default function Navigation() {
                             <div className="flex flex-col h-full p-6 pt-20">
                                 {/* Drawer header */}
                                 <div className="mb-8 px-2">
-                                    <span className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">Menu</span>
+                                    <span className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">{t("nav.menu")}</span>
                                     <div className="h-0.5 w-16 mt-2 rounded-full bg-gradient-to-r from-[#7BA9F7] to-[#8B5CF6]" />
                                 </div>
 
                                 {navItems.map((item, index) => {
-                                    const isActive = pathname === item.path;
+                                    const href = prefixPath(locale, item.path);
+                                    const active = isActive(item.path);
                                     return (
                                         <motion.div
                                             key={item.path}
@@ -192,32 +354,32 @@ export default function Navigation() {
                                             transition={{ type: "spring", damping: 24, stiffness: 300, delay: index * 0.06 }}
                                         >
                                             <Link
-                                                href={item.path}
+                                                href={href}
                                                 onClick={(e) => {
-                                                    handleNavClick(e, item.path);
+                                                    handleNavClick(e, item.path, href);
                                                     setMobileMenuOpen(false);
                                                 }}
                                             >
                                                 <motion.div
                                                     whileTap={{ scale: 0.98 }}
                                                     transition={{ duration: 0.15 }}
-                                                    className={`flex items-center gap-4 py-5 px-5 mb-2 rounded-2xl transition-colors duration-300 touch-manipulation ${
-                                                        isActive
+                                                    className={`flex items-center gap-4 py-6 px-6 mb-4 rounded-2xl transition-colors duration-300 touch-manipulation uppercase tracking-[0.1em] leading-relaxed ${active
                                                             ? "bg-gradient-to-r from-[#7BA9F7] to-[#8B9FF8] text-white shadow-lg shadow-[#7BA9F7]/30"
                                                             : "text-slate-600 active:bg-slate-100 hover:bg-white/60 hover:text-slate-900 hover:shadow-sm"
-                                                    }`}
+                                                        }`}
                                                 >
-                                                    <span className={isActive ? "text-white" : "text-slate-500"}>
+                                                    <span className={active ? "text-white" : "text-slate-500"}>
                                                         <NavIcon type={item.icon} />
                                                     </span>
-                                                    <span className="text-lg font-semibold">
-                                                        {item.name}
+                                                    <span className="text-xl font-semibold">
+                                                        {t(`nav.${item.key}`)}
                                                     </span>
                                                 </motion.div>
                                             </Link>
                                         </motion.div>
                                     );
                                 })}
+
                             </div>
                         </motion.div>
                     </>

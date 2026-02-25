@@ -1,0 +1,115 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "works": "Works",
+    "caseStudies": "Case Studies",
+    "projects": "Projects",
+    "services": "Services",
+    "articles": "Articles",
+    "industries": "Industries",
+    "contact": "Contact",
+    "letsTalk": "Let's Talk",
+    "menu": "Menu"
+  },
+  "hero": {
+    "crafting": "Crafting",
+    "interactive": "Interactive",
+    "experiences": "Experiences",
+    "scrollToExplore": "SCROLL TO EXPLORE"
+  },
+  "sections": {
+    "ourServices": "OUR SERVICES",
+    "featuredWork": "Featured Work",
+    "whoWeAre": "WHO WE ARE",
+    "whoWeAreDesc": "We are a team of visionaries and creators dedicated to pushing the boundaries of digital interaction. Our mission is to craft immersive experiences that engage, inspire, and perform.",
+    "getInTouch": "Get In Touch",
+    "scrollToExploreMore": "Scroll to explore more →",
+    "scrollPrompt": "Scroll to explore",
+    "letsWorkTogether": "Let's work together!",
+    "bigIdeaWaiting": "Is your big idea waiting to build?",
+    "cta": {
+      "journey": {
+        "idea": "Your Idea",
+        "design": "Design",
+        "build": "Build",
+        "launch": "Launch"
+      },
+      "singleAct": {
+        "headlinePart1": "Crafting a Signature",
+        "headlineHighlight": "Immersive Experience",
+        "headlinePart3": "for your unique vision.",
+        "subtitle": "Discuss your project with JPM Interactive to design tailor-made digital solutions that perfectly suit your space and business objectives."
+      }
+    },
+    "stats": {
+      "projects": "Projects Delivered",
+      "years": "Years Experience",
+      "clients": "Clients & Partners"
+    },
+    "values": {
+      "creativity": {
+        "title": "Creativity",
+        "description": "We push boundaries with bold ideas and memorable visuals."
+      },
+      "technology": {
+        "title": "Technology",
+        "description": "We blend cutting-edge tech with seamless user experiences."
+      },
+      "experience": {
+        "title": "Experience",
+        "description": "Every project is crafted to engage and inspire audiences."
+      },
+      "impact": {
+        "title": "Impact",
+        "description": "We deliver results that matter for brands and their audiences."
+      }
+    }
+  },
+  "footer": {
+    "tagline": "Creative Technology Studio",
+    "copyright": "All rights reserved."
+  },
+  "common": {
+    "close": "Close",
+    "readArticle": "Read article",
+    "backToArticles": "Back to Articles",
+    "back": "Back",
+    "featured": "Featured",
+    "seeAllProjects": "See all projects",
+    "viewProject": "VIEW PROJECT",
+    "technologiesUsed": "Technologies Used",
+    "interestedInProject": "Interested in a similar project?",
+    "discussVision": "Let's discuss how we can bring your vision to life.",
+    "soundOn": "Sound on",
+    "soundOff": "Sound off"
+  },
+  "works": {
+    "featuredInnovations": "Featured Innovations",
+    "all": "All",
+    "visualExperience": "Visual Experience",
+    "interactiveSolutions": "Interactive Solutions",
+    "multimediaDesign": "Multimedia Design"
+  },
+  "content": {
+    "nextArticle": "Next Article",
+    "tableOfContents": "Table of Contents",
+    "insightsAndStories": "Insights & Stories",
+    "articles": "Articles",
+    "articlesSub": "Creative technology, digital experiences, and what we're building at JPM Interactive.",
+    "noArticles": "No articles yet. Check back soon."
+  },
+  "contact": {
+    "getInTouch": "Get In Touch",
+    "discussProject": "Let's discuss your next project",
+    "yourName": "Your Name",
+    "emailAddress": "Email Address",
+    "message": "Message",
+    "messageLabel": "Tell us about your project",
+    "sendMessage": "Send Message",
+    "thankYou": "Thank you! We'll get back to you soon.",
+    "email": "Email",
+    "phone": "Phone",
+    "followUs": "Follow Us"
+  }
+}

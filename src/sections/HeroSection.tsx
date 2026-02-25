@@ -4,9 +4,11 @@ import { useRef, useEffect, useState } from "react";
 import { gsap } from "gsap";
 import Container from "@/components/layout/Container";
 import { useMotion } from "@/system/motion/useMotion";
+import { useLocale } from "@/context/LocaleContext";
 import GeometricShapes3D from "./home/hero/GeometricShapes3D";
 
 export default function HeroSection() {
+    const { t } = useLocale();
     const scrollRef = useRef<HTMLDivElement>(null);
     const titleRef = useRef<HTMLHeadingElement>(null);
     const { reducedMotion, interactionMode } = useMotion();
@@ -129,15 +131,15 @@ export default function HeroSection() {
                         paddingRight: "clamp(1.25rem, 5vw, 2rem)",
                     }}
                 >
-                    <h1 ref={titleRef} className="text-center pointer-events-auto">
-                        <div className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-light tracking-tight text-slate-700 mb-5 sm:mb-8">
-                            <span className="word inline-block mr-5 sm:mr-8 md:mr-10">Crafting</span>
+                    <h1 ref={titleRef} className="text-center pointer-events-auto w-full max-w-full px-2">
+                        <div className="text-3xl min-[480px]:text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-light tracking-tight text-slate-700 mb-4 sm:mb-6 md:mb-8">
+                            <span className="word inline-block mr-3 sm:mr-6 md:mr-8">{t("hero.crafting")}</span>
                             {' '}
-                            <span className="word inline-block">Interactive</span>
+                            <span className="word inline-block">{t("hero.interactive")}</span>
                         </div>
-                        <div className="text-5xl sm:text-6xl md:text-8xl lg:text-9xl xl:text-[10rem] font-bold tracking-tight">
+                        <div className="text-4xl min-[480px]:text-5xl sm:text-6xl md:text-8xl lg:text-9xl xl:text-[10rem] font-bold tracking-tight break-words">
                             <span className="word inline-block bg-gradient-to-r from-[#5B8DEF] via-[#8B5CF6] to-[#C084FC] bg-clip-text text-transparent drop-shadow-[0_4px_30px_rgba(139,92,246,0.3)]">
-                                Experiences
+                                {t("hero.experiences")}
                             </span>
                         </div>
                     </h1>
@@ -150,7 +152,7 @@ export default function HeroSection() {
                 className="absolute bottom-12 left-1/2 -translate-x-1/2 z-[60] pointer-events-auto cursor-pointer"
             >
                 <div className="flex flex-col items-center gap-2">
-                    <span className="text-xs text-slate-600 uppercase tracking-wider">SCROLL TO EXPLORE</span>
+                    <span className="text-xs text-slate-600 uppercase tracking-wider">{t("hero.scrollToExplore")}</span>
                     <div className="w-6 h-10 border-2 border-sky-500/70 rounded-full flex items-start justify-center pt-2 bg-white/30 backdrop-blur-sm">
                         <div className="w-1.5 h-2 bg-gradient-to-b from-sky-500 to-purple-500 rounded-full animate-bounce"></div>
                     </div>

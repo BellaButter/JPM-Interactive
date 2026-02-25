@@ -5,17 +5,20 @@ import Link from "next/link";
 import Image from "next/image";
 import { getAllPosts } from "@/data/content";
 import PageContainer from "@/components/layout/PageContainer";
+import { useLocale } from "@/context/LocaleContext";
+import { prefixPath } from "@/i18n/config";
 
 export default function ContentListPage() {
-    const posts = getAllPosts();
+    const { t, locale } = useLocale();
+    const posts = getAllPosts(locale);
     const [featured, ...rest] = posts;
 
     return (
         <main
-            className="relative min-h-screen bg-gradient-to-b from-[#fafbff] to-[#f3f4ff] w-full flex flex-col items-center overflow-x-hidden"
+            className="relative min-h-screen bg-gradient-to-b from-[#fafbff] to-[#f3f4ff] w-full max-w-[100vw] min-w-0 flex flex-col items-center overflow-x-hidden"
             style={{
-                paddingTop: "10rem",
-                paddingBottom: "10rem",
+                paddingTop: "clamp(6rem, 12vw, 10rem)",
+                paddingBottom: "clamp(4rem, 10vw, 10rem)",
             }}
         >
             <PageContainer className="w-full">
@@ -27,13 +30,13 @@ export default function ContentListPage() {
                         className="mb-16 md:mb-20"
                     >
                         <span className="inline-block text-sm font-semibold text-[#6B9FF7] uppercase tracking-[0.2em] mb-4">
-                            Insights & Stories
+                            {t("content.insightsAndStories")}
                         </span>
-                        <h1 className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold bg-gradient-to-r from-[#1e293b] via-[#334155] to-[#475569] bg-clip-text text-transparent tracking-tight leading-[1.05] max-w-4xl">
-                            Articles
+                        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold bg-gradient-to-r from-[#1e293b] via-[#334155] to-[#475569] bg-clip-text text-transparent tracking-tight leading-[1.05] max-w-4xl">
+                            {t("content.articles")}
                         </h1>
                         <p className="mt-6 text-lg md:text-xl text-gray-600 max-w-xl leading-relaxed">
-                            Creative technology, digital experiences, and what we&apos;re building at JPM Interactive.
+                            {t("content.articlesSub")}
                         </p>
                     </motion.div>
 
@@ -45,7 +48,7 @@ export default function ContentListPage() {
                             transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
                             style={{ marginBottom: "clamp(3rem, 6vw, 4rem)" }}
                         >
-                            <Link href={`/content/${featured.slug}`}>
+                            <Link href={prefixPath(locale, `/content/${featured.slug}`)}>
                                 <motion.article
                                     whileHover={{ y: -4 }}
                                     transition={{ type: "spring", stiffness: 300, damping: 25 }}
@@ -81,7 +84,7 @@ export default function ContentListPage() {
                                                 dateTime={featured.publishedAt}
                                                 className="text-xs font-medium text-slate-500 uppercase tracking-wider mb-4"
                                             >
-                                                {new Date(featured.publishedAt).toLocaleDateString("en-US", {
+                                                {new Date(featured.publishedAt).toLocaleDateString(locale === "th" ? "th-TH" : "en-US", {
                                                     month: "long",
                                                     day: "numeric",
                                                     year: "numeric",
@@ -94,7 +97,7 @@ export default function ContentListPage() {
                                                 {featured.description}
                                             </p>
                                             <span className="inline-flex items-center gap-2 text-[#6B9FF7] font-semibold group-hover:gap-3 transition-all duration-300">
-                                                Read article
+                                                {t("common.readArticle")}
                                                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                                                 </svg>
@@ -103,8 +106,11 @@ export default function ContentListPage() {
                                     </div>
                                     {/* Featured badge */}
                                     <div className="absolute top-6 left-6 md:top-8 md:left-8 z-10">
-                                        <span className="inline-block px-3 py-1 rounded-full bg-[#6B9FF7]/20 text-[#6B9FF7] text-xs font-semibold uppercase tracking-wider">
-                                            Featured
+                                        <span
+                                            className="inline-block rounded-full bg-[#6B9FF7]/20 text-[#6B9FF7] text-sm font-semibold uppercase tracking-wider"
+                                            style={{ padding: "0.5rem 1.25rem" }}
+                                        >
+                                            {t("common.featured")}
                                         </span>
                                     </div>
                                     {/* Arrow */}
@@ -141,7 +147,7 @@ export default function ContentListPage() {
                                 }}
                                 transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
                             >
-                                <Link href={`/content/${post.slug}`}>
+                                <Link href={prefixPath(locale, `/content/${post.slug}`)}>
                                     <motion.article
                                         whileHover={{ y: -8, transition: { duration: 0.25 } }}
                                         className="group relative h-full flex flex-col overflow-hidden rounded-2xl md:rounded-3xl bg-white border-2 border-gray-100 hover:border-[#6B9FF7]/50 transition-all duration-500 hover:shadow-2xl hover:shadow-[#6B9FF7]/10"
@@ -167,11 +173,14 @@ export default function ContentListPage() {
                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                                                 </svg>
                                             </div>
-                                            <div className="absolute bottom-3 left-3 rounded-full bg-white/95 backdrop-blur-sm px-3 py-1.5 text-xs font-medium text-slate-600 shadow-sm">
+                                            <div
+                                                className="absolute bottom-3 left-3 rounded-full bg-white/95 backdrop-blur-sm text-xs font-medium text-slate-600 shadow-sm"
+                                                style={{ padding: "0.5rem 1.25rem" }}
+                                            >
                                                 <time
                                                     dateTime={post.publishedAt}
                                                 >
-                                                    {new Date(post.publishedAt).toLocaleDateString("en-US", {
+                                                    {new Date(post.publishedAt).toLocaleDateString(locale === "th" ? "th-TH" : "en-US", {
                                                         month: "short",
                                                         day: "numeric",
                                                         year: "numeric",
@@ -193,7 +202,7 @@ export default function ContentListPage() {
                                                 {post.description}
                                             </p>
                                             <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-[#6B9FF7] opacity-0 group-hover:opacity-100 transition-opacity">
-                                                Read article
+                                                {t("common.readArticle")}
                                                 <svg className="w-4 h-4 transform group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                                                 </svg>
@@ -207,7 +216,7 @@ export default function ContentListPage() {
 
                     {posts.length === 0 && (
                         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="py-24 text-center">
-                            <p className="text-slate-500 text-lg">No articles yet. Check back soon.</p>
+                            <p className="text-slate-500 text-lg">{t("content.noArticles")}</p>
                         </motion.div>
                     )}
             </PageContainer>
