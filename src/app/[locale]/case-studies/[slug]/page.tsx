@@ -70,7 +70,7 @@ export default async function LocaleCaseStudyDetailPage({
   const nextSlug = index >= 0 && index < orderedSlugs.length - 1 ? orderedSlugs[index + 1] : null;
   const prevSlug = index > 0 ? orderedSlugs[index - 1] : null;
 
-  const search = await searchParams?.catch(() => ({}));
+  const search = await searchParams?.catch(() => ({})) as { category?: string };
   const returnCategory =
     search?.category && ["led", "touch_screen", "graphic_design"].includes(search.category)
       ? search.category
