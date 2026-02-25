@@ -18,7 +18,7 @@ const listItemVariants = {
   visible: (i: number) => ({
     opacity: 1,
     x: 0,
-    transition: { duration: 0.4, delay: 0.2 + i * 0.08, ease: [0.22, 1, 0.36, 1] },
+    transition: { duration: 0.4, delay: 0.2 + i * 0.08, ease: [0.22, 1, 0.36, 1] as const },
   }),
 };
 
