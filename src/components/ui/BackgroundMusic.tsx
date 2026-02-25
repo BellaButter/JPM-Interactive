@@ -55,7 +55,7 @@ export default function BackgroundMusic() {
         className="hidden"
         aria-label="Background music"
       />
-      {/* Lusion-style: minimal pill button, bottom-left, subtle glow */}
+      {/* Lusion-style: minimal pill button, bottom-left, visible on light & dark backgrounds */}
       <motion.button
         type="button"
         onClick={togglePlay}
@@ -64,11 +64,11 @@ export default function BackgroundMusic() {
         initial={{ opacity: 0, x: -12 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ delay: 2, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-        className="fixed bottom-6 left-6 z-[100] flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2.5 backdrop-blur-md shadow-lg transition-all duration-300 hover:bg-white/20 hover:border-[#6B9FF7]/40 hover:shadow-[#6B9FF7]/20"
+        className="fixed bottom-6 left-6 z-[100] flex items-center gap-2 rounded-full border border-black/20 bg-black/40 px-4 py-2.5 backdrop-blur-md shadow-lg ring-1 ring-white/10 transition-all duration-300 hover:bg-black/55 hover:border-[#6B9FF7]/50 hover:shadow-[#6B9FF7]/25"
         aria-label={isPlaying ? "Pause music" : "Play music"}
         title={isPlaying ? "Pause" : "Play"}
       >
-        <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-white transition-colors duration-300 ${isHovered ? "bg-[#6B9FF7]/40" : "bg-white/20"}`}>
+        <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-white transition-colors duration-300 ${isHovered ? "bg-[#6B9FF7]/60" : "bg-white/30"}`}>
           <AnimatePresence mode="wait">
             {isPlaying ? (
               <motion.svg

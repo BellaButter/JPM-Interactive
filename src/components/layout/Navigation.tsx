@@ -151,7 +151,7 @@ export default function Navigation() {
                             <Link
                                 href={contactHref}
                                 onClick={(e) => handleNavClick(e, "/contact", contactHref)}
-                                style={{ padding: "0.5rem 1rem" }}
+                                style={{ padding: "0.625rem 1.25rem" }}
                                 className="group inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#6B9FF7] to-[#8B5CF6] text-white text-base font-semibold uppercase tracking-wider shadow-lg shadow-[#6B9FF7]/25 hover:shadow-xl hover:shadow-[#6B9FF7]/30 hover:-translate-y-0.5 transition-all duration-300"
                             >
                                 <span>{t("nav.letsTalk")}</span>
@@ -189,14 +189,14 @@ export default function Navigation() {
                         </motion.div>
 
                         {/* Mobile: Let's Talk + Menu (hamburger) - theme style */}
-                        <div className="flex md:hidden items-center gap-2">
+                        <div className="flex shrink-0 md:hidden items-center gap-4">
                             <Link
                                 href={contactHref}
                                 onClick={(e) => handleNavClick(e, "/contact", contactHref)}
-                                className="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-[#6B9FF7] to-[#8B5CF6] text-white text-sm font-semibold uppercase tracking-wider px-3 py-2 shadow-md shadow-[#6B9FF7]/20"
+                                className="inline-flex shrink-0 items-center gap-3 rounded-full bg-gradient-to-r from-[#6B9FF7] to-[#8B5CF6] text-white text-xs font-semibold uppercase tracking-wider pl-8 pr-7 py-6 shadow-md shadow-[#6B9FF7]/20"
                             >
                                 <span>{t("nav.letsTalk")}</span>
-                                <span className="w-1 h-1 rounded-full bg-white/90" aria-hidden />
+                                <span className="w-1 h-1 rounded-full bg-white/90 shrink-0" aria-hidden />
                             </Link>
                             <motion.button
                                 whileTap={{ scale: 0.9 }}
@@ -322,7 +322,7 @@ export default function Navigation() {
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
                             onClick={() => setMobileMenuOpen(false)}
-                            className="fixed inset-0 bg-black/40 backdrop-blur-sm z-40 md:hidden"
+                            className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[150] md:hidden"
                         />
 
                         {/* Menu - gradient/glass drawer with blue-purple tint */}
@@ -331,12 +331,13 @@ export default function Navigation() {
                             animate={{ x: 0 }}
                             exit={{ x: "100%" }}
                             transition={{ type: "spring", damping: 30, stiffness: 300 }}
-                            className="fixed top-0 right-0 bottom-0 w-[85vw] max-w-sm z-50 md:hidden backdrop-blur-2xl border-l border-[#7BA9F7]/30 shadow-[ -4px_0_24px_rgba(123,169,247,0.18) ]"
+                            className="fixed top-0 right-0 bottom-0 w-[85vw] max-w-sm z-[160] md:hidden backdrop-blur-2xl border-l border-[#7BA9F7]/30 shadow-[ -4px_0_24px_rgba(123,169,247,0.18) ]"
                             style={{
                                 background: "linear-gradient(160deg, #f0f4ff 0%, #e8f0ff 45%, #f3e8ff 100%)",
+                                paddingTop: "max(6rem, calc(5rem + env(safe-area-inset-top, 0px)))",
                             }}
                         >
-                            <div className="flex flex-col h-full p-6 pt-20">
+                            <div className="flex flex-col h-full p-6">
                                 {/* Drawer header */}
                                 <div className="mb-8 px-2">
                                     <span className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">{t("nav.menu")}</span>
