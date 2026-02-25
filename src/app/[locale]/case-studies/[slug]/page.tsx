@@ -71,9 +71,10 @@ export default async function LocaleCaseStudyDetailPage({
   const prevSlug = index > 0 ? orderedSlugs[index - 1] : null;
 
   const search = await searchParams?.catch(() => ({})) as { category?: string };
-  const returnCategory =
-    search?.category && ["led", "touch_screen", "graphic_design"].includes(search.category)
-      ? search.category
+  const validCategories = ["led", "touch_screen", "graphic_design"] as const;
+  const returnCategory: "led" | "touch_screen" | "graphic_design" | null =
+    search?.category && validCategories.includes(search.category as (typeof validCategories)[number])
+      ? (search.category as (typeof validCategories)[number])
       : null;
 
   const projectPath = `/${validLocale}/case-studies/${slug}`;
