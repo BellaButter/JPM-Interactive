@@ -3,8 +3,14 @@ import { notFound } from "next/navigation";
 import { getAllPosts, getPostBySlug, getNextPost, getPreviousPost } from "@/data/content";
 import ContentDetailClient from "@/app/content/[slug]/ContentDetailClient";
 import { generatePageMetadata, siteUrl } from "@/lib/seo";
+import { getArticleJsonLd, getBreadcrumbListJsonLd } from "@/lib/jsonLd";
 import type { Locale } from "@/types/locale";
 import { locales } from "@/i18n/config";
+
+const BREADCRUMB_LABELS: Record<Locale, { home: string; content: string }> = {
+  en: { home: "Home", content: "Articles" },
+  th: { home: "หน้าแรก", content: "บทความ" },
+};
 
 export function generateStaticParams() {
   const slugs = getAllPosts("th").map((post) => post.slug);
@@ -62,12 +68,37 @@ export default async function LocaleContentDetailPage({
     { year: "numeric", month: "long", day: "numeric" }
   );
 
+  const articleJsonLd = getArticleJsonLd({
+    title: `${post.title} - JPM Interactive`,
+    description: post.description,
+    path: `/${validLocale}/content/${slug}`,
+    image: post.coverImage ? `${siteUrl}${post.coverImage.startsWith("/") ? "" : "/"}${post.coverImage}` : undefined,
+    datePublished: post.publishedAt,
+    dateModified: post.updatedAt ?? post.publishedAt,
+  });
+  const labels = BREADCRUMB_LABELS[validLocale];
+  const breadcrumbJsonLd = getBreadcrumbListJsonLd([
+    { name: labels.home, path: `/${validLocale}` },
+    { name: labels.content, path: `/${validLocale}/content` },
+    { name: post.title, path: `/${validLocale}/content/${slug}` },
+  ]);
+
   return (
-    <ContentDetailClient
-      post={post}
-      nextPost={nextPost ?? null}
-      prevPost={prevPost ?? null}
-      publishedDate={publishedDate}
-    />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      <ContentDetailClient
+        post={post}
+        nextPost={nextPost ?? null}
+        prevPost={prevPost ?? null}
+        publishedDate={publishedDate}
+      />
+    </>
   );
 }

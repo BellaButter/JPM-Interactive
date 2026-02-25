@@ -5,6 +5,7 @@ import Image from "next/image";
 import { serviceContent } from "@/data/servicePageContent";
 import type { Locale } from "@/types/locale";
 import Link from "next/link";
+import { useLocale } from "@/context/LocaleContext";
 
 const LAYOUT_PADDING = {
   paddingLeft: "clamp(1.75rem, 6vw, 4rem)" as const,
@@ -125,6 +126,7 @@ export function ServicePageContent({
   locale: Locale;
   slug: keyof typeof slugToKey;
 }) {
+  const { t } = useLocale();
   const key = slugToKey[slug];
   const c = serviceContent[locale][key];
 
@@ -460,6 +462,30 @@ export function ServicePageContent({
               ))}
             </div>
           </div>
+          </section>
+
+          {/* ══ PROJECTS (ลิงก์ไปหน้า Case Studies) ═══════════════ */}
+          <section className="w-full bg-white" style={{ ...SECTION_MARGIN, padding: "clamp(2rem, 5vw, 3rem)" }}>
+            <div className="flex flex-col items-center text-center">
+              <motion.h2 {...fadeUp(0)} className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-800 tracking-tight leading-[1.3]" style={{ marginBottom: "1rem" }}>
+                {t("nav.caseStudies")}
+              </motion.h2>
+              <motion.p {...fadeUp(0.05)} className="text-slate-500 text-base sm:text-lg max-w-xl mb-8" style={{ lineHeight: 1.7 }}>
+                {locale === "th" ? "ดูผลงานและโปรเจกต์ที่เราได้ส่งมอบให้กับองค์กรและพันธมิตร" : "Explore our delivered projects and case studies for organizations and partners."}
+              </motion.p>
+              <motion.div {...fadeUp(0.1)}>
+                <Link
+                  href={`/${locale}/case-studies`}
+                  className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#6B9FF7] to-[#8B5CF6] text-white font-semibold text-base sm:text-lg shadow-lg shadow-[#6B9FF7]/25 hover:shadow-xl hover:shadow-[#6B9FF7]/30 hover:-translate-y-0.5 transition-all duration-300"
+                  style={{ padding: "clamp(0.75rem, 2vw, 1rem) clamp(1.5rem, 4vw, 2rem)" }}
+                >
+                  {t("common.seeAllProjects")}
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" />
+                  </svg>
+                </Link>
+              </motion.div>
+            </div>
           </section>
 
           {/* ══ CTA FOOTER ════════════════════════════════════════ */}

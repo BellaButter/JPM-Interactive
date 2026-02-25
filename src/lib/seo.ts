@@ -19,6 +19,8 @@ export interface GenerateLayoutMetadataParams {
   locale: MetadataLocale;
   iconPath: string;
   url: string;
+  /** Optional. When set, used for Open Graph and Twitter image (e.g. /og-image.jpg). Otherwise iconPath is used. */
+  openGraphImagePath?: string;
   keywords?: string[];
   alternates?: { "en-US": string; "th-TH": string };
   openGraphExtra?: Record<string, unknown>;
@@ -105,25 +107,30 @@ export function generateLayoutMetadata({
   locale,
   iconPath,
   url,
+  openGraphImagePath,
   keywords,
   alternates,
   openGraphExtra,
 }: GenerateLayoutMetadataParams): Metadata {
   const absoluteIconUrl = `${siteUrl}${iconPath.startsWith("/") ? iconPath : `/${iconPath}`}`;
+  const ogImagePath = openGraphImagePath ?? iconPath;
+  const absoluteOgUrl = `${siteUrl}${ogImagePath.startsWith("/") ? ogImagePath : `/${ogImagePath}`}`;
+  const useOgDimensions = !!openGraphImagePath;
+  const openGraphImages = [
+    {
+      url: absoluteOgUrl,
+      width: useOgDimensions ? OG_IMAGE_WIDTH : LAYOUT_ICON_WIDTH,
+      height: useOgDimensions ? OG_IMAGE_HEIGHT : LAYOUT_ICON_HEIGHT,
+      alt: title,
+    },
+  ];
 
   const openGraph: Metadata["openGraph"] = {
     title,
     description,
     url,
     siteName: SITE_NAME,
-    images: [
-      {
-        url: absoluteIconUrl,
-        width: LAYOUT_ICON_WIDTH,
-        height: LAYOUT_ICON_HEIGHT,
-        alt: title,
-      },
-    ],
+    images: openGraphImages,
     locale,
     type: "website",
     ...openGraphExtra,
@@ -138,7 +145,7 @@ export function generateLayoutMetadata({
       card: "summary_large_image",
       title,
       description,
-      images: [absoluteIconUrl],
+      images: [absoluteOgUrl],
     },
     icons: { icon: iconPath },
   };

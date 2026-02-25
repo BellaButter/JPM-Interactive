@@ -4,6 +4,7 @@ import Footer from "@/components/layout/Footer";
 import ScrollProgress from "@/components/ui/ScrollProgress";
 import FloatingElements from "@/components/effects/FloatingElements";
 import { generateLayoutMetadata, siteUrl } from "@/lib/seo";
+import { getOrganizationJsonLd } from "@/lib/jsonLd";
 import "./globals.css";
 
 /** English / Latin: LINE Seed Sans (LINESeedSans_W_*) */
@@ -56,6 +57,7 @@ export const metadata = generateLayoutMetadata({
   locale: "en_US",
   iconPath: "/icon.png",
   url: siteUrl,
+  openGraphImagePath: "/og-image.jpg",
   keywords: ROOT_KEYWORDS,
 });
 
@@ -82,7 +84,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning className={`min-h-full ${lineSeed.variable} ${lineSeedTH.variable}`}>
-      <head />
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(getOrganizationJsonLd()) }}
+        />
+      </head>
       <body className="antialiased min-h-full w-full max-w-[100vw] overflow-x-hidden">
         <LocaleProvider>
             <MotionProvider>
