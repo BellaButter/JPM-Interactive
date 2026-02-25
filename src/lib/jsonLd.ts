@@ -163,6 +163,66 @@ export function getServiceJsonLd({ name, description, path }: ServiceJsonLdParam
   };
 }
 
+/** พารามิเตอร์สำหรับ CreativeWork JSON-LD (case study / โปรเจกต์) */
+export interface CreativeWorkJsonLdParams {
+  name: string;
+  description: string;
+  path: string;
+  image?: string;
+  datePublished?: string;
+}
+
+/**
+ * สร้าง JSON-LD CreativeWork สำหรับหน้า case study (โปรเจกต์).
+ * ใช้ในหน้า case-studies/[slug]: <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(getCreativeWorkJsonLd({...})) }} />
+ * @see https://schema.org/CreativeWork
+ */
+export function getCreativeWorkJsonLd({
+  name,
+  description,
+  path,
+  image,
+  datePublished,
+}: CreativeWorkJsonLdParams): Record<string, unknown> {
+  const url = path.startsWith("http") ? path : `${siteUrl}${path.startsWith("/") ? path : `/${path}`}`;
+  const imageUrl = image ?? `${siteUrl}/og-image.jpg`;
+  return {
+    "@context": "https://schema.org",
+    "@type": "CreativeWork",
+    name,
+    description,
+    url,
+    image: imageUrl,
+    ...(datePublished && { datePublished }),
+    author: { "@id": `${siteUrl}/#organization` },
+    publisher: { "@id": `${siteUrl}/#organization` },
+  };
+}
+
+/** พารามิเตอร์สำหรับ FAQPage JSON-LD (หน้า FAQ) */
+export interface FaqPageJsonLdParams {
+  path: string;
+  items: { q: string; a: string }[];
+}
+
+/**
+ * สร้าง JSON-LD FAQPage สำหรับ rich FAQ ในผลค้นหา Google.
+ * ใช้ในหน้า FAQ: <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(getFaqPageJsonLd({...})) }} />
+ */
+export function getFaqPageJsonLd({ path, items }: FaqPageJsonLdParams): Record<string, unknown> {
+  const url = path.startsWith("http") ? path : `${siteUrl}${path.startsWith("/") ? path : `/${path}`}`;
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: items.map((item) => ({
+      "@type": "Question",
+      name: item.q,
+      acceptedAnswer: { "@type": "Answer", text: item.a },
+    })),
+    url,
+  };
+}
+
 /** รายการ breadcrumb: name + path (relative หรือ absolute) */
 export interface BreadcrumbItem {
   name: string;

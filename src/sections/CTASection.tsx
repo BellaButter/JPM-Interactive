@@ -159,21 +159,33 @@ export default function CTASection() {
     scrollYProgress.on("change", (v) => { scrollProgressRef.current = v; });
 
     return (
-        <section ref={sectionRef} className="relative w-full" style={{ height: "100vh", background: BG }}>
-            <div className="h-full w-full overflow-hidden
-                            flex flex-col-reverse lg:flex-row items-stretch">
+        <section
+            ref={sectionRef}
+            className="relative w-full overflow-x-hidden min-w-0"
+            style={{
+                height: "100vh",
+                minHeight: "100vh",
+                background: BG,
+                marginTop: "clamp(2.5rem, 10vw, 5rem)",
+                paddingTop: "clamp(2rem, 8vw, 4rem)",
+                paddingBottom: "clamp(5rem, 18vw, 6rem)",
+                paddingLeft: "max(1rem, env(safe-area-inset-left))",
+                paddingRight: "max(1rem, env(safe-area-inset-right))",
+            }}
+        >
+            <div className="h-full min-h-0 w-full overflow-x-hidden overflow-y-auto lg:overflow-hidden scrollbar-hide
+                            flex flex-col-reverse lg:flex-row items-stretch min-w-0">
                 <Background />
 
-                {/* LEFT / BOTTOM — Text content */}
+                {/* LEFT / BOTTOM — Text content (lower z so 3D stays visible on mobile) */}
                 <div
-                    className="relative z-10
-                               flex-none lg:flex-1
+                    className="relative z-[5] lg:z-10 min-w-0 max-w-full flex-none lg:flex-1
                                flex flex-col justify-center items-center lg:items-start
                                text-center lg:text-left"
                     style={{
-                        paddingLeft: "clamp(2.5rem, 8vw, 7.5rem)",
-                        paddingRight: "clamp(1rem,   4vw, 4rem)",
-                        paddingBottom: "3rem",
+                        paddingLeft: "clamp(1.25rem, 5vw, 7.5rem)",
+                        paddingRight: "clamp(1.25rem, 5vw, 4rem)",
+                        paddingBottom: "clamp(5rem, 16vw, 6rem)",
                         gap: "clamp(1.5rem, 3vw, 2.5rem)",
                     }}
                 >
@@ -207,7 +219,7 @@ export default function CTASection() {
                                 }}
                             />
                         </span><br />
-                        <span className="text-slate-800" style={{ whiteSpace: "nowrap" }}>
+                        <span className="text-slate-800 sm:whitespace-nowrap">
                             {t("sections.cta.singleAct.headlinePart3")}
                         </span>
                     </motion.h2>
@@ -268,12 +280,12 @@ export default function CTASection() {
                 </div>
 
                 {/*
-                    RIGHT / TOP — 3D Scene + floating badges
+                    RIGHT / TOP — 3D Scene + floating badges (higher z on mobile so not covered by text)
                 ══════════════════════════════════════════════ */}
-                <div className="relative z-10
-                                flex-1 lg:flex-1 w-full
-                                h-[58vw] sm:h-[52vw] lg:h-full
-                                min-h-[250px] max-h-[500px] lg:max-h-none">
+                <div className="relative z-20 lg:z-10
+                                flex-1 lg:flex-1 w-full shrink-0
+                                h-[42vh] min-h-[260px] sm:h-[48vw] sm:min-h-[280px] lg:h-full lg:min-h-0
+                                max-h-[400px] lg:max-h-none">
 
                     {/* Purple halo behind character */}
                     <div className="absolute inset-0 pointer-events-none"

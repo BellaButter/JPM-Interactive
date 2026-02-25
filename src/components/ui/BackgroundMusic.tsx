@@ -64,7 +64,7 @@ export default function BackgroundMusic() {
         initial={{ opacity: 0, x: -12 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ delay: 2, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-        className="fixed bottom-6 left-6 z-[100] flex items-center gap-2 rounded-full border border-black/20 bg-black/40 px-4 py-2.5 backdrop-blur-md shadow-lg ring-1 ring-white/10 transition-all duration-300 hover:bg-black/55 hover:border-[#6B9FF7]/50 hover:shadow-[#6B9FF7]/25"
+        className="fixed bottom-20 left-6 right-auto sm:bottom-6 z-[100] flex items-center gap-2 rounded-full border border-black/20 bg-black/40 px-4 py-2.5 backdrop-blur-md shadow-lg ring-1 ring-white/10 transition-all duration-300 hover:bg-black/55 hover:border-[#6B9FF7]/50 hover:shadow-[#6B9FF7]/25"
         aria-label={isPlaying ? "Pause music" : "Play music"}
         title={isPlaying ? "Pause" : "Play"}
       >

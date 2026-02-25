@@ -9,6 +9,7 @@
     "articles": "บทความ",
     "industries": "อุตสาหกรรม",
     "contact": "ติดต่อเรา",
+    "faq": "คำถามที่พบบ่อย",
     "letsTalk": "คุยกัน",
     "menu": "เมนู"
   },
@@ -80,9 +81,12 @@
     "viewProject": "ดูโปรเจกต์",
     "technologiesUsed": "เทคโนโลยีที่ใช้",
     "interestedInProject": "สนใจโปรเจกต์แบบนี้?",
+    "previousProject": "โปรเจกต์ก่อนหน้า",
+    "nextProject": "โปรเจกต์ถัดไป",
     "discussVision": "มาคุยกันว่าเราจะทำให้วิสัยทัศน์ของคุณเป็นจริงได้อย่างไร",
     "soundOn": "เปิดเสียง",
-    "soundOff": "ปิดเสียง"
+    "soundOff": "ปิดเสียง",
+    "more": "ดูเพิ่ม"
   },
   "works": {
     "featuredInnovations": "ผลงานนวัตกรรม",
@@ -98,6 +102,10 @@
     "articles": "บทความ",
     "articlesSub": "เทคโนโลยีเชิงสร้างสรรค์ ประสบการณ์ดิจิทัล และสิ่งที่เรากำลังสร้างที่ JPM Interactive",
     "noArticles": "ยังไม่มีบทความ รอติดตามได้เลย"
+  },
+  "faq": {
+    "pageTitle": "คำถามที่พบบ่อย",
+    "pageDescription": "คำถามทั่วไปเกี่ยวกับ Interactive และ Immersive Experience"
   },
   "contact": {
     "getInTouch": "ติดต่อเรา",

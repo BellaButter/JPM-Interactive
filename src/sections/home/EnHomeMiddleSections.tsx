@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { motion, useInView, AnimatePresence } from "framer-motion";
-import { useRef, useState } from "react";
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
 import Container from "@/components/layout/Container";
 import { useLocale } from "@/context/LocaleContext";
 import { prefixPath } from "@/i18n/config";
@@ -15,12 +15,6 @@ const FIRST_SECTION_TOP = "first:pt-24 sm:first:pt-28 md:first:pt-32 lg:first:pt
 const HEADER_BOTTOM = "mb-10 sm:mb-12 md:mb-14";
 const CARD_PADDING_REM = "clamp(1.25rem, 4vw, 2.25rem)";
 const CARD_PADDING_STYLE = { padding: CARD_PADDING_REM };
-const FAQ_ANSWER_PADDING_STYLE = {
-  paddingTop: "0.875rem",
-  paddingBottom: CARD_PADDING_REM,
-  paddingLeft: CARD_PADDING_REM,
-  paddingRight: CARD_PADDING_REM,
-};
 const BUTTON_PADDING_STYLE = { padding: "0.75rem 1.5rem" };
 const PROCESS_HEADER_BOTTOM_STYLE = { marginBottom: "clamp(2.5rem, 6vw, 4rem)" };
 const INDUSTRIES_BUTTON_TOP_STYLE = { marginTop: "clamp(2.5rem, 6vw, 4rem)" };
@@ -67,21 +61,6 @@ const INDUSTRIES_LIST = [
   "Museum designers & curators",
   "Museum System Integrators",
   "Showroom & Experience Space companies",
-] as const;
-
-const FAQ_ITEMS = [
-  {
-    q: "What is an Interactive Experience?",
-    a: "It is a system or medium that lets users participate—through touch, motion, or real-time interaction—instead of passive viewing.",
-  },
-  {
-    q: "How does an Immersive Experience differ from a standard LED display?",
-    a: "Immersive experiences are designed so users are surrounded by the content, creating a sense of presence and deeper engagement than a single-screen display.",
-  },
-  {
-    q: "Can the system be customized for our specific space?",
-    a: "Yes. We design solutions based on your space size, budget, and organizational goals.",
-  },
 ] as const;
 
 const containerVariants = {
@@ -151,13 +130,10 @@ function SectionHeader({
 
 export default function EnHomeMiddleSections() {
   const { locale } = useLocale();
-  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
   const processRef = useRef<HTMLElement>(null);
   const processInView = useInView(processRef, { once: true, margin: "-80px" });
   const industriesRef = useRef<HTMLElement>(null);
   const industriesInView = useInView(industriesRef, { once: true, margin: "-80px" });
-  const faqRef = useRef<HTMLElement>(null);
-  const faqInView = useInView(faqRef, { once: true, margin: "-80px" });
 
   return (
     <div
@@ -236,7 +212,7 @@ export default function EnHomeMiddleSections() {
       {/* Industries */}
       <section
         ref={industriesRef}
-        className={SECTION_PY}
+        className={`${SECTION_PY} last:pb-24 sm:last:pb-28 md:last:pb-32`}
         aria-labelledby="industries-heading"
       >
         <Container className="w-full">
@@ -288,80 +264,6 @@ export default function EnHomeMiddleSections() {
               <span className="transition-transform group-hover:translate-x-1" aria-hidden>→</span>
             </Link>
           </motion.p>
-        </Container>
-      </section>
-
-      {/* FAQ */}
-      <section
-        ref={faqRef}
-        className={`${SECTION_PY} relative overflow-hidden last:pb-24 sm:last:pb-28 md:last:pb-32`}
-        aria-labelledby="faq-heading"
-      >
-        <div className="absolute inset-0 -z-10 bg-white" aria-hidden />
-        <Container className="w-full">
-          <SectionHeader
-            id="faq-heading"
-            title="Frequently Asked Questions"
-            description="Common questions about Interactive and Immersive Experiences"
-            inView={faqInView}
-          />
-
-          <motion.div
-            className="space-y-3 sm:space-y-4"
-            variants={containerVariants}
-            initial="hidden"
-            animate={faqInView ? "visible" : "hidden"}
-          >
-            {FAQ_ITEMS.map((item, index) => {
-              const isOpen = openFaqIndex === index;
-              return (
-                <motion.div key={item.q} variants={itemVariants}>
-                  <motion.div
-                    className={`rounded-2xl border-2 bg-white shadow-sm transition-colors duration-300 ${isOpen
-                        ? "border-[#6B9FF7]/40 bg-[#f8faff]/50 shadow-lg shadow-[#6B9FF7]/10"
-                        : "border-[#7BA9F7]/20"
-                      }`}
-                    whileTap={{ scale: 0.99 }}
-                    transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                  >
-                    <button
-                      type="button"
-                      onClick={() => setOpenFaqIndex((prev) => (prev === index ? null : index))}
-                      className="flex w-full cursor-pointer list-none items-center justify-between gap-4 font-medium text-slate-900 transition-colors hover:text-[#6B9FF7]"
-                      style={CARD_PADDING_STYLE}
-                    >
-                      <span className="text-left text-[15px] leading-snug sm:text-base pr-2">{item.q}</span>
-                      <motion.span
-                        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#6B9FF7]/10 text-[#6B9FF7] sm:h-10 sm:w-10"
-                        animate={{ rotate: isOpen ? 180 : 0 }}
-                        transition={{ type: "spring", stiffness: 300, damping: 24 }}
-                        aria-hidden
-                      >
-                        <svg className="h-4 w-4 sm:h-5 sm:w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                        </svg>
-                      </motion.span>
-                    </button>
-                    <AnimatePresence initial={false}>
-                      {isOpen && (
-                        <motion.div
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: "auto", opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                          transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                          className="overflow-hidden border-t border-slate-100"
-                        >
-                          <div style={FAQ_ANSWER_PADDING_STYLE}>
-                            <p className={bodyClass}>{item.a}</p>
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </motion.div>
-                </motion.div>
-              );
-            })}
-          </motion.div>
         </Container>
       </section>
     </div>

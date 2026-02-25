@@ -4,8 +4,16 @@ import { getWorkBySlug, works } from "@/data/works";
 import { getWorkBySlugFromPageData, worksPageData } from "@/data/worksPageData";
 import WorkDetailClient from "@/components/works/WorkDetailClient";
 import { generatePageMetadata, siteUrl } from "@/lib/seo";
+import { getCreativeWorkJsonLd, getBreadcrumbListJsonLd } from "@/lib/jsonLd";
 import type { Locale } from "@/types/locale";
 import { locales } from "@/i18n/config";
+
+/** ลำดับ slug สำหรับปุ่ม Prev/Next (worksPageData ก่อน แล้วค่อย works ที่ไม่มีใน list) */
+function getOrderedSlugs(): string[] {
+    const fromPage = worksPageData.map((w) => w.slug);
+    const fromWorks = works.map((w) => w.slug).filter((s) => !fromPage.includes(s));
+    return [...fromPage, ...fromWorks];
+}
 
 export function generateStaticParams() {
   const fromWorks = works.map((work) => work.slug);
@@ -45,8 +53,10 @@ export async function generateMetadata({
 
 export default async function LocaleCaseStudyDetailPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ locale: string; slug: string }>;
+  searchParams?: Promise<{ category?: string }>;
 }) {
   const { locale, slug } = await params;
   const validLocale = locales.includes(locale as Locale) ? (locale as Locale) : null;
@@ -55,5 +65,46 @@ export default async function LocaleCaseStudyDetailPage({
   const work = getWorkBySlug(slug) ?? getWorkBySlugFromPageData(slug);
   if (!work) notFound();
 
-  return <WorkDetailClient work={work} />;
+  const orderedSlugs = getOrderedSlugs();
+  const index = orderedSlugs.indexOf(slug);
+  const nextSlug = index >= 0 && index < orderedSlugs.length - 1 ? orderedSlugs[index + 1] : null;
+  const prevSlug = index > 0 ? orderedSlugs[index - 1] : null;
+
+  const search = await searchParams?.catch(() => ({}));
+  const returnCategory =
+    search?.category && ["led", "touch_screen", "graphic_design"].includes(search.category)
+      ? search.category
+      : null;
+
+  const projectPath = `/${validLocale}/case-studies/${slug}`;
+  const projectJsonLd = getCreativeWorkJsonLd({
+    name: work.title,
+    description: work.description,
+    path: projectPath,
+    image: work.cover ? `${siteUrl}/${work.cover}` : undefined,
+  });
+  const breadcrumbJsonLd = getBreadcrumbListJsonLd([
+    { name: "Home", path: `/${validLocale}` },
+    { name: "Case Studies", path: `/${validLocale}/case-studies` },
+    { name: work.title, path: projectPath },
+  ]);
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(projectJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      <WorkDetailClient
+        work={work}
+        nextSlug={nextSlug}
+        prevSlug={prevSlug}
+        returnCategory={returnCategory}
+      />
+    </>
+  );
 }

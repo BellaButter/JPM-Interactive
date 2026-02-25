@@ -1,10 +1,12 @@
 "use client";
 
 import { useRef, useState, useEffect, type ReactNode } from "react";
+import Link from "next/link";
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import Container from "@/components/layout/Container";
 import ScrollReveal from "@/components/animations/ScrollReveal";
 import { useLocale } from "@/context/LocaleContext";
+import { prefixPath } from "@/i18n/config";
 
 /** Padding การ์ด — ใช้ inline เพื่อให้เห็นผลทั้ง TH/EN */
 const STAT_CARD_PADDING = "clamp(1rem, 3vw, 1.5rem)";
@@ -115,7 +117,7 @@ const VALUE_ICONS: Record<string, ReactNode> = {
 const VALUE_KEYS = ["creativity", "technology", "experience", "impact"] as const;
 
 export default function WhoWeAreSection() {
-    const { t } = useLocale();
+    const { t, locale } = useLocale();
     const containerRef = useRef<HTMLDivElement>(null);
 
     const { scrollYProgress } = useScroll({
@@ -176,6 +178,17 @@ export default function WhoWeAreSection() {
                             >
                                 {t("sections.whoWeAreDesc")}
                             </motion.p>
+                        </ScrollReveal>
+                        <ScrollReveal variant="fade" delay={0.3}>
+                            <Link
+                                href={prefixPath(locale, "/about")}
+                                className="inline-flex items-center gap-2 mt-6 sm:mt-8 text-base sm:text-lg font-semibold text-[#6B9FF7] hover:text-[#8B5CF6] transition-colors"
+                            >
+                                <span>{t("common.more")}</span>
+                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                                </svg>
+                            </Link>
                         </ScrollReveal>
                     </motion.div>
 

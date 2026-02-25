@@ -42,7 +42,16 @@ export default function HomePageContent() {
         }}
       >
         <WhoWeAreSection />
-        <ServicesSection />
+      </div>
+      {/* Services เต็มความกว้างจอ เพื่อให้เส้นโค้งเริ่มจากขอบจอ */}
+      <ServicesSection />
+      <div
+        className="relative z-0 w-full flex flex-col items-center box-border max-w-[1600px] mx-auto w-full"
+        style={{
+          paddingLeft: "clamp(1.25rem, 5vw, 2rem)",
+          paddingRight: "clamp(1.25rem, 5vw, 2rem)",
+        }}
+      >
         <WorksSection />
         <EnHomeMiddleSections />
       </div>

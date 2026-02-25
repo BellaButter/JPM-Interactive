@@ -15,6 +15,7 @@ export const pathnames = {
   caseStudies: "/case-studies",
   caseStudyDetail: (slug: string) => `/case-studies/${slug}`,
   contact: "/contact",
+  faq: "/faq",
   content: "/content",
   contentDetail: (slug: string) => `/content/${slug}`,
 } as const;
@@ -35,6 +36,7 @@ export const seo: Record<
     };
     caseStudies: { title: string; description: string };
     contact: { title: string; description: string };
+    faq: { title: string; description: string };
   }
 > = {
   en: {
@@ -77,6 +79,10 @@ export const seo: Record<
       title: "Contact - JPM Interactive",
       description: "Get in touch with JPM Interactive. Let's discuss your next project.",
     },
+    faq: {
+      title: "FAQ - JPM Interactive",
+      description: "Frequently asked questions about Interactive Experience, Immersive Experience, and our services.",
+    },
   },
   th: {
     siteName: "JPM Interactive",
@@ -117,6 +123,10 @@ export const seo: Record<
     contact: {
       title: "ติดต่อเรา - JPM Interactive",
       description: "ติดต่อ JPM Interactive มาร่วมกันคุยโปรเจกต์ถัดไปของคุณ",
+    },
+    faq: {
+      title: "คำถามที่พบบ่อย - JPM Interactive",
+      description: "คำถามที่พบบ่อยเกี่ยวกับ Interactive Experience, Immersive Experience และบริการของเรา",
     },
   },
 };

@@ -191,6 +191,15 @@ html.lenis {
   background: var(--color-accent-blue);
 }
 
+/* Hide scrollbar but keep scroll (e.g. CTA section) */
+.scrollbar-hide {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
 /* Glitch Text Effects */
 .glitch-text {
   position: relative;

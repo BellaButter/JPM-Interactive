@@ -85,6 +85,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning className={`min-h-full ${lineSeed.variable} ${lineSeedTH.variable}`}>
       <head>
+        {/* LocaleSync sets document.documentElement.lang to "th"|"en" for [locale] routes */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(getOrganizationJsonLd()) }}

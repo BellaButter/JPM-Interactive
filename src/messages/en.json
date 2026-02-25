@@ -9,6 +9,7 @@
     "articles": "Articles",
     "industries": "Industries",
     "contact": "Contact",
+    "faq": "FAQ",
     "letsTalk": "Let's Talk",
     "menu": "Menu"
   },
@@ -80,9 +81,12 @@
     "viewProject": "VIEW PROJECT",
     "technologiesUsed": "Technologies Used",
     "interestedInProject": "Interested in a similar project?",
+    "previousProject": "Previous project",
+    "nextProject": "Next project",
     "discussVision": "Let's discuss how we can bring your vision to life.",
     "soundOn": "Sound on",
-    "soundOff": "Sound off"
+    "soundOff": "Sound off",
+    "more": "More"
   },
   "works": {
     "featuredInnovations": "Featured Innovations",
@@ -98,6 +102,10 @@
     "articles": "Articles",
     "articlesSub": "Creative technology, digital experiences, and what we're building at JPM Interactive.",
     "noArticles": "No articles yet. Check back soon."
+  },
+  "faq": {
+    "pageTitle": "Frequently Asked Questions",
+    "pageDescription": "Common questions about Interactive and Immersive Experiences"
   },
   "contact": {
     "getInTouch": "Get In Touch",

@@ -65,14 +65,22 @@ function WorksPageContent() {
                     </h1>
                 </motion.div>
 
-                {/* Category Filter */}
+                {/* Category Filter — มือถือ: เลื่อนแนวนอน + ปุ่มเล็กลง, เดสก์ท็อป: แบบเดิม */}
                 <motion.div 
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: 0.2 }}
-                    className="flex flex-wrap"
-                    style={{ gap: '0.75rem', marginBottom: 'clamp(2rem, 5vw, 4rem)' }}
+                    className="works-category-scroll flex flex-nowrap md:flex-wrap overflow-x-auto overflow-y-visible gap-2 md:gap-3 -mx-1 px-1 py-2 md:mx-0 md:px-0 md:py-0"
+                    style={{
+                        marginBottom: 'clamp(2rem, 5vw, 4rem)',
+                        WebkitOverflowScrolling: 'touch',
+                        scrollbarWidth: 'none',
+                        msOverflowStyle: 'none',
+                    }}
                 >
+                    <style jsx>{`
+                        .works-category-scroll::-webkit-scrollbar { display: none; }
+                    `}</style>
                     {categories.map((category, index) => (
                         <motion.button
                             key={category}
@@ -80,17 +88,16 @@ function WorksPageContent() {
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ delay: 0.15 + index * 0.05 }}
                             onClick={() => setSelectedCategory(category)}
-                            whileHover={{ scale: 1.05, y: -2 }}
                             whileTap={{ scale: 0.98 }}
-                            className={`rounded-full font-semibold transition-all duration-300 ${selectedCategory === category
-                                ? "bg-gradient-to-r from-[#6B9FF7] to-[#8B9FF8] text-white shadow-lg shadow-[#6B9FF7]/30"
-                                : "bg-white text-gray-700 border-2 border-gray-200 hover:border-[#6B9FF7] hover:text-[#6B9FF7] hover:shadow-md"
+                            className={`rounded-full font-semibold transition-all duration-200 shrink-0 border-2 ${selectedCategory === category
+                                ? "bg-gradient-to-r from-[#6B9FF7] to-[#8B9FF8] text-white border-[#6B9FF7]/50 shadow-lg shadow-[#6B9FF7]/30"
+                                : "bg-white text-gray-700 border-gray-300 hover:border-[#6B9FF7] hover:text-[#6B9FF7] hover:shadow-md"
                                 }`}
                             style={{
-                                paddingLeft: '2rem',
-                                paddingRight: '2rem',
-                                paddingTop: '0.875rem',
-                                paddingBottom: '0.875rem'
+                                paddingLeft: '1.25rem',
+                                paddingRight: '1.25rem',
+                                paddingTop: '0.65rem',
+                                paddingBottom: '0.65rem',
                             }}
                         >
                             {categoryLabels[category]}
@@ -116,7 +123,7 @@ function WorksPageContent() {
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: Math.min(index * 0.05, 0.5), duration: 0.35 }}
                             >
-                                <Link href={prefixPath(locale, `/case-studies/${work.slug}`)}>
+                                <Link href={prefixPath(locale, `/case-studies/${work.slug}`) + (selectedCategory === "all" ? "" : `?category=${selectedCategory}`)}>
                                     <motion.div
                                         whileHover={{ y: -12, scale: 1.02 }}
                                         transition={{ type: "spring", stiffness: 300, damping: 20 }}

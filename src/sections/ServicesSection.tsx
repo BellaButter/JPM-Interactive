@@ -33,12 +33,12 @@ export default function ServicesSection() {
         <section
             ref={containerRef}
             className="relative w-full overflow-x-hidden bg-white pt-24 sm:pt-32 md:pt-40 lg:pt-48 xl:pt-56 pb-40 sm:pb-56 md:pb-64 lg:pb-80 xl:pb-96"
-            style={{ marginBottom: "clamp(4rem, 10vw, 10rem)", position: "relative" }}
+            style={{ marginBottom: "clamp(2rem, 4vw, 4rem)", position: "relative" }}
         >
-            {/* เส้นโค้ง abstract - เต็มความกว้างจอ เริ่มจากขอบซ้ายจบขอบขวา */}
-            <div 
-                className="absolute top-0 bottom-0 left-0 right-0 w-[100vw] max-w-none pointer-events-none z-10 hidden md:block"
-                style={{ left: '50%', right: 'auto', transform: 'translateX(-50%)' }}
+            {/* เส้นโค้ง abstract - เต็มความกว้างจอ เริ่มจากขอบซ้ายจบขอบขวา (section อยู่เต็มความกว้าง main แล้ว) */}
+            <div
+                className="absolute top-0 bottom-0 left-1/2 pointer-events-none z-10 hidden md:block"
+                style={{ width: '100vw', maxWidth: '100vw', transform: 'translateX(-50%)' }}
             >
                 <svg
                     className="absolute w-full h-full"
@@ -89,14 +89,14 @@ export default function ServicesSection() {
                     style={{
                         marginLeft: "auto",
                         marginRight: "auto",
-                        paddingLeft: "clamp(1.25rem, 5vw, 2rem)",
-                        paddingRight: "clamp(1.25rem, 5vw, 2rem)",
+                        paddingLeft: "clamp(1rem, 4vw, 1.75rem)",
+                        paddingRight: "clamp(1rem, 4vw, 1.75rem)",
                     }}
                 >
-                {/* Header */}
-                <div className="mb-20 sm:mb-24 md:mb-28 lg:mb-32 text-center">
+                {/* Header — margin ระหว่างหัวข้อกับข้อมูลด้านล่าง (inline) */}
+                <div className="text-center" style={{ marginBottom: "clamp(2rem, 6vw, 3.5rem)" }}>
                     <ScrollReveal variant="fade">
-                        <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-gray-900 tracking-tight">
+                        <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold tracking-tight bg-gradient-to-r from-[#6B9FF7] via-[#8B5CF6] to-[#C084FC] bg-clip-text text-transparent">
                             {t("sections.ourServices")}
                         </h2>
                     </ScrollReveal>
@@ -113,21 +113,23 @@ export default function ServicesSection() {
                                     <div className={imageOnLeft ? "order-2 lg:order-1 mt-8 lg:mt-0" : "order-1 lg:order-1"}>
                                         {imageOnLeft ? (
                                             <div className="flex justify-center lg:justify-start">
-                                                <motion.div
-                                                    className="group relative w-full max-w-lg xl:max-w-xl aspect-[4/3] rounded-3xl overflow-hidden border border-slate-200/80 shadow-xl cursor-pointer"
-                                                    style={{ boxShadow: `0 20px 60px ${service.color}25` }}
-                                                    whileHover={{ scale: 1.03 }}
-                                                    transition={{ type: "spring", stiffness: 300, damping: 24 }}
-                                                >
-                                                    <Image
-                                                        src={service.image}
-                                                        alt={service.imageAlt}
-                                                        fill
-                                                        sizes="(max-width: 1024px) 100vw, 512px"
-                                                        className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
-                                                        unoptimized={service.key === "led"}
-                                                    />
-                                                </motion.div>
+                                                <Link href={prefixPath(locale, service.href)} className="block w-full max-w-lg xl:max-w-xl">
+                                                    <motion.div
+                                                        className="group relative w-full aspect-[4/3] rounded-3xl overflow-hidden border border-slate-200/80 shadow-xl cursor-pointer"
+                                                        style={{ boxShadow: `0 20px 60px ${service.color}25` }}
+                                                        whileHover={{ scale: 1.03 }}
+                                                        transition={{ type: "spring", stiffness: 300, damping: 24 }}
+                                                    >
+                                                        <Image
+                                                            src={service.image}
+                                                            alt={service.imageAlt}
+                                                            fill
+                                                            sizes="(max-width: 1024px) 100vw, 512px"
+                                                            className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+                                                            unoptimized={service.key === "led"}
+                                                        />
+                                                    </motion.div>
+                                                </Link>
                                             </div>
                                         ) : (
                                             <div className="flex flex-col gap-6 sm:gap-8 md:gap-10 mt-8 lg:mt-0">
@@ -143,6 +145,7 @@ export default function ServicesSection() {
                                                 <Link
                                                     href={prefixPath(locale, service.href)}
                                                     className="inline-block text-base md:text-lg font-medium text-[#6B9FF7] hover:text-[#8B9FF8] border-b-2 border-[#6B9FF7]/50 hover:border-[#8B9FF8] transition-all"
+                                                    style={{ marginTop: "3rem" }}
                                                 >
                                                     {t("common.viewProject")}
                                                 </Link>
@@ -166,27 +169,30 @@ export default function ServicesSection() {
                                                 <Link
                                                     href={prefixPath(locale, service.href)}
                                                     className="inline-block text-base md:text-lg font-medium text-[#6B9FF7] hover:text-[#8B9FF8] border-b-2 border-[#6B9FF7]/50 hover:border-[#8B9FF8] transition-all"
+                                                    style={{ marginTop: "3rem" }}
                                                 >
                                                     {t("common.viewProject")}
                                                 </Link>
                                             </div>
                                         ) : (
                                             <div className="flex justify-center lg:justify-end">
-                                                <motion.div
-                                                    className="group relative w-full max-w-lg xl:max-w-xl aspect-[4/3] rounded-3xl overflow-hidden border border-slate-200/80 shadow-xl cursor-pointer"
-                                                    style={{ boxShadow: `0 20px 60px ${service.color}25` }}
-                                                    whileHover={{ scale: 1.03 }}
-                                                    transition={{ type: "spring", stiffness: 300, damping: 24 }}
-                                                >
-                                                    <Image
-                                                        src={service.image}
-                                                        alt={service.imageAlt}
-                                                        fill
-                                                        sizes="(max-width: 1024px) 100vw, 512px"
-                                                        className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
-                                                        unoptimized={service.key === "led"}
-                                                    />
-                                                </motion.div>
+                                                <Link href={prefixPath(locale, service.href)} className="block w-full max-w-lg xl:max-w-xl">
+                                                    <motion.div
+                                                        className="group relative w-full aspect-[4/3] rounded-3xl overflow-hidden border border-slate-200/80 shadow-xl cursor-pointer"
+                                                        style={{ boxShadow: `0 20px 60px ${service.color}25` }}
+                                                        whileHover={{ scale: 1.03 }}
+                                                        transition={{ type: "spring", stiffness: 300, damping: 24 }}
+                                                    >
+                                                        <Image
+                                                            src={service.image}
+                                                            alt={service.imageAlt}
+                                                            fill
+                                                            sizes="(max-width: 1024px) 100vw, 512px"
+                                                            className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+                                                            unoptimized={service.key === "led"}
+                                                        />
+                                                    </motion.div>
+                                                </Link>
                                             </div>
                                         )}
                                     </div>

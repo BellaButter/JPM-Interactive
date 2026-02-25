@@ -80,16 +80,24 @@ export default function ContentListPage() {
                                                 paddingLeft: "clamp(2.5rem, 7vw, 5rem)",
                                             }}
                                         >
-                                            <time
-                                                dateTime={featured.publishedAt}
-                                                className="text-xs font-medium text-slate-500 uppercase tracking-wider mb-4"
-                                            >
-                                                {new Date(featured.publishedAt).toLocaleDateString(locale === "th" ? "th-TH" : "en-US", {
-                                                    month: "long",
-                                                    day: "numeric",
-                                                    year: "numeric",
-                                                })}
-                                            </time>
+                                            <div className="flex flex-wrap items-center gap-3 mb-4">
+                                                <span
+                                                    className="inline-block rounded-full bg-[#6B9FF7]/20 text-[#6B9FF7] text-xs font-semibold uppercase tracking-wider shrink-0"
+                                                    style={{ padding: "0.35rem 0.9rem" }}
+                                                >
+                                                    {t("common.featured")}
+                                                </span>
+                                                <time
+                                                    dateTime={featured.publishedAt}
+                                                    className="text-xs font-medium text-slate-500 uppercase tracking-wider"
+                                                >
+                                                    {new Date(featured.publishedAt).toLocaleDateString(locale === "th" ? "th-TH" : "en-US", {
+                                                        month: "long",
+                                                        day: "numeric",
+                                                        year: "numeric",
+                                                    })}
+                                                </time>
+                                            </div>
                                             <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 leading-tight mb-4 group-hover:text-[#6B9FF7] transition-colors duration-300">
                                                 {featured.title}
                                             </h2>
@@ -103,15 +111,6 @@ export default function ContentListPage() {
                                                 </svg>
                                             </span>
                                         </div>
-                                    </div>
-                                    {/* Featured badge */}
-                                    <div className="absolute top-6 left-6 md:top-8 md:left-8 z-10">
-                                        <span
-                                            className="inline-block rounded-full bg-[#6B9FF7]/20 text-[#6B9FF7] text-sm font-semibold uppercase tracking-wider"
-                                            style={{ padding: "0.5rem 1.25rem" }}
-                                        >
-                                            {t("common.featured")}
-                                        </span>
                                     </div>
                                     {/* Arrow */}
                                     <div className="absolute top-5 right-5 w-11 h-11 rounded-full bg-white border-2 border-gray-200 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:scale-110 group-hover:border-[#6B9FF7] shadow-lg z-10">

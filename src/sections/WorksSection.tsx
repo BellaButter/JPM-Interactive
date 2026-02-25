@@ -29,7 +29,7 @@ export default function WorksSection() {
         <section 
             ref={sectionRef} 
             className="relative z-[5] bg-white overflow-x-hidden pt-20 sm:pt-28 md:pt-36 lg:pt-44 xl:pt-52 pb-24 sm:pb-32 md:pb-40 lg:pb-48 xl:pb-56"
-            style={{ marginTop: '6rem', position: 'relative' }}
+            style={{ marginTop: '2rem', position: 'relative' }}
         >
             <div
                     className="relative z-10 w-full max-w-[1600px] mx-auto"
@@ -38,19 +38,28 @@ export default function WorksSection() {
                         paddingRight: "clamp(1.25rem, 5vw, 2rem)",
                     }}
                 >
-                {/* Header */}
-                <div className="mb-20 sm:mb-24 md:mb-28 lg:mb-32 text-center">
+                {/* Header — margin ระหว่างหัวข้อกับข้อมูลด้านล่าง */}
+                <div className="text-center" style={{ marginBottom: "clamp(2.5rem, 6vw, 4rem)" }}>
                     <ScrollReveal variant="fade" delay={0.1}>
-                        <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-gray-900 tracking-tight leading-none">
+                        <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold tracking-tight leading-none bg-gradient-to-r from-[#6B9FF7] via-[#8B5CF6] to-[#C084FC] bg-clip-text text-transparent">
                             {t("sections.featuredWork")}
                         </h2>
                     </ScrollReveal>
                 </div>
 
-                {/* Grid - 2 Columns Equal */}
+                {/* Grid - 2 Columns Equal; การ์ดแรก (Guitar Hero) แสดงเป็นอันที่ 4 ทุกจอ */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 sm:gap-12 md:gap-16 lg:gap-20 xl:gap-24 mb-20 sm:mb-24 md:mb-28">
-                    {featuredWorks.map((work, index) => (
-                        <Link key={work.id} href={prefixPath(locale, `/case-studies/${work.slug}`)}>
+                    {featuredWorks.map((work, index) => {
+                        const orderClasses = [
+                            "order-4",              // 0 (Guitar Hero) -> อันที่ 4
+                            "order-1",              // 1
+                            "order-2",              // 2
+                            "order-3",              // 3
+                            "order-5",              // 4
+                            "order-6",              // 5
+                        ][index] ?? "order-first";
+                        return (
+                        <Link key={work.id} href={prefixPath(locale, `/case-studies/${work.slug}`)} className={orderClasses}>
                             <motion.div
                                 initial={{ opacity: 0, y: 40 }}
                                 whileInView={{ opacity: 1, y: 0 }}
@@ -112,7 +121,8 @@ export default function WorksSection() {
                                 </div>
                             </motion.div>
                         </Link>
-                    ))}
+                        );
+                    })}
                 </div>
 
                 {/* View All Button */}

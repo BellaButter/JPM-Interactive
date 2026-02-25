@@ -8,7 +8,17 @@ import { type Work } from "@/data/works";
 import { useLocale } from "@/context/LocaleContext";
 import { prefixPath } from "@/i18n/config";
 
-export default function WorkDetailClient({ work }: { work: Work }) {
+export default function WorkDetailClient({
+    work,
+    nextSlug = null,
+    prevSlug = null,
+    returnCategory = null,
+}: {
+    work: Work;
+    nextSlug?: string | null;
+    prevSlug?: string | null;
+    returnCategory?: "led" | "touch_screen" | "graphic_design" | null;
+}) {
     const { t, locale } = useLocale();
     const categoryLabels = {
         touch_screen: t("works.interactiveSolutions"),
@@ -41,17 +51,25 @@ export default function WorkDetailClient({ work }: { work: Work }) {
 
     return (
         <main className="w-full min-h-screen overflow-x-hidden max-w-[100vw] min-w-0 bg-gradient-to-b from-[#fafbff] to-[#f3f4ff]">
-            {/* Back Button - aligned with content */}
-            <div className="fixed top-24 sm:top-28 left-0 right-0 z-50 flex justify-center pointer-events-none">
-                <div className="w-full max-w-7xl px-6 sm:px-8 md:px-10 lg:px-12 xl:px-16 2xl:px-20 pointer-events-auto">
-                    <Link href={prefixPath(locale, "/case-studies")} className="inline-block">
+            {/* Back Button - อยู่เหนือวิดีโอและ nav */}
+            <div className="fixed top-24 sm:top-28 left-0 right-0 z-[110] flex justify-center pointer-events-none">
+                <div className="w-full max-w-7xl px-8 sm:px-8 md:px-10 lg:px-12 xl:px-16 2xl:px-20 pointer-events-auto">
+                    <Link
+                        href={
+                            returnCategory
+                                ? `${prefixPath(locale, "/case-studies")}?category=${returnCategory}`
+                                : prefixPath(locale, "/case-studies")
+                        }
+                        className="inline-block"
+                    >
                         <motion.button
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                            className="inline-flex items-center gap-2 bg-white border border-[#e5e7eb] rounded-full text-sm font-medium text-slate-700 hover:border-[#7BA9F7] hover:text-[#7BA9F7] transition-all shadow-sm"
-                            style={{ padding: "14px 28px" }}
+                            whileHover={{ scale: 1.04 }}
+                            whileTap={{ scale: 0.97 }}
+                            transition={{ type: "tween", duration: 0.2, ease: "easeOut" }}
+                            className="inline-flex items-center gap-1.5 bg-white border border-[#e5e7eb] rounded-full text-xs sm:text-sm font-medium text-slate-700 hover:border-[#7BA9F7] hover:text-[#7BA9F7] hover:shadow-md active:scale-[0.97] transition-all duration-200 ease-out shadow-sm"
+                            style={{ padding: "10px 18px" }}
                         >
-                            <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                             </svg>
                             <span className="hidden sm:inline">Back</span>
@@ -60,12 +78,12 @@ export default function WorkDetailClient({ work }: { work: Work }) {
                 </div>
             </div>
 
-            {/* Hero/Media - กว้างเต็มจอมากขึ้น */}
+            {/* Hero/Media - z-0 + isolate ให้อยู่ใต้ nav และปุ่ม back (iframe ไม่ซ้อนทับ) */}
             <div
                 ref={heroRef}
-                className="relative w-full mt-16 sm:mt-20 md:mt-24 overflow-hidden bg-gray-900"
+                className="relative z-0 isolate w-full mt-16 sm:mt-20 md:mt-24 overflow-hidden bg-gray-900"
             >
-                <div className="w-full flex justify-center px-6 sm:px-8 md:px-10 lg:px-12 xl:px-16 2xl:px-20">
+                <div className="w-full flex justify-center" style={{ paddingLeft: "clamp(1.5rem, 6vw, 2.5rem)", paddingRight: "clamp(1.5rem, 6vw, 2.5rem)" }}>
                     <div className="w-full max-w-7xl">
                         <div className="relative w-full aspect-video max-h-[55vh] sm:max-h-[65vh] md:max-h-[75vh] rounded-xl sm:rounded-2xl overflow-hidden shadow-2xl bg-black">
                         {work.media?.type === "youtube" && work.media?.src ? (
@@ -102,13 +120,15 @@ export default function WorkDetailClient({ work }: { work: Work }) {
                 </div>
             </div>
 
-            {/* Content - ระยะขอบบน/ล่างให้ห่างวิดีโอและฟุตเตอร์ (ใช้ style ให้แน่นอน) */}
-            <div ref={contentRef} className="w-full flex justify-center px-6 sm:px-8 md:px-10 lg:px-12 xl:px-16 2xl:px-20">
+            {/* Content - ระยะขอบ (inline style ให้ชัดบนมือถือ) */}
+            <div ref={contentRef} className="w-full flex justify-center">
                 <div
                     className="w-full max-w-7xl box-border"
                     style={{
                         paddingTop: "clamp(2rem, 5vw, 3.5rem)",
-                        paddingBottom: "clamp(3.5rem, 8vw, 6rem)"
+                        paddingBottom: "clamp(3.5rem, 8vw, 6rem)",
+                        paddingLeft: "clamp(1.5rem, 6vw, 2.5rem)",
+                        paddingRight: "clamp(1.5rem, 6vw, 2.5rem)",
                     }}
                 >
                 <div className="max-w-5xl">
@@ -191,6 +211,46 @@ export default function WorkDetailClient({ work }: { work: Work }) {
                             </motion.button>
                         </Link>
                     </section>
+
+                    {/* Prev / Next project */}
+                    {(prevSlug || nextSlug) && (
+                        <nav
+                            className="flex flex-wrap items-center justify-between gap-4 border-t border-[#e5e7eb]"
+                            style={{ marginTop: "4rem", paddingTop: "2rem" }}
+                            aria-label="Previous and next project"
+                        >
+                            {prevSlug ? (
+                                <Link
+                                    href={
+                                        prefixPath(locale, `/case-studies/${prevSlug}`) +
+                                        (returnCategory ? `?category=${returnCategory}` : "")
+                                    }
+                                    className="inline-flex items-center gap-2 text-sm font-medium text-slate-600 hover:text-[#6B9FF7] transition-colors duration-200"
+                                >
+                                    <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                                    </svg>
+                                    <span>{t("common.previousProject")}</span>
+                                </Link>
+                            ) : (
+                                <span />
+                            )}
+                            {nextSlug ? (
+                                <Link
+                                    href={
+                                        prefixPath(locale, `/case-studies/${nextSlug}`) +
+                                        (returnCategory ? `?category=${returnCategory}` : "")
+                                    }
+                                    className="inline-flex items-center gap-2 text-sm font-medium text-slate-600 hover:text-[#6B9FF7] transition-colors duration-200 ml-auto"
+                                >
+                                    <span>{t("common.nextProject")}</span>
+                                    <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                                    </svg>
+                                </Link>
+                            ) : null}
+                        </nav>
+                    )}
                 </div>
                 </div>
             </div>
