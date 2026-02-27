@@ -14,6 +14,7 @@ export interface Work {
         src: string;
         thumbnail?: string;
     };
+    youtubeVideoId?: string; // Add youtube reference for detail page fallback
     cover?: string;
     technologies?: string[];
     featured?: boolean;
@@ -30,6 +31,7 @@ export const works: Work[] = [
             type: "video",
             src: "/video_Featured_innovation/20501002.5_guitarhero.mp4"
         },
+        youtubeVideoId: "rEh-o1srlhQ",
         technologies: ["Unity", "Motion Tracking", "Audio Sync", "Interactive Display"],
         featured: true
     },
@@ -43,6 +45,7 @@ export const works: Work[] = [
             type: "video",
             src: "/video_Featured_innovation/20516523.900000095_Immersive wallA.mp4"
         },
+        youtubeVideoId: "NNEHahAh-C4",
         technologies: ["LED Mapping", "Real-time Rendering", "Content Management", "Visual Design"],
         featured: true
     },
@@ -56,6 +59,7 @@ export const works: Work[] = [
             type: "video",
             src: "/video_Featured_innovation/20525218_Immersive floorl.mp4"
         },
+        youtubeVideoId: "8RYdaKQWTMA",
         technologies: ["Motion Sensors", "Projection Mapping", "Real-time Graphics", "Interactive Design"],
         featured: true
     },
@@ -82,6 +86,7 @@ export const works: Work[] = [
             type: "video",
             src: "/video_Featured_innovation/color remember.mp4"
         },
+        youtubeVideoId: "oUsOBoEixwo",
         technologies: ["Interactive Floor", "Motion Sensors", "Real-time Feedback", "Group Activity"],
         featured: true
     },
