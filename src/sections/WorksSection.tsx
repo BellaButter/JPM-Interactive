@@ -1,7 +1,7 @@
 "use client";
 
-import { useRef } from "react";
-import { motion } from "framer-motion";
+import { useRef, useEffect } from "react";
+import { motion, useInView } from "framer-motion";
 import Link from "next/link";
 import Container from "@/components/layout/Container";
 import ScrollReveal from "@/components/animations/ScrollReveal";
@@ -18,20 +18,25 @@ const categoryColors = {
 // Component เล่นวิดีโอเฉพาะตอนอยู่ในหน้าจอ เพื่อประหยัด CPU/GPU
 function InViewVideo({ src }: { src: string }) {
     const videoRef = useRef<HTMLVideoElement>(null);
+    const isInView = useInView(videoRef, { margin: "200px 0px 200px 0px", once: false });
+
+    useEffect(() => {
+        if (isInView) {
+            videoRef.current?.play().catch(() => { });
+        } else {
+            videoRef.current?.pause();
+        }
+    }, [isInView]);
 
     return (
-        <motion.video
+        <video
             ref={videoRef}
-            src={src}
+            src={encodeURI(src)}
             loop
             muted
             playsInline
             className="absolute inset-0 w-full h-full object-cover rounded-3xl group-hover:scale-105 transition-transform duration-700 ease-out"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            onViewportEnter={() => videoRef.current?.play()}
-            onViewportLeave={() => videoRef.current?.pause()}
-            viewport={{ margin: "200px 0px 200px 0px" }}
+            style={{ opacity: 1 }}
         />
     );
 }

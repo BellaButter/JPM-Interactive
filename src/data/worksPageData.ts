@@ -4,11 +4,11 @@ export type { Work };
 // ใช้ YouTube แทนวิดีโอ local เพื่อให้ deploy ผ่าน (Vercel) – แทนที่ VIDEO_ID ด้วย ID จริงจาก YouTube
 const PLACEHOLDER_VIDEO_ID = "dQw4w9WgXcQ";
 
-const COVER_FOLDER = "JPMGROUP_s WORKS/Cover";
+const COVER_FOLDER = "Cover";
 
 /** path ภาพ Cover สำหรับการ์ด (ใช้กับ img src ได้โดยเติม / ข้างหน้า) */
 function coverPath(...segments: string[]): string {
-    return COVER_FOLDER + "/" + segments.join("/");
+    return COVER_FOLDER + "/" + segments.map(encodeURIComponent).join("/");
 }
 
 export const worksPageData: Work[] = [
