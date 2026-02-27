@@ -94,7 +94,7 @@ export default function ServicesSection() {
                     }}
                 >
                 {/* Header — margin ระหว่างหัวข้อกับข้อมูลด้านล่าง (inline) */}
-                <div className="text-center" style={{ marginBottom: "clamp(2rem, 6vw, 3.5rem)" }}>
+                <div className="text-center" style={{ marginBottom: "clamp(1.25rem, 4vw, 3.5rem)" }}>
                     <ScrollReveal variant="fade">
                         <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold tracking-tight bg-gradient-to-r from-[#6B9FF7] via-[#8B5CF6] to-[#C084FC] bg-clip-text text-transparent">
                             {t("sections.ourServices")}

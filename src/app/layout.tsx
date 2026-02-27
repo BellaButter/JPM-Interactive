@@ -55,7 +55,7 @@ export const metadata = generateLayoutMetadata({
   title: ROOT_TITLE,
   description: ROOT_DESCRIPTION,
   locale: "en_US",
-  iconPath: "/icon.png",
+  iconPath: "/icon.ico",
   url: siteUrl,
   openGraphImagePath: "/og-image.jpg",
   keywords: ROOT_KEYWORDS,
@@ -74,8 +74,7 @@ import { LocaleProvider } from "@/context/LocaleContext";
 import PageLoader from "@/components/ui/PageLoader";
 import ScrollToTop from "@/components/utils/ScrollToTop";
 import RouteTransitionOverlay from "@/components/ui/RouteTransitionOverlay";
-import CursorTrail from "@/components/cursor/CursorTrail";
-import BackgroundMusic from "@/components/ui/BackgroundMusic";
+import ClientOnlyComponents from "@/components/layout/ClientOnlyComponents";
 
 export default function RootLayout({
   children,
@@ -93,20 +92,19 @@ export default function RootLayout({
       </head>
       <body className="antialiased min-h-full w-full max-w-[100vw] overflow-x-hidden">
         <LocaleProvider>
-            <MotionProvider>
-              <RouteTransitionProvider>
-                <ScrollToTop />
-                <PageLoader />
-                <RouteTransitionOverlay />
-                <ScrollProgress />
-                <CursorTrail />
-                <BackgroundMusic />
-                <Navigation />
-                {children}
-                <Footer />
-              </RouteTransitionProvider>
-            </MotionProvider>
-          </LocaleProvider>
+          <MotionProvider>
+            <RouteTransitionProvider>
+              <ScrollToTop />
+              <PageLoader />
+              <RouteTransitionOverlay />
+              <ScrollProgress />
+              <ClientOnlyComponents />
+              <Navigation />
+              {children}
+              <Footer />
+            </RouteTransitionProvider>
+          </MotionProvider>
+        </LocaleProvider>
       </body>
     </html>
   );

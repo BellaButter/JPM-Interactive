@@ -161,10 +161,8 @@ export default function CTASection() {
     return (
         <section
             ref={sectionRef}
-            className="relative w-full overflow-x-hidden min-w-0"
+            className="relative w-full overflow-x-hidden min-w-0 min-h-[100vh] lg:h-screen lg:min-h-0"
             style={{
-                height: "100vh",
-                minHeight: "100vh",
                 background: BG,
                 marginTop: "clamp(2.5rem, 10vw, 5rem)",
                 paddingTop: "clamp(2rem, 8vw, 4rem)",
@@ -173,7 +171,7 @@ export default function CTASection() {
                 paddingRight: "max(1rem, env(safe-area-inset-right))",
             }}
         >
-            <div className="h-full min-h-0 w-full overflow-x-hidden overflow-y-auto lg:overflow-hidden scrollbar-hide
+            <div className="min-h-[100vh] lg:h-full lg:min-h-0 w-full overflow-x-hidden overflow-y-visible lg:overflow-hidden
                             flex flex-col-reverse lg:flex-row items-stretch min-w-0">
                 <Background />
 

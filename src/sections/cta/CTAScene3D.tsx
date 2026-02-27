@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { useGLTF, Float, ContactShadows, Environment, OrbitControls } from "@react-three/drei";
 import * as THREE from "three";
@@ -73,12 +73,17 @@ function Lights() {
         <>
             <ambientLight intensity={2.2} color="#eef2ff" />
             <directionalLight position={[5, 10, 6]} intensity={3} color="#b4cdff"
-                castShadow shadow-mapSize-width={1024} shadow-mapSize-height={1024} />
+                castShadow shadow-mapSize-width={512} shadow-mapSize-height={512} />
             <pointLight position={[-4, 3, 4]} intensity={2.5} color="#c084fc" />
             <pointLight position={[6, -2, -3]} intensity={2.0} color="#6B9FF7" />
             <pointLight position={[0, -4, 3]} intensity={1.0} color="#dde8ff" />
         </>
     );
+}
+
+// Fallback component while loading 3D Model
+function Loader() {
+    return null; // or an HTML / 3D placeholder if needed
 }
 
 /* ─── Main export ────────────────────────────────────────────── */
@@ -98,17 +103,26 @@ export default function CTAScene3D({ scrollProgress }: {
             <Canvas
                 camera={{ position: [0, 0.2, 6], fov: 44 }}
                 shadows
-                dpr={[1, 2]}
+                dpr={[1, 1.5]} // Cap DPR at 1.5 to save performance instead of 2
                 gl={{
                     antialias: true,
                     alpha: true,
                     toneMapping: THREE.ACESFilmicToneMapping,
                     toneMappingExposure: 1.25,
+                    powerPreference: "high-performance",
                 }}
             >
                 <Lights />
-                <Environment preset="city" />
-                <ChumModel scrollProgress={scrollProgress} />
+
+                {/* 
+                  Environment preset="city" downloads a 1-2MB HDRI initially and blocks rendering 
+                  Using a simpler environment or ensuring we wrap in Suspense is crucial 
+                */}
+                <React.Suspense fallback={<Loader />}>
+                    <Environment preset="city" resolution={256} />
+                    <ChumModel scrollProgress={scrollProgress} />
+                </React.Suspense>
+
                 <ContactShadows
                     position={[0, -1.8, 0]}
                     opacity={0.18}
@@ -117,6 +131,7 @@ export default function CTAScene3D({ scrollProgress }: {
                     blur={2.5}
                     far={3}
                     color="#8B9FF8"
+                    resolution={256} // Reduce resolution for contact shadow
                 />
                 <OrbitControls
                     enableZoom={false}

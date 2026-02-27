@@ -27,8 +27,8 @@ export const works: Work[] = [
         category: "touch_screen",
         description: "An electrifying interactive guitar game that transforms players into rock stars. Features real-time rhythm gameplay, dynamic visual feedback, and an immersive musical journey that captivates audiences of all ages.",
         media: {
-            type: "youtube",
-            src: youtubeEmbedUrl("rEh-o1srlhQ")
+            type: "video",
+            src: "/video_Featured_innovation/20501002.5_guitarhero.mp4"
         },
         technologies: ["Unity", "Motion Tracking", "Audio Sync", "Interactive Display"],
         featured: true
@@ -40,8 +40,8 @@ export const works: Work[] = [
         category: "led",
         description: "A stunning large-scale LED wall installation that creates breathtaking visual narratives. Dynamic content flows seamlessly across the massive display, transforming spaces into captivating visual stories that engage and inspire.",
         media: {
-            type: "youtube",
-            src: youtubeEmbedUrl("NNEHahAh-C4")
+            type: "video",
+            src: "/video_Featured_innovation/20516523.900000095_Immersive wallA.mp4"
         },
         technologies: ["LED Mapping", "Real-time Rendering", "Content Management", "Visual Design"],
         featured: true
@@ -53,8 +53,8 @@ export const works: Work[] = [
         category: "touch_screen",
         description: "A revolutionary interactive floor system that responds to every movement. Watch as vibrant visuals bloom beneath your feet, creating a magical playground where physical movement meets digital artistry in perfect harmony.",
         media: {
-            type: "youtube",
-            src: youtubeEmbedUrl("8RYdaKQWTMA")
+            type: "video",
+            src: "/video_Featured_innovation/20525218_Immersive floorl.mp4"
         },
         technologies: ["Motion Sensors", "Projection Mapping", "Real-time Graphics", "Interactive Design"],
         featured: true
@@ -79,8 +79,8 @@ export const works: Work[] = [
         category: "led",
         description: "Interactive floor game where players remember and match color positions. Perfect for team-building and events: participants follow cues, step on the right spots, and work together under time pressure. Combines physical movement with memory challenge for engaging activations.",
         media: {
-            type: "youtube",
-            src: youtubeEmbedUrl("oUsOBoEixwo")
+            type: "video",
+            src: "/video_Featured_innovation/color remember.mp4"
         },
         technologies: ["Interactive Floor", "Motion Sensors", "Real-time Feedback", "Group Activity"],
         featured: true

@@ -5,7 +5,12 @@ import { gsap } from "gsap";
 import Container from "@/components/layout/Container";
 import { useMotion } from "@/system/motion/useMotion";
 import { useLocale } from "@/context/LocaleContext";
-import GeometricShapes3D from "./home/hero/GeometricShapes3D";
+import dynamic from "next/dynamic";
+
+const GeometricShapes3D = dynamic(
+    () => import("./home/hero/GeometricShapes3D"),
+    { ssr: false }
+);
 
 export default function HeroSection() {
     const { t } = useLocale();
@@ -77,13 +82,13 @@ export default function HeroSection() {
 
     return (
         <section id="hero" className="relative w-full h-screen overflow-hidden">
-            
+
             {/* Gradient Background with animated glow */}
             <div className="absolute inset-0 bg-gradient-to-br from-[#f0f4ff] via-[#e8f0ff] to-[#f3e8ff]">
                 {/* Animated gradient orbs */}
-                <div className="absolute top-0 left-0 w-[700px] h-[700px] bg-gradient-radial from-[#7BA9F7]/30 to-transparent rounded-full blur-3xl animate-pulse"></div>
-                <div className="absolute bottom-0 right-0 w-[900px] h-[900px] bg-gradient-radial from-[#C89BF5]/25 to-transparent rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
-                <div className="absolute top-1/3 right-1/4 w-[600px] h-[600px] bg-gradient-radial from-[#88D4FF]/20 to-transparent rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
+                <div className="absolute top-0 left-0 w-[700px] h-[700px] bg-gradient-radial from-[#7BA9F7]/30 to-transparent rounded-full blur-2xl lg:blur-3xl animate-pulse"></div>
+                <div className="absolute bottom-0 right-0 w-[900px] h-[900px] bg-gradient-radial from-[#C89BF5]/25 to-transparent rounded-full blur-2xl lg:blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+                <div className="absolute top-1/3 right-1/4 w-[600px] h-[600px] bg-gradient-radial from-[#88D4FF]/20 to-transparent rounded-full blur-2xl lg:blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
             </div>
 
             {/* Mesh Grid Pattern */}
@@ -110,8 +115,7 @@ export default function HeroSection() {
                             top: `${particle.top}%`,
                             animation: `float ${particle.duration}s ease-in-out infinite`,
                             animationDelay: `${particle.delay}s`,
-                            opacity: particle.opacity,
-                            filter: 'blur(1px)'
+                            opacity: particle.opacity
                         }}
                     ></div>
                 ))}

@@ -68,7 +68,7 @@ function ServiceCard({
             {/* Orb accent */}
             <div className={`pointer-events-none absolute top-0 right-0 w-72 h-72 bg-gradient-to-br ${cfg.orb} rounded-full blur-3xl -translate-y-1/3 translate-x-1/3`} />
 
-            <div className="relative flex flex-col flex-1" style={{ padding: "clamp(3.25rem, 8vw, 4rem)" }}>
+            <div className="relative flex flex-col flex-1 min-h-0" style={{ padding: "clamp(3.25rem, 8vw, 4rem)" }}>
                 {/* Icon + badge row */}
                 <div className="flex items-center gap-4" style={{ marginBottom: "3rem" }}>
                     <div className={`flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br ${cfg.gradient} shadow-md`}>
@@ -196,7 +196,8 @@ export function ServicesOverviewContent({ locale }: { locale: Locale }) {
                 <div className="w-full max-w-[1600px] flex flex-col">
                     {/* ── SERVICE CARDS ──────────────────────────────────── */}
                     <section className="relative z-10 w-full" style={{ ...SECTION_MARGIN, paddingTop: "clamp(1rem, 3vw, 1.75rem)", paddingBottom: "clamp(2rem, 6vw, 3.5rem)" }}>
-                        <div className="grid grid-cols-1 md:grid-cols-3 md:items-stretch" style={{ gap: "clamp(2.5rem, 8vw, 5rem)" }}>
+                        {/* Tablet (iPad): 1 column to avoid narrow cards + vertical overflow; desktop: 3 columns */}
+                        <div className="grid grid-cols-1 lg:grid-cols-3 lg:items-stretch" style={{ gap: "clamp(2.5rem, 8vw, 5rem)" }}>
                             {(["interactive", "visual", "multimedia"] as const).map((key) => (
                                 <ServiceCard key={key} serviceKey={key} locale={locale} />
                             ))}

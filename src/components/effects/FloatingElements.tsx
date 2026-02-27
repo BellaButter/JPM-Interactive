@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const shapes = [
     { color: "from-[#6B9FF7]/30 to-[#8B9FF8]/20", size: 300, duration: 20 },
@@ -12,17 +12,30 @@ const shapes = [
 
 export default function FloatingElements() {
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+    const mouseRef = useRef({ x: 0, y: 0 });
+    const rafRef = useRef<number>(0);
 
     useEffect(() => {
         const handleMouseMove = (e: MouseEvent) => {
-            setMousePosition({
+            mouseRef.current = {
                 x: (e.clientX / window.innerWidth - 0.5) * 20,
                 y: (e.clientY / window.innerHeight - 0.5) * 20,
-            });
+            };
+
+            // จำกัด setState ที่ 60fps แทนที่จะ fire ทุก mousemove event (300-600x/s)
+            if (!rafRef.current) {
+                rafRef.current = requestAnimationFrame(() => {
+                    setMousePosition({ ...mouseRef.current });
+                    rafRef.current = 0;
+                });
+            }
         };
 
-        window.addEventListener("mousemove", handleMouseMove);
-        return () => window.removeEventListener("mousemove", handleMouseMove);
+        window.addEventListener("mousemove", handleMouseMove, { passive: true });
+        return () => {
+            window.removeEventListener("mousemove", handleMouseMove);
+            if (rafRef.current) cancelAnimationFrame(rafRef.current);
+        };
     }, []);
 
     return (

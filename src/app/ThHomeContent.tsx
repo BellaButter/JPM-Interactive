@@ -1,14 +1,15 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import WhoWeAreSection from "@/sections/WhoWeAreSection";
-import ServicesSection from "@/sections/ServicesSection";
-import WorksSection from "@/sections/WorksSection";
 import ScrollToTop from "@/components/utils/ScrollToTop";
 import HeroPlaceholder from "@/components/placeholders/HeroPlaceholder";
 import CTAPlaceholder from "@/components/placeholders/CTAPlaceholder";
-import ThHomeMiddleSections from "@/sections/home/ThHomeMiddleSections";
 import { useMotion } from "@/system/motion/useMotion";
+
+const WhoWeAreSection = dynamic(() => import("@/sections/WhoWeAreSection"));
+const ServicesSection = dynamic(() => import("@/sections/ServicesSection"));
+const WorksSection = dynamic(() => import("@/sections/WorksSection"));
+const ThHomeMiddleSections = dynamic(() => import("@/sections/home/ThHomeMiddleSections"));
 
 const HeroSection = dynamic(
   () => import("@/sections/HeroSection"),
@@ -32,7 +33,7 @@ export default function ThHomeContent() {
       <ScrollToTop />
       <HeroSection />
       <div
-        className="relative z-0 w-full flex flex-col items-center box-border max-w-[1600px] mx-auto w-full"
+        className="relative z-0 w-full flex flex-col items-center box-border max-w-[1600px] mx-auto w-full overflow-y-visible"
         style={{
           paddingLeft: "clamp(1.25rem, 5vw, 2rem)",
           paddingRight: "clamp(1.25rem, 5vw, 2rem)",

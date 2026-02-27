@@ -134,7 +134,7 @@ export default function WhoWeAreSection() {
     return (
         <section
             ref={containerRef}
-            className="relative min-h-[60vh] sm:min-h-[70vh] overflow-x-hidden flex items-center pt-16 sm:pt-24 md:pt-28 pb-12 sm:pb-16 md:pb-20 bg-white"
+            className="relative min-h-[60vh] sm:min-h-[70vh] overflow-hidden flex items-center pt-16 sm:pt-24 md:pt-28 pb-12 sm:pb-16 md:pb-20 bg-white"
         >
             {/* Subtle floating orbs - ลูกเล่นพื้นหลัง */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden>

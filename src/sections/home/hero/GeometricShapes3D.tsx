@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Float } from "@react-three/drei";
 import * as THREE from "three";
@@ -185,42 +185,38 @@ function CrossShape({ position, color, scale = 1, shapeId, allShapes }: any) {
                         <cylinderGeometry args={[0.3, 0.3, 2, 32]} />
                         <meshPhysicalMaterial
                             color="#4488ff"
-                            metalness={0}
-                            roughness={0.15}
-                            transmission={0.7}
-                            thickness={2.5}
-                            envMapIntensity={4}
-                            clearcoat={0.7}
-                            clearcoatRoughness={0.15}
+                            metalness={0.1}
+                            roughness={0.2}
+                            transmission={0.6}
+                            thickness={1.5}
+                            envMapIntensity={2}
+                            clearcoat={0.3}
+                            clearcoatRoughness={0.2}
                             transparent={true}
                             opacity={0.85}
-                            ior={1.6}
-                            iridescence={1}
-                            iridescenceIOR={2.8}
-                            iridescenceThicknessRange={[400, 2000]}
+                            ior={1.4}
+                            iridescence={0.8}
                             sheenColor="#ff44ff"
-                            sheen={0.9}
+                            sheen={0.5}
                         />
                     </mesh>
                     <mesh castShadow receiveShadow>
                         <cylinderGeometry args={[0.3, 0.3, 2, 32]} />
                         <meshPhysicalMaterial
                             color="#4488ff"
-                            metalness={0}
-                            roughness={0.15}
-                            transmission={0.7}
-                            thickness={2.5}
-                            envMapIntensity={4}
-                            clearcoat={0.7}
-                            clearcoatRoughness={0.15}
+                            metalness={0.1}
+                            roughness={0.2}
+                            transmission={0.6}
+                            thickness={1.5}
+                            envMapIntensity={2}
+                            clearcoat={0.3}
+                            clearcoatRoughness={0.2}
                             transparent={true}
                             opacity={0.85}
-                            ior={1.6}
-                            iridescence={1}
-                            iridescenceIOR={2.8}
-                            iridescenceThicknessRange={[400, 2000]}
+                            ior={1.4}
+                            iridescence={0.8}
                             sheenColor="#ff44ff"
-                            sheen={0.9}
+                            sheen={0.5}
                         />
                     </mesh>
                 </group>
@@ -246,21 +242,19 @@ function TorusShape({ position, color, scale = 1, shapeId, allShapes }: any) {
                     <torusGeometry args={[1, 0.4, 32, 64]} />
                     <meshPhysicalMaterial
                         color="#ff44ff"
-                        metalness={0}
-                        roughness={0.15}
-                        transmission={0.7}
-                        thickness={3}
-                        envMapIntensity={4}
-                        clearcoat={0.7}
-                        clearcoatRoughness={0.15}
+                        metalness={0.1}
+                        roughness={0.2}
+                        transmission={0.6}
+                        thickness={1.5}
+                        envMapIntensity={2}
+                        clearcoat={0.3}
+                        clearcoatRoughness={0.2}
                         transparent={true}
                         opacity={0.85}
-                        ior={1.6}
-                        iridescence={1}
-                        iridescenceIOR={2.8}
-                        iridescenceThicknessRange={[400, 2000]}
+                        ior={1.4}
+                        iridescence={0.8}
                         sheenColor="#44ffff"
-                        sheen={0.9}
+                        sheen={0.5}
                     />
                 </mesh>
             </Float>
@@ -284,21 +278,19 @@ function CylinderShape({ position, color, scale = 1, shapeId, allShapes }: any) 
                     <cylinderGeometry args={[0.8, 0.8, 1.5, 64]} />
                     <meshPhysicalMaterial
                         color="#ff4488"
-                        metalness={0}
-                        roughness={0.15}
-                        transmission={0.7}
-                        thickness={2}
-                        envMapIntensity={4}
-                        clearcoat={0.7}
-                        clearcoatRoughness={0.15}
+                        metalness={0.1}
+                        roughness={0.2}
+                        transmission={0.6}
+                        thickness={1.5}
+                        envMapIntensity={2}
+                        clearcoat={0.3}
+                        clearcoatRoughness={0.2}
                         transparent={true}
                         opacity={0.85}
-                        ior={1.6}
-                        iridescence={1}
-                        iridescenceIOR={2.8}
-                        iridescenceThicknessRange={[400, 2000]}
+                        ior={1.4}
+                        iridescence={0.8}
                         sheenColor="#ffff44"
-                        sheen={0.9}
+                        sheen={0.5}
                     />
                 </mesh>
             </Float>
@@ -352,8 +344,8 @@ function Scene({ isMobile = false }: { isMobile?: boolean }) {
                 intensity={3}
                 color="#ffffff"
                 castShadow
-                shadow-mapSize-width={2048}
-                shadow-mapSize-height={2048}
+                shadow-mapSize-width={512}
+                shadow-mapSize-height={512}
                 shadow-camera-far={50}
                 shadow-camera-left={-10}
                 shadow-camera-right={10}
@@ -406,16 +398,19 @@ export default function GeometricShapes3D({ isMobile = false }: { isMobile?: boo
             <Canvas
                 camera={{ position: [0, 0, cameraZ], fov: cameraFov }}
                 shadows={!isMobile}
-                dpr={isMobile ? [1, 1] : undefined}
+                dpr={isMobile ? [1, 1] : [1, 1.5]} // Cap DPR at 1.5 max on Desktop
                 gl={{
                     antialias: !isMobile,
                     alpha: true,
                     toneMapping: THREE.ACESFilmicToneMapping,
-                    toneMappingExposure: 1.55
+                    toneMappingExposure: 1.55,
+                    powerPreference: "high-performance", // Hint for GPU
                 }}
             >
                 {/* ไม่ใส่ background เพื่อให้โปร่งใส — gradient fixed ของหน้าโผล่ผ่าน ไม่มีเส้นรอยต่อ */}
-                <Scene isMobile={isMobile} />
+                <React.Suspense fallback={null}>
+                    <Scene isMobile={isMobile} />
+                </React.Suspense>
             </Canvas>
         </div>
     );

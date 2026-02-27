@@ -122,16 +122,7 @@ export const worksPageData: Work[] = [
         cover: coverPath("cover video_black bg.jpg"),
         technologies: ["Motion Design", "Brand Guidelines", "Visual Design", "Content Strategy"]
     },
-    {
-        id: "p11",
-        slug: "capacitive-interactive",
-        title: "Capacitive Touch Interactive",
-        category: "touch_screen",
-        description: "Capacitive touch technology applied to interactive installations. Responsive, durable interfaces for high-traffic environments.",
-        media: { type: "youtube", src: youtubeEmbedUrl(PLACEHOLDER_VIDEO_ID) },
-        cover: coverPath("Other", "TouchLight.png"),
-        technologies: ["Capacitive Touch", "Interactive Hardware", "UX Design", "Installation"]
-    },
+
     {
         id: "p12",
         slug: "oishi-card-rfid",
