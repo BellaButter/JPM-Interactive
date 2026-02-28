@@ -69,6 +69,7 @@ function IndustryCard({
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
+            aria-hidden="true"
           >
             <path
               strokeLinecap="round"
@@ -291,6 +292,7 @@ export default function IndustriesPageClient({ locale }: { locale: Locale }) {
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
+                    aria-hidden="true"
                   >
                     <path
                       strokeLinecap="round"
@@ -314,7 +316,7 @@ export default function IndustriesPageClient({ locale }: { locale: Locale }) {
               href={`/${locale}`}
               className="inline-flex items-center gap-2 font-medium text-[#6B9FF7] transition-colors hover:text-[#5a8ee6]"
             >
-              <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16l-4-4m0 0l4-4m-4 4h18" />
               </svg>
               {locale === "th" ? "กลับหน้าแรก" : "Back to home"}

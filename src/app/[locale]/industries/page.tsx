@@ -34,5 +34,38 @@ export default async function LocaleIndustriesPage({
   const validLocale = locales.includes(locale as Locale) ? (locale as Locale) : null;
   if (validLocale === null) notFound();
 
-  return <IndustriesPageClient locale={validLocale} />;
+  const content = industriesContent[validLocale];
+
+  // Map industries sections to JSON-LD structured data (ItemList of Services)
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": content.meta.title,
+    "description": content.meta.description,
+    "itemListElement": content.sections.map((section, index) => ({
+      "@type": "ListItem",
+      "position": index + 1,
+      "item": {
+        "@type": "Service",
+        "name": section.title,
+        "description": section.description,
+        "serviceType": "Interactive Installation & Experience Design",
+        "provider": {
+          "@type": "Organization",
+          "name": "JPM Interactive",
+          "url": "https://jpminteractive.com"
+        }
+      }
+    }))
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <IndustriesPageClient locale={validLocale} />
+    </>
+  );
 }
