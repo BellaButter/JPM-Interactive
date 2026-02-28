@@ -46,7 +46,7 @@ function IndustryCard({
     >
       {/* Decorative orb */}
       <div
-        className={`pointer-events-none absolute -z-10 h-64 w-64 rounded-full bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] ${section.gradient} opacity-10 transform-gpu ${isEven ? "left-0 top-1/2 -translate-y-1/2 -translate-x-1/2" : "right-0 top-1/2 -translate-y-1/2 translate-x-1/2"
+        className={`pointer-events-none absolute -z-10 h-64 w-64 rounded-full bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] ${section.gradient} opacity-10 ${isEven ? "left-0 top-1/2 -translate-y-1/2 -translate-x-1/2" : "right-0 top-1/2 -translate-y-1/2 translate-x-1/2"
           }`}
       />
 
@@ -90,7 +90,7 @@ function IndustryCard({
         initial={{ opacity: 0, y: 24 }}
         animate={inView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.5, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
-        className="relative flex-1 overflow-hidden rounded-2xl border-2 border-slate-200/60 bg-white shadow-lg transition-all duration-300 hover:border-[#6B9FF7]/30 hover:shadow-xl hover:shadow-[#6B9FF7]/10 hover:-translate-y-1 transform-gpu will-change-transform"
+        className="relative flex-1 overflow-hidden rounded-2xl border-2 border-slate-200/60 bg-white shadow-lg transition-all duration-300 hover:border-[#6B9FF7]/30 hover:shadow-xl hover:shadow-[#6B9FF7]/10 hover:-translate-y-1"
         style={{ padding: "clamp(1.75rem, 5vw, 3rem)" }}
       >
         <p className="mb-6 text-slate-600 leading-relaxed">{section.description}</p>
@@ -122,10 +122,10 @@ export default function IndustriesPageClient({ locale }: { locale: Locale }) {
   return (
     <main className="relative min-h-screen w-full overflow-x-hidden bg-white max-w-[100vw] min-w-0">
       {/* Hero background */}
-      <div className="pointer-events-none fixed inset-0 -z-10 transform-gpu bg-white">
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-50/80 via-violet-50/60 to-cyan-50/80 transform-gpu" />
-        <div className="absolute -top-40 -left-40 h-[600px] w-[600px] rounded-full bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-400/20 via-violet-400/15 to-transparent transform-gpu will-change-transform" />
-        <div className="absolute -bottom-40 -right-40 h-[500px] w-[500px] rounded-full bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-violet-400/15 via-cyan-400/20 to-transparent transform-gpu will-change-transform" />
+      <div className="pointer-events-none fixed inset-0 -z-10 bg-white">
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-50/80 via-violet-50/60 to-cyan-50/80" />
+        <div className="absolute -top-40 -left-40 h-[600px] w-[600px] rounded-full bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-400/20 via-violet-400/15 to-transparent" />
+        <div className="absolute -bottom-40 -right-40 h-[500px] w-[500px] rounded-full bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-violet-400/15 via-cyan-400/20 to-transparent" />
       </div>
 
       <div className="flex w-full justify-center">
@@ -234,7 +234,7 @@ export default function IndustriesPageClient({ locale }: { locale: Locale }) {
             className="relative overflow-hidden rounded-3xl border-2 border-[#7BA9F7]/20 bg-gradient-to-br from-[#f8faff] to-[#f0e8ff] text-center"
             style={{ padding: "clamp(2rem, 5vw, 3.5rem)", marginTop: "clamp(5rem, 10vw, 8rem)" }}
           >
-            <div className="pointer-events-none absolute -right-20 -top-20 h-48 w-48 rounded-full bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[#6B9FF7]/20 to-transparent transform-gpu" />
+            <div className="pointer-events-none absolute -right-20 -top-20 h-48 w-48 rounded-full bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[#6B9FF7]/20 to-transparent" />
             <motion.h2
               {...scrollReveal(0.05)}
               className="text-2xl font-bold tracking-tight text-slate-800 sm:text-3xl md:text-4xl"
@@ -268,9 +268,9 @@ export default function IndustriesPageClient({ locale }: { locale: Locale }) {
               className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#4F46E5] via-[#6B9FF7] to-[#8B5CF6] text-center shadow-2xl shadow-[#6B9FF7]/25"
               style={{ padding: "clamp(2.5rem, 6vw, 4rem)" }}
             >
-              <div className="pointer-events-none absolute inset-0 transform-gpu">
-                <div className="absolute -left-20 -top-20 h-64 w-64 rounded-full bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-white/10 to-transparent transform-gpu" />
-                <div className="absolute -bottom-20 -right-20 h-64 w-64 rounded-full bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-white/10 to-transparent transform-gpu" />
+              <div className="pointer-events-none absolute inset-0">
+                <div className="absolute -left-20 -top-20 h-64 w-64 rounded-full bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-white/10 to-transparent" />
+                <div className="absolute -bottom-20 -right-20 h-64 w-64 rounded-full bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-white/10 to-transparent" />
               </div>
               <div className="relative z-10 flex flex-col items-center text-center">
                 <h2 className="text-2xl font-bold text-white sm:text-3xl md:text-4xl sm:whitespace-nowrap">
