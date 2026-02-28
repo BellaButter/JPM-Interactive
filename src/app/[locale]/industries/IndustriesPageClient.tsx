@@ -90,7 +90,8 @@ function IndustryCard({
         initial={{ opacity: 0, y: 24 }}
         animate={inView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.5, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
-        className="relative flex-1 overflow-hidden rounded-2xl border-2 border-slate-200/60 bg-white shadow-lg transition-all duration-300 hover:border-[#6B9FF7]/30 hover:shadow-xl hover:shadow-[#6B9FF7]/10 hover:-translate-y-1"
+        whileHover={{ y: -4 }}
+        className="relative flex-1 overflow-hidden rounded-2xl border-2 border-slate-200/60 bg-white shadow-lg transition-colors transition-shadow duration-300 hover:border-[#6B9FF7]/30 hover:shadow-xl hover:shadow-[#6B9FF7]/10"
         style={{ padding: "clamp(1.75rem, 5vw, 3rem)" }}
       >
         <p className="mb-6 text-slate-600 leading-relaxed">{section.description}</p>
