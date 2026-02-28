@@ -4,6 +4,7 @@ import { seo } from "@/i18n/config";
 import { generatePageMetadata } from "@/lib/seo";
 import type { Locale } from "@/types/locale";
 import { locales } from "@/i18n/config";
+import { aboutContent } from "@/data/aboutPageContent";
 
 export async function generateMetadata({
   params,
@@ -33,5 +34,29 @@ export default async function LocaleAboutPage({
   const validLocale = locales.includes(locale as Locale) ? (locale as Locale) : null;
   if (validLocale === null) notFound();
 
-  return <AboutPageClient locale={validLocale} />;
+  const c = aboutContent[validLocale];
+
+  // Map to JSON-LD structured data (Organization/AboutPage)
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": ["Organization", "AboutPage"],
+    "name": "JPM Interactive",
+    "url": "https://jpminteractive.com",
+    "logo": "https://jpminteractive.com/logo.png", // Assuming logo path
+    "description": c.hero.h1,
+    "sameAs": [
+      // Links to social profiles could go here
+    ],
+    "knowsAbout": c.expertise.items
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <AboutPageClient locale={validLocale} />
+    </>
+  );
 }

@@ -4,6 +4,7 @@ import { seo } from "@/i18n/config";
 import { generatePageMetadata } from "@/lib/seo";
 import type { Locale } from "@/types/locale";
 import { locales } from "@/i18n/config";
+import { worksPageData } from "@/data/worksPageData";
 
 export async function generateMetadata({
   params,
@@ -33,5 +34,38 @@ export default async function LocaleCaseStudiesPage({
   const validLocale = locales.includes(locale as Locale) ? (locale as Locale) : null;
   if (validLocale === null) notFound();
 
-  return <WorksPage />;
+  const title = seo[validLocale].caseStudies.title;
+  const description = seo[validLocale].caseStudies.description;
+
+  // Map to JSON-LD structured data (CollectionPage / ItemList)
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": ["CollectionPage", "SearchResultsPage"],
+    "name": title,
+    "description": description,
+    "mainEntity": {
+      "@type": "ItemList",
+      "itemListElement": worksPageData.map((work, index) => ({
+        "@type": "ListItem",
+        "position": index + 1,
+        "item": {
+          "@type": "CreativeWork",
+          "name": work.title,
+          "description": work.description,
+          "url": `https://jpminteractive.com/${validLocale}/case-studies/${work.slug}`,
+          "image": work.media?.src || ""
+        }
+      }))
+    }
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <WorksPage />
+    </>
+  );
 }
