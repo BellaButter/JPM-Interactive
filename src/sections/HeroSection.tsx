@@ -2,7 +2,6 @@
 
 import { useRef, useEffect, useState } from "react";
 import { gsap } from "gsap";
-import Container from "@/components/layout/Container";
 import { useMotion } from "@/system/motion/useMotion";
 import { useLocale } from "@/context/LocaleContext";
 import dynamic from "next/dynamic";

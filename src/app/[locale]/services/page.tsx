@@ -1,6 +1,5 @@
 import { notFound } from "next/navigation";
 import { ServicesOverviewContent } from "@/app/services/ServicesOverviewContent";
-import { seo } from "@/i18n/config";
 import { generatePageMetadata } from "@/lib/seo";
 import type { Locale } from "@/types/locale";
 import { locales } from "@/i18n/config";

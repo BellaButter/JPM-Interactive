@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, Suspense } from "react";
+import { useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
@@ -16,22 +16,22 @@ function WorksPageContent() {
     const categoryParam = searchParams.get("category") as Work["category"] | null;
 
     const [selectedCategory, setSelectedCategory] = useState<Work["category"] | "all">("all");
-    const [filteredWorks, setFilteredWorks] = useState(worksPageData);
+    const [prevCategoryParam, setPrevCategoryParam] = useState<string | null>(null);
 
-    // Set initial category from URL parameter
-    useEffect(() => {
+    // Sync URL parameter to state synchronously during render
+    if (categoryParam !== prevCategoryParam) {
+        setPrevCategoryParam(categoryParam);
         if (categoryParam && ["led", "touch_screen", "graphic_design"].includes(categoryParam)) {
             setSelectedCategory(categoryParam);
+        } else if (!categoryParam) {
+            setSelectedCategory("all");
         }
-    }, [categoryParam]);
+    }
 
-    useEffect(() => {
-        if (selectedCategory === "all") {
-            setFilteredWorks(worksPageData);
-        } else {
-            setFilteredWorks(worksPageData.filter((work) => work.category === selectedCategory));
-        }
-    }, [selectedCategory]);
+    // Filter works synchronously during render based on selectedCategory
+    const filteredWorks = selectedCategory === "all"
+        ? worksPageData
+        : worksPageData.filter((work) => work.category === selectedCategory);
 
     const categories: Array<Work["category"] | "all"> = ["all", "led", "touch_screen", "graphic_design"];
 

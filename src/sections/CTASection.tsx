@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { motion, useScroll } from "framer-motion";
+import { motion, useScroll, useMotionValueEvent } from "framer-motion";
 import { useRef } from "react";
 import dynamic from "next/dynamic";
 import { useLocale } from "@/context/LocaleContext";
@@ -156,7 +156,9 @@ export default function CTASection() {
         offset: ["start start", "end end"],
     });
 
-    scrollYProgress.on("change", (v) => { scrollProgressRef.current = v; });
+    useMotionValueEvent(scrollYProgress, "change", (latest) => {
+        scrollProgressRef.current = latest;
+    });
 
     return (
         <section

@@ -6,7 +6,6 @@ import { useMotion } from "@/system/motion/useMotion";
 // Improved constants for ultra-smooth, fast-fading trail
 const FADE_DURATION = 420; // ms - trail lifetime
 const MIN_DISTANCE = 0.25; // px - balanced point density
-const TENSION = 0.5; // Catmull-Rom tension for smooth curves
 const MAX_POINTS = 55; // Max points before force cleanup
 const SMOOTHING_PASSES = 3; // Multiple passes for extra smoothness
 

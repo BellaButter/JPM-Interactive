@@ -25,11 +25,9 @@ const listItemVariants = {
 function IndustryCard({
   section,
   index,
-  locale,
 }: {
   section: (typeof industriesContent.th.sections)[0];
   index: number;
-  locale: Locale;
 }) {
   const ref = useRef<HTMLElement>(null);
   const inView = useInView(ref, { once: true, margin: "-60px", amount: 0.15 });
@@ -225,7 +223,6 @@ export default function IndustriesPageClient({ locale }: { locale: Locale }) {
                 key={section.id}
                 section={section}
                 index={index}
-                locale={locale}
               />
             ))}
           </div>

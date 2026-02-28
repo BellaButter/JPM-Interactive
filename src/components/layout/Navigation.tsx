@@ -57,29 +57,21 @@ function NavIcon({ type, className }: { type: string; className?: string }) {
 
 export default function Navigation() {
     const { t } = useLocale();
-    const [scrolled, setScrolled] = useState(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [menuDropdownOpen, setMenuDropdownOpen] = useState(false);
     const menuButtonRef = useRef<HTMLButtonElement>(null);
     const [menuPanelMarginRight, setMenuPanelMarginRight] = useState(88);
     const pathname = usePathname();
+    const [prevPathname, setPrevPathname] = useState(pathname);
     const locale = getLocaleFromPathname(pathname) ?? "en";
     const contactHref = prefixPath(locale, "/contact");
 
-    useEffect(() => {
-        const handleScroll = () => {
-            setScrolled(window.scrollY > 50);
-        };
-
-        window.addEventListener("scroll", handleScroll, { passive: true });
-        return () => window.removeEventListener("scroll", handleScroll);
-    }, []);
-
-    // Close menus on route change
-    useEffect(() => {
+    // Close menus on route change synchronously during render
+    if (pathname !== prevPathname) {
+        setPrevPathname(pathname);
         setMobileMenuOpen(false);
         setMenuDropdownOpen(false);
-    }, [pathname]);
+    }
 
     // Lusion-style: align menu panel right edge with Menu/Close button
     useEffect(() => {
@@ -102,7 +94,7 @@ export default function Navigation() {
 
 
     const homeHref = prefixPath(locale, "/");
-    const handleNavClick = (e: React.MouseEvent, path: string, href: string) => {
+    const handleNavClick = (e: React.MouseEvent, path: string) => {
         if (path === "/" && pathname === homeHref) {
             e.preventDefault();
             window.scrollTo({ top: 0, behavior: "smooth" });
@@ -131,7 +123,7 @@ export default function Navigation() {
                 >
                     <div className="w-full max-w-[1600px] flex items-center justify-between h-16 sm:h-20">
                         {/* Logo - Text only, no background */}
-                        <Link href={homeHref} onClick={(e) => handleNavClick(e, "/", homeHref)} className="relative group">
+                        <Link href={homeHref} onClick={(e) => handleNavClick(e, "/")} className="relative group">
                             <motion.span
                                 whileHover={{ scale: 1.05 }}
                                 transition={{ type: "spring", stiffness: 400 }}
@@ -150,7 +142,7 @@ export default function Navigation() {
                             {/* Let's Talk - CTA pill (theme gradient, padding เท่าเมนู) */}
                             <Link
                                 href={contactHref}
-                                onClick={(e) => handleNavClick(e, "/contact", contactHref)}
+                                onClick={(e) => handleNavClick(e, "/contact")}
                                 style={{ padding: "0.625rem 1.25rem" }}
                                 className="group inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#6B9FF7] to-[#8B5CF6] text-white text-base font-semibold uppercase tracking-wider shadow-lg shadow-[#6B9FF7]/25 hover:shadow-xl hover:shadow-[#6B9FF7]/30 hover:-translate-y-0.5 transition-all duration-300"
                             >
@@ -167,8 +159,8 @@ export default function Navigation() {
                                 whileTap={{ scale: 0.98 }}
                                 style={{ padding: "0.5rem 1rem" }}
                                 className={`inline-flex items-center gap-2 rounded-full text-base font-semibold uppercase tracking-wider transition-all duration-300 ${menuDropdownOpen
-                                        ? "bg-[#6B9FF7]/10 text-[#6B9FF7] border-2 border-[#6B9FF7]/30 shadow-md"
-                                        : "bg-white/90 text-slate-700 border-2 border-[#7BA9F7]/20 hover:border-[#6B9FF7]/40 hover:bg-[#f8faff] shadow-sm"
+                                    ? "bg-[#6B9FF7]/10 text-[#6B9FF7] border-2 border-[#6B9FF7]/30 shadow-md"
+                                    : "bg-white/90 text-slate-700 border-2 border-[#7BA9F7]/20 hover:border-[#6B9FF7]/40 hover:bg-[#f8faff] shadow-sm"
                                     }`}
                             >
                                 {menuDropdownOpen ? (
@@ -192,7 +184,7 @@ export default function Navigation() {
                         <div className="flex shrink-0 md:hidden items-center gap-4">
                             <Link
                                 href={contactHref}
-                                onClick={(e) => handleNavClick(e, "/contact", contactHref)}
+                                onClick={(e) => handleNavClick(e, "/contact")}
                                 className="inline-flex shrink-0 items-center gap-3 rounded-full bg-gradient-to-r from-[#6B9FF7] to-[#8B5CF6] text-white text-xs font-semibold uppercase tracking-wider pl-8 pr-7 py-6 shadow-md shadow-[#6B9FF7]/20"
                             >
                                 <span>{t("nav.letsTalk")}</span>
@@ -286,12 +278,12 @@ export default function Navigation() {
                                                             <Link
                                                                 key={item.path}
                                                                 href={href}
-                                                                onClick={(e) => handleNavClick(e, item.path, href)}
+                                                                onClick={(e) => handleNavClick(e, item.path)}
                                                                 className={`group flex items-center justify-between gap-4 mx-3 px-6 py-5 text-xl font-bold uppercase tracking-[0.12em] leading-relaxed transition-colors rounded-xl hover:bg-[#6B9FF7]/5 active:bg-[#6B9FF7]/10 active:scale-[0.99] touch-manipulation ${isContact
+                                                                    ? "text-[#6B9FF7]"
+                                                                    : active
                                                                         ? "text-[#6B9FF7]"
-                                                                        : active
-                                                                            ? "text-[#6B9FF7]"
-                                                                            : "text-slate-700 hover:text-[#6B9FF7]"
+                                                                        : "text-slate-700 hover:text-[#6B9FF7]"
                                                                     }`}
                                                             >
                                                                 <span className="flex items-center gap-3 leading-relaxed">
@@ -357,7 +349,7 @@ export default function Navigation() {
                                             <Link
                                                 href={href}
                                                 onClick={(e) => {
-                                                    handleNavClick(e, item.path, href);
+                                                    handleNavClick(e, item.path);
                                                     setMobileMenuOpen(false);
                                                 }}
                                             >
@@ -365,8 +357,8 @@ export default function Navigation() {
                                                     whileTap={{ scale: 0.98 }}
                                                     transition={{ duration: 0.15 }}
                                                     className={`flex items-center gap-4 py-6 px-6 mb-4 rounded-2xl transition-colors duration-300 touch-manipulation uppercase tracking-[0.1em] leading-relaxed ${active
-                                                            ? "bg-gradient-to-r from-[#7BA9F7] to-[#8B9FF8] text-white shadow-lg shadow-[#7BA9F7]/30"
-                                                            : "text-slate-600 active:bg-slate-100 hover:bg-white/60 hover:text-slate-900 hover:shadow-sm"
+                                                        ? "bg-gradient-to-r from-[#7BA9F7] to-[#8B9FF8] text-white shadow-lg shadow-[#7BA9F7]/30"
+                                                        : "text-slate-600 active:bg-slate-100 hover:bg-white/60 hover:text-slate-900 hover:shadow-sm"
                                                         }`}
                                                 >
                                                     <span className={active ? "text-white" : "text-slate-500"}>

@@ -2,7 +2,6 @@ import localFont from "next/font/local";
 import Navigation from "@/components/layout/Navigation";
 import Footer from "@/components/layout/Footer";
 import ScrollProgress from "@/components/ui/ScrollProgress";
-import FloatingElements from "@/components/effects/FloatingElements";
 import { generateLayoutMetadata, siteUrl } from "@/lib/seo";
 import { getOrganizationJsonLd } from "@/lib/jsonLd";
 import "./globals.css";

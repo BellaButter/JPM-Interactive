@@ -5,13 +5,33 @@ import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Float } from "@react-three/drei";
 import * as THREE from "three";
 
+interface ShapeData {
+    id: number;
+    ref: React.RefObject<THREE.Object3D | null>;
+    velocityRef: React.MutableRefObject<THREE.Vector3>;
+}
+
+interface PhysicsShapeProps {
+    children: React.ReactNode;
+    initialPosition: [number, number, number];
+    shapeId: number;
+    allShapesRef: React.MutableRefObject<ShapeData[]>;
+}
+
+interface SpecificShapeProps {
+    position: [number, number, number];
+    scale?: number;
+    shapeId: number;
+    allShapesRef: React.MutableRefObject<ShapeData[]>;
+}
+
 // Physics-enabled shape wrapper
 function PhysicsShape({
     children,
     initialPosition,
     shapeId,
-    allShapes
-}: any) {
+    allShapesRef
+}: PhysicsShapeProps) {
     const meshRef = useRef<THREE.Group>(null);
     const velocityRef = useRef(new THREE.Vector3());
     const scaleRef = useRef(1);
@@ -21,19 +41,19 @@ function PhysicsShape({
 
     // Register this shape's ref
     useEffect(() => {
-        if (meshRef.current && allShapes) {
-            const shapeData = {
+        if (meshRef.current && allShapesRef) {
+            const shapeData: ShapeData = {
                 id: shapeId,
                 ref: meshRef,
                 velocityRef: velocityRef
             };
-            allShapes.current = [...allShapes.current, shapeData];
+            allShapesRef.current = [...allShapesRef.current, shapeData];
 
             return () => {
-                allShapes.current = allShapes.current.filter((s: any) => s.id !== shapeId);
+                allShapesRef.current = allShapesRef.current.filter((s) => s.id !== shapeId);
             };
         }
-    }, [shapeId, allShapes]);
+    }, [shapeId, allShapesRef]);
 
     useFrame(() => {
         if (!meshRef.current) return;
@@ -125,8 +145,8 @@ function PhysicsShape({
         const repulsionStrength = 0.07;
         const bounceDamping = 0.25;
 
-        if (allShapes?.current) {
-            allShapes.current.forEach((otherShape: any) => {
+        if (allShapesRef?.current) {
+            allShapesRef.current.forEach((otherShape) => {
                 if (otherShape.id === shapeId || !otherShape.ref?.current) return;
                 const otherMesh = otherShape.ref.current;
                 const distance = mesh.position.distanceTo(otherMesh.position);
@@ -176,9 +196,9 @@ function PhysicsShape({
 }
 
 // Shape components
-function CrossShape({ position, color, scale = 1, shapeId, allShapes }: any) {
+function CrossShape({ position, scale = 1, shapeId, allShapesRef }: SpecificShapeProps) {
     return (
-        <PhysicsShape initialPosition={position} shapeId={shapeId} allShapes={allShapes}>
+        <PhysicsShape initialPosition={position} shapeId={shapeId} allShapesRef={allShapesRef}>
             <Float speed={1.5} rotationIntensity={1} floatIntensity={0.5}>
                 <group scale={scale}>
                     <mesh rotation={[0, 0, Math.PI / 2]} castShadow receiveShadow>
@@ -225,7 +245,7 @@ function CrossShape({ position, color, scale = 1, shapeId, allShapes }: any) {
     );
 }
 
-function TorusShape({ position, color, scale = 1, shapeId, allShapes }: any) {
+function TorusShape({ position, scale = 1, shapeId, allShapesRef }: SpecificShapeProps) {
     const meshRef = useRef<THREE.Mesh>(null);
 
     useFrame(() => {
@@ -236,7 +256,7 @@ function TorusShape({ position, color, scale = 1, shapeId, allShapes }: any) {
     });
 
     return (
-        <PhysicsShape initialPosition={position} shapeId={shapeId} allShapes={allShapes}>
+        <PhysicsShape initialPosition={position} shapeId={shapeId} allShapesRef={allShapesRef}>
             <Float speed={2} rotationIntensity={0.5} floatIntensity={0.5}>
                 <mesh ref={meshRef} scale={scale} castShadow receiveShadow>
                     <torusGeometry args={[1, 0.4, 32, 64]} />
@@ -262,7 +282,7 @@ function TorusShape({ position, color, scale = 1, shapeId, allShapes }: any) {
     );
 }
 
-function CylinderShape({ position, color, scale = 1, shapeId, allShapes }: any) {
+function CylinderShape({ position, scale = 1, shapeId, allShapesRef }: SpecificShapeProps) {
     const meshRef = useRef<THREE.Mesh>(null);
 
     useFrame(() => {
@@ -272,7 +292,7 @@ function CylinderShape({ position, color, scale = 1, shapeId, allShapes }: any) 
     });
 
     return (
-        <PhysicsShape initialPosition={position} shapeId={shapeId} allShapes={allShapes}>
+        <PhysicsShape initialPosition={position} shapeId={shapeId} allShapesRef={allShapesRef}>
             <Float speed={1.8} rotationIntensity={0.8} floatIntensity={0.5}>
                 <mesh ref={meshRef} scale={scale} castShadow receiveShadow>
                     <cylinderGeometry args={[0.8, 0.8, 1.5, 64]} />
@@ -300,7 +320,7 @@ function CylinderShape({ position, color, scale = 1, shapeId, allShapes }: any) 
 
 // Scene component with shape tracking
 function Scene({ isMobile = false }: { isMobile?: boolean }) {
-    const allShapesRef = useRef<any[]>([]);
+    const allShapesRef = useRef<ShapeData[]>([]);
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
@@ -323,7 +343,7 @@ function Scene({ isMobile = false }: { isMobile?: boolean }) {
 
     const mobileScale = 0.42;
     const mobilePosScale = 0.65;
-    const mobileShapes = desktopShapes.slice(0, 4).map((s, i) => ({
+    const mobileShapes = desktopShapes.slice(0, 4).map((s) => ({
         ...s,
         id: s.id,
         position: [s.position[0] * mobilePosScale, s.position[1] * mobilePosScale, s.position[2]] as [number, number, number],
@@ -378,10 +398,9 @@ function Scene({ isMobile = false }: { isMobile?: boolean }) {
                 <shape.Component
                     key={shape.id}
                     position={shape.position}
-                    color={shape.color}
                     scale={shape.scale}
                     shapeId={shape.id}
-                    allShapes={allShapesRef}
+                    allShapesRef={allShapesRef}
                 />
             ))}
         </>

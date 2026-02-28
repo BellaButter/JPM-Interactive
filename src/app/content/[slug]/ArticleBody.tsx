@@ -35,12 +35,10 @@ export function useArticleContent(html: string): { toc: TocItem[]; body: React.R
 
     const regex = /<(h2|h3|p|ul|ol)(?:\s[^>]*)?>([\s\S]*?)<\/\1>/gi;
     let match;
-    let lastIndex = 0;
 
     while ((match = regex.exec(html)) !== null) {
       const tag = match[1].toLowerCase();
       const content = match[2];
-      const fullMatch = match[0];
 
       if (tag === "h2") {
         const text = content.replace(/<[^>]+>/g, "").trim();

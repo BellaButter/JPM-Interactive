@@ -3,7 +3,6 @@
 import { useRef, useEffect } from "react";
 import { motion, useInView } from "framer-motion";
 import Link from "next/link";
-import Container from "@/components/layout/Container";
 import ScrollReveal from "@/components/animations/ScrollReveal";
 import { useLocale } from "@/context/LocaleContext";
 import { prefixPath } from "@/i18n/config";
@@ -46,11 +45,6 @@ export default function WorksSection() {
     const { t, locale } = useLocale();
     const sectionRef = useRef<HTMLElement>(null);
     const featuredWorks = getFeaturedWorks();
-    const categoryLabels = {
-        touch_screen: t("works.interactiveSolutions"),
-        led: t("works.visualExperience"),
-        graphic_design: t("works.multimediaDesign"),
-    };
 
     return (
         <section

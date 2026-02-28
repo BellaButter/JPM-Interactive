@@ -16,7 +16,6 @@ const SECTION_PY = "py-14 sm:py-16 md:py-20 lg:py-24";
 /** ระยะบน section แรก (padding ด้านบนของ "กระบวนการ") — เพิ่มค่า = ห่างขึ้น */
 const FIRST_SECTION_TOP = "first:pt-24 sm:first:pt-28 md:first:pt-32 lg:first:pt-36";
 const HEADER_BOTTOM = "mb-10 sm:mb-12 md:mb-14";
-const CARD_PADDING = "p-6 sm:p-7 md:p-8 lg:p-9";
 /** ใช้ inline style เพื่อให้ padding มีผลแน่นอน (Tailwind จากตัวแปรอาจไม่ถูก build) — ค่า rem */
 const CARD_PADDING_REM = "clamp(1.25rem, 4vw, 2.25rem)";
 const CARD_PADDING_STYLE = { padding: CARD_PADDING_REM };

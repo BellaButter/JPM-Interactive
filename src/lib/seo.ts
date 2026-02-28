@@ -112,7 +112,6 @@ export function generateLayoutMetadata({
   alternates,
   openGraphExtra,
 }: GenerateLayoutMetadataParams): Metadata {
-  const absoluteIconUrl = `${siteUrl}${iconPath.startsWith("/") ? iconPath : `/${iconPath}`}`;
   const ogImagePath = openGraphImagePath ?? iconPath;
   const absoluteOgUrl = `${siteUrl}${ogImagePath.startsWith("/") ? ogImagePath : `/${ogImagePath}`}`;
   const useOgDimensions = !!openGraphImagePath;
