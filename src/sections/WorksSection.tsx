@@ -31,10 +31,11 @@ function InViewVideo({ src }: { src: string }) {
     return (
         <video
             ref={videoRef}
-            src={encodeURI(src)}
+            src={src}
             loop
             muted
             playsInline
+            preload="auto"
             className="absolute inset-0 w-full h-full object-cover rounded-3xl group-hover:scale-105 transition-transform duration-700 ease-out"
             style={{ opacity: 1 }}
         />
