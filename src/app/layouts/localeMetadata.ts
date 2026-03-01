@@ -4,6 +4,9 @@ import type { Locale } from "@/types/locale";
 import { generateLayoutMetadata, siteUrl } from "@/lib/seo";
 
 const EN_KEYWORDS = [
+  "jpm interactive",
+  "jpminteractive",
+  "JPM Interactive",
   "creative technology",
   "interactive experiences",
   "LED visual",
@@ -11,9 +14,15 @@ const EN_KEYWORDS = [
   "digital installation",
   "touch screen",
   "immersive",
-  "JPM Interactive",
 ];
-const TH_KEYWORDS = ["ครีเอทีฟเทคโนโลยี", "ประสบการณ์เชิงโต้ตอบ", "JPM Interactive"];
+const TH_KEYWORDS = [
+  "jpm interactive",
+  "jpminteractive",
+  "JPM Interactive",
+  "บริษัท jpm interactive",
+  "ครีเอทีฟเทคโนโลยี",
+  "ประสบการณ์เชิงโต้ตอบ"
+];
 
 export function getDefaultLocaleMetadata(locale: Locale): Metadata {
   const L = seo[locale];

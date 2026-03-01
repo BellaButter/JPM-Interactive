@@ -139,6 +139,8 @@ export function generateLayoutMetadata({
     metadataBase: new URL(siteUrl),
     title,
     description,
+    applicationName: SITE_NAME,
+    authors: [{ name: SITE_NAME, url: siteUrl }],
     openGraph,
     twitter: {
       card: "summary_large_image",

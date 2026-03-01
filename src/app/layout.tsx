@@ -40,6 +40,9 @@ const ROOT_TITLE = "JPM Interactive - Creative Technology Studio";
 const ROOT_DESCRIPTION =
   "High-end interactive programs, mini games, graphic design, and motion graphics for innovative brands.";
 const ROOT_KEYWORDS = [
+  "jpm interactive",
+  "jpminteractive",
+  "JPM Interactive",
   "creative technology",
   "interactive experiences",
   "LED visual",
@@ -47,7 +50,6 @@ const ROOT_KEYWORDS = [
   "digital installation",
   "touch screen",
   "immersive",
-  "JPM Interactive",
 ];
 
 export const metadata = generateLayoutMetadata({
