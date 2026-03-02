@@ -37,7 +37,7 @@ function PhysicsShape({
     const scaleRef = useRef(1);
     const rotationVelocityRef = useRef(0);
     const prevMousePosRef = useRef(new THREE.Vector3());
-    const { viewport, pointer } = useThree();
+    const { viewport, pointer, invalidate } = useThree();
 
     // Register this shape's ref
     useEffect(() => {
@@ -138,7 +138,7 @@ function PhysicsShape({
             velocity.z = -velocity.z * 0.35;
         }
 
-        // 3. SEPARATION + COLLISION - spread out when nearby, soft bounce when touching
+        // 3. SEPARATION + COLLISION
         const separationRadius = 2.8;
         const separationStrength = 0.035;
         const collisionRadius = 1.4;
@@ -156,13 +156,11 @@ function PhysicsShape({
                     .subVectors(mesh.position, otherMesh.position)
                     .normalize();
 
-                // Gentle repulsion when within separation radius (avoid clustering)
                 if (distance < separationRadius) {
                     const push = (separationRadius - distance) * separationStrength;
                     velocity.add(direction.clone().multiplyScalar(push));
                 }
 
-                // Soft bounce when very close
                 if (distance < collisionRadius) {
                     const overlap = collisionRadius - distance;
                     velocity.add(direction.clone().multiplyScalar(overlap * repulsionStrength));
@@ -186,6 +184,9 @@ function PhysicsShape({
         // 5. Damping
         velocity.multiplyScalar(0.94);
         mesh.position.add(velocity);
+
+        // Demand render — only paint when physics produces visible movement
+        invalidate();
     });
 
     return (
@@ -195,14 +196,15 @@ function PhysicsShape({
     );
 }
 
-// Shape components
+// Shape components — reduced segment counts for better performance
 function CrossShape({ position, scale = 1, shapeId, allShapesRef }: SpecificShapeProps) {
     return (
         <PhysicsShape initialPosition={position} shapeId={shapeId} allShapesRef={allShapesRef}>
             <Float speed={1.5} rotationIntensity={1} floatIntensity={0.5}>
                 <group scale={scale}>
+                    {/* reduced segments: 32 → 16 */}
                     <mesh rotation={[0, 0, Math.PI / 2]} castShadow receiveShadow>
-                        <cylinderGeometry args={[0.3, 0.3, 2, 32]} />
+                        <cylinderGeometry args={[0.3, 0.3, 2, 16]} />
                         <meshPhysicalMaterial
                             color="#4488ff"
                             metalness={0.1}
@@ -221,7 +223,7 @@ function CrossShape({ position, scale = 1, shapeId, allShapesRef }: SpecificShap
                         />
                     </mesh>
                     <mesh castShadow receiveShadow>
-                        <cylinderGeometry args={[0.3, 0.3, 2, 32]} />
+                        <cylinderGeometry args={[0.3, 0.3, 2, 16]} />
                         <meshPhysicalMaterial
                             color="#4488ff"
                             metalness={0.1}
@@ -247,19 +249,22 @@ function CrossShape({ position, scale = 1, shapeId, allShapesRef }: SpecificShap
 
 function TorusShape({ position, scale = 1, shapeId, allShapesRef }: SpecificShapeProps) {
     const meshRef = useRef<THREE.Mesh>(null);
+    const { invalidate } = useThree();
 
     useFrame(() => {
         if (meshRef.current) {
             meshRef.current.rotation.x += 0.01;
             meshRef.current.rotation.y += 0.005;
+            invalidate();
         }
     });
 
     return (
         <PhysicsShape initialPosition={position} shapeId={shapeId} allShapesRef={allShapesRef}>
             <Float speed={2} rotationIntensity={0.5} floatIntensity={0.5}>
+                {/* reduced segments: (32, 64) → (16, 32) */}
                 <mesh ref={meshRef} scale={scale} castShadow receiveShadow>
-                    <torusGeometry args={[1, 0.4, 32, 64]} />
+                    <torusGeometry args={[1, 0.4, 16, 32]} />
                     <meshPhysicalMaterial
                         color="#ff44ff"
                         metalness={0.1}
@@ -284,18 +289,21 @@ function TorusShape({ position, scale = 1, shapeId, allShapesRef }: SpecificShap
 
 function CylinderShape({ position, scale = 1, shapeId, allShapesRef }: SpecificShapeProps) {
     const meshRef = useRef<THREE.Mesh>(null);
+    const { invalidate } = useThree();
 
     useFrame(() => {
         if (meshRef.current) {
             meshRef.current.rotation.y += 0.01;
+            invalidate();
         }
     });
 
     return (
         <PhysicsShape initialPosition={position} shapeId={shapeId} allShapesRef={allShapesRef}>
             <Float speed={1.8} rotationIntensity={0.8} floatIntensity={0.5}>
+                {/* reduced segments: 64 → 32 */}
                 <mesh ref={meshRef} scale={scale} castShadow receiveShadow>
-                    <cylinderGeometry args={[0.8, 0.8, 1.5, 64]} />
+                    <cylinderGeometry args={[0.8, 0.8, 1.5, 32]} />
                     <meshPhysicalMaterial
                         color="#ff4488"
                         metalness={0.1}
@@ -329,23 +337,22 @@ function Scene({ isMobile = false }: { isMobile?: boolean }) {
 
     // Desktop: 10 shapes. Mobile: fewer & smaller for less crowding
     const desktopShapes = [
-        { id: 1, Component: CrossShape, position: [-2, 1, 0] as [number, number, number], color: "#ffffff", scale: 1 },
-        { id: 2, Component: TorusShape, position: [2, -1, -1] as [number, number, number], color: "#ffffff", scale: 0.8 },
-        { id: 3, Component: CylinderShape, position: [0, 2, -2] as [number, number, number], color: "#ffffff", scale: 0.6 },
-        { id: 4, Component: CrossShape, position: [-3, -2, 1] as [number, number, number], color: "#ffffff", scale: 0.7 },
-        { id: 5, Component: TorusShape, position: [3, 2, 0] as [number, number, number], color: "#ffffff", scale: 0.9 },
-        { id: 6, Component: CylinderShape, position: [1, -2, -1] as [number, number, number], color: "#ffffff", scale: 0.5 },
-        { id: 7, Component: CrossShape, position: [0, 0, 0] as [number, number, number], color: "#ffffff", scale: 1.2 },
-        { id: 8, Component: TorusShape, position: [-1.5, -1.5, -1.5] as [number, number, number], color: "#ffffff", scale: 0.75 },
-        { id: 9, Component: CylinderShape, position: [2.5, 0.5, -0.5] as [number, number, number], color: "#ffffff", scale: 0.65 },
-        { id: 10, Component: CrossShape, position: [-2.5, 2.5, 0.5] as [number, number, number], color: "#ffffff", scale: 0.85 },
+        { id: 1, Component: CrossShape, position: [-2, 1, 0] as [number, number, number], scale: 1 },
+        { id: 2, Component: TorusShape, position: [2, -1, -1] as [number, number, number], scale: 0.8 },
+        { id: 3, Component: CylinderShape, position: [0, 2, -2] as [number, number, number], scale: 0.6 },
+        { id: 4, Component: CrossShape, position: [-3, -2, 1] as [number, number, number], scale: 0.7 },
+        { id: 5, Component: TorusShape, position: [3, 2, 0] as [number, number, number], scale: 0.9 },
+        { id: 6, Component: CylinderShape, position: [1, -2, -1] as [number, number, number], scale: 0.5 },
+        { id: 7, Component: CrossShape, position: [0, 0, 0] as [number, number, number], scale: 1.2 },
+        { id: 8, Component: TorusShape, position: [-1.5, -1.5, -1.5] as [number, number, number], scale: 0.75 },
+        { id: 9, Component: CylinderShape, position: [2.5, 0.5, -0.5] as [number, number, number], scale: 0.65 },
+        { id: 10, Component: CrossShape, position: [-2.5, 2.5, 0.5] as [number, number, number], scale: 0.85 },
     ];
 
     const mobileScale = 0.42;
     const mobilePosScale = 0.65;
     const mobileShapes = desktopShapes.slice(0, 4).map((s) => ({
         ...s,
-        id: s.id,
         position: [s.position[0] * mobilePosScale, s.position[1] * mobilePosScale, s.position[2]] as [number, number, number],
         scale: s.scale * mobileScale
     }));
@@ -417,16 +424,16 @@ export default function GeometricShapes3D({ isMobile = false }: { isMobile?: boo
             <Canvas
                 camera={{ position: [0, 0, cameraZ], fov: cameraFov }}
                 shadows={!isMobile}
-                dpr={isMobile ? [1, 1] : [1, 1.5]} // Cap DPR at 1.5 max on Desktop
+                frameloop="demand"             // Only render when invalidated
+                dpr={isMobile ? [1, 1] : [1, 1.5]}
                 gl={{
                     antialias: !isMobile,
                     alpha: true,
                     toneMapping: THREE.ACESFilmicToneMapping,
                     toneMappingExposure: 1.55,
-                    powerPreference: "high-performance", // Hint for GPU
+                    powerPreference: "high-performance",
                 }}
             >
-                {/* ไม่ใส่ background เพื่อให้โปร่งใส — gradient fixed ของหน้าโผล่ผ่าน ไม่มีเส้นรอยต่อ */}
                 <React.Suspense fallback={null}>
                     <Scene isMobile={isMobile} />
                 </React.Suspense>

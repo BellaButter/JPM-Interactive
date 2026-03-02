@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import Link from "next/link";
 import ScrollReveal from "@/components/animations/ScrollReveal";
@@ -14,7 +14,55 @@ const categoryColors = {
     graphic_design: "from-[#38bdf8] to-[#06b6d4]"
 };
 
-// Component เล่นวิดีโอเฉพาะตอนอยู่ในหน้าจอ เพื่อประหยัด CPU/GPU
+// Lazy YouTube embed — shows thumbnail + play button, only loads iframe on click
+// This avoids loading ~300KB of YouTube JS on page mount for each embed
+function YouTubeThumbnail({ src, title }: { src: string; title: string }) {
+    const [clicked, setClicked] = useState(false);
+
+    // Extract video ID from the embed URL
+    const videoId = src.split("/").pop()?.split("?")[0] || "";
+    const thumbSrc = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+
+    const autoplaySrc = `${src}${src.includes("?") ? "&" : "?"}autoplay=1&mute=1&loop=1&playlist=${videoId}`;
+
+    if (clicked) {
+        return (
+            <iframe
+                src={autoplaySrc}
+                title={title}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                className="absolute inset-0 w-full h-full pointer-events-none"
+            />
+        );
+    }
+
+    return (
+        <button
+            className="absolute inset-0 w-full h-full group"
+            onClick={() => setClicked(true)}
+            aria-label={`Play ${title}`}
+        >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+                src={thumbSrc}
+                alt={title}
+                className="w-full h-full object-cover rounded-3xl group-hover:scale-105 transition-transform duration-700 ease-out"
+                loading="lazy"
+            />
+            {/* Play button overlay */}
+            <span className="absolute inset-0 flex items-center justify-center">
+                <span className="w-14 h-14 rounded-full bg-black/60 flex items-center justify-center group-hover:bg-black/80 transition-colors duration-200">
+                    <svg className="w-6 h-6 text-white translate-x-0.5" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M8 5v14l11-7z" />
+                    </svg>
+                </span>
+            </span>
+        </button>
+    );
+}
+
+// Component — plays video only when in viewport to save CPU/GPU
 function InViewVideo({ src }: { src: string }) {
     const videoRef = useRef<HTMLVideoElement>(null);
     const isInView = useInView(videoRef, { margin: "200px 0px 200px 0px", once: false });
@@ -34,7 +82,7 @@ function InViewVideo({ src }: { src: string }) {
             loop
             muted
             playsInline
-            preload="auto"
+            preload="none"            // Changed from "auto" — only load when user scrolls near
             className="absolute inset-0 w-full h-full object-cover rounded-3xl group-hover:scale-105 transition-transform duration-700 ease-out"
             style={{ opacity: 1 }}
         />
@@ -59,7 +107,7 @@ export default function WorksSection() {
                     paddingRight: "clamp(1.25rem, 5vw, 2rem)",
                 }}
             >
-                {/* Header — margin ระหว่างหัวข้อกับข้อมูลด้านล่าง */}
+                {/* Header */}
                 <div className="text-center" style={{ marginBottom: "clamp(1.5rem, 4vw, 4rem)" }}>
                     <ScrollReveal variant="fade" delay={0.1}>
                         <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold tracking-tight leading-none bg-gradient-to-r from-[#6B9FF7] via-[#8B5CF6] to-[#C084FC] bg-clip-text text-transparent">
@@ -68,16 +116,16 @@ export default function WorksSection() {
                     </ScrollReveal>
                 </div>
 
-                {/* Grid - 2 Columns Equal; การ์ดแรก (Guitar Hero) แสดงเป็นอันที่ 4 ทุกจอ */}
+                {/* Grid */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 sm:gap-12 md:gap-16 lg:gap-20 xl:gap-24 mb-20 sm:mb-24 md:mb-28">
                     {featuredWorks.map((work, index) => {
                         const orderClasses = [
-                            "order-4",              // 0 (Guitar Hero) -> อันที่ 4
-                            "order-1",              // 1
-                            "order-2",              // 2
-                            "order-3",              // 3
-                            "order-5",              // 4
-                            "order-6",              // 5
+                            "order-4",
+                            "order-1",
+                            "order-2",
+                            "order-3",
+                            "order-5",
+                            "order-6",
                         ][index] ?? "order-first";
                         return (
                             <Link key={work.id} href={prefixPath(locale, `/case-studies/${work.slug}`)} className={orderClasses}>
@@ -96,24 +144,17 @@ export default function WorksSection() {
                                             boxShadow: '0 10px 40px rgba(0,0,0,0.08)'
                                         }}
                                     >
-                                        {work.media.type === "youtube" ? (() => {
-                                            const videoId = work.media.src.split("/").pop()?.split("?")[0] || "";
-                                            const previewSrc = `${work.media.src}${work.media.src.includes("?") ? "&" : "?"}autoplay=1&mute=1&loop=1&playlist=${videoId}`;
-                                            return (
-                                                <iframe
-                                                    src={previewSrc}
-                                                    title={work.title}
-                                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                                    allowFullScreen
-                                                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out pointer-events-none"
-                                                />
-                                            );
-                                        })() : work.media.type === "video" ? (
+                                        {work.media.type === "youtube" ? (
+                                            <YouTubeThumbnail
+                                                src={work.media.src}
+                                                title={work.title}
+                                            />
+                                        ) : work.media.type === "video" ? (
                                             <InViewVideo src={work.media.src} />
                                         ) : (
                                             <div className={`w-full h-full bg-gradient-to-br ${categoryColors[work.category]} opacity-30`} />
                                         )}
-                                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-500" />
+                                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-500 pointer-events-none" />
                                     </div>
 
                                     {/* Content */}
@@ -125,7 +166,6 @@ export default function WorksSection() {
                                             {work.title}
                                         </h3>
 
-                                        {/* Tech Tags */}
                                         {work.technologies && (
                                             <div className="text-sm md:text-base uppercase tracking-wider text-gray-500 font-medium leading-relaxed">
                                                 {work.technologies.slice(0, 4).join(' • ')}

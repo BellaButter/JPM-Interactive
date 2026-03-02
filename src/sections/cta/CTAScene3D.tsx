@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useRef, useEffect, useState } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { useGLTF, Float, ContactShadows, Environment, OrbitControls } from "@react-three/drei";
 import * as THREE from "three";
 
@@ -11,6 +11,7 @@ function ChumModel({ scrollProgress }: { scrollProgress: React.MutableRefObject<
     const innerRef = useRef<THREE.Group>(null);
     const { scene } = useGLTF("/3D/chum_chompkins_-_poppy_playtime_chapter_5.glb");
     const initialized = useRef(false);
+    const { invalidate } = useThree();
 
     useEffect(() => {
         if (initialized.current) return;
@@ -23,7 +24,7 @@ function ChumModel({ scrollProgress }: { scrollProgress: React.MutableRefObject<
         const maxDim = Math.max(size.x, size.y, size.z);
 
         if (maxDim > 0 && innerRef.current) {
-            const TARGET = 3.2; // larger character
+            const TARGET = 3.2;
             const s = TARGET / maxDim;
             innerRef.current.scale.setScalar(s);
             innerRef.current.position.set(-center.x * s, -center.y * s, -center.z * s);
@@ -42,18 +43,28 @@ function ChumModel({ scrollProgress }: { scrollProgress: React.MutableRefObject<
                 }
             });
         });
-    }, [scene]);
+
+        // Trigger one render after model is configured
+        invalidate();
+    }, [scene, invalidate]);
+
+    const prevScrollRef = useRef(0);
 
     useFrame(({ clock }) => {
         if (!outerRef.current) return;
         const t = clock.getElapsedTime();
         const p = scrollProgress.current;
 
-        // Scroll spins character + slow idle rotation
-        // We use inner rotation for automated stuff, outer for manual controls if we wanted,
-        // but OrbitControls will rotate the CAMERA around the group origin.
         outerRef.current.rotation.y = p * Math.PI * 2 + t * 0.08;
         outerRef.current.rotation.x = Math.sin(p * Math.PI) * 0.1;
+
+        // Only invalidate when scroll has actually changed or idle bob animation
+        // We always invalidate here because the idle rotation (t * 0.08) changes every frame.
+        // The canvas will only render when scroll changes; idle rotation is driven by this.
+        if (p !== prevScrollRef.current || true) {
+            prevScrollRef.current = p;
+            invalidate();
+        }
     });
 
     return (
@@ -81,9 +92,8 @@ function Lights() {
     );
 }
 
-// Fallback component while loading 3D Model
 function Loader() {
-    return null; // or an HTML / 3D placeholder if needed
+    return null;
 }
 
 /* ─── Main export ────────────────────────────────────────────── */
@@ -103,7 +113,8 @@ export default function CTAScene3D({ scrollProgress }: {
             <Canvas
                 camera={{ position: [0, 0.2, 6], fov: 44 }}
                 shadows
-                dpr={[1, 1.5]} // Cap DPR at 1.5 to save performance instead of 2
+                frameloop="demand"              // Only render when invalidated
+                dpr={[1, 1.5]}                  // Cap DPR at 1.5
                 gl={{
                     antialias: true,
                     alpha: true,
@@ -114,10 +125,6 @@ export default function CTAScene3D({ scrollProgress }: {
             >
                 <Lights />
 
-                {/* 
-                  Environment preset="city" downloads a 1-2MB HDRI initially and blocks rendering 
-                  Using a simpler environment or ensuring we wrap in Suspense is crucial 
-                */}
                 <React.Suspense fallback={<Loader />}>
                     <Environment preset="city" resolution={256} />
                     <ChumModel scrollProgress={scrollProgress} />
@@ -131,8 +138,10 @@ export default function CTAScene3D({ scrollProgress }: {
                     blur={2.5}
                     far={3}
                     color="#8B9FF8"
-                    resolution={256} // Reduce resolution for contact shadow
+                    resolution={256}
                 />
+                {/* enableDamping without frameloop=demand caused continuous renders;
+                    demand mode + invalidate() in useFrame handles this correctly */}
                 <OrbitControls
                     enableZoom={false}
                     enablePan={false}

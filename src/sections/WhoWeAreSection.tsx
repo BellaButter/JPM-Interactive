@@ -2,7 +2,7 @@
 
 import { useRef, useState, useEffect, type ReactNode } from "react";
 import Link from "next/link";
-import { motion, useScroll, useTransform, useInView } from "framer-motion";
+import { motion, useScroll, useTransform, useInView, useReducedMotion } from "framer-motion";
 import Container from "@/components/layout/Container";
 import ScrollReveal from "@/components/animations/ScrollReveal";
 import { useLocale } from "@/context/LocaleContext";
@@ -131,21 +131,23 @@ export default function WhoWeAreSection() {
     const headingY = useTransform(scrollYProgress, [0, 0.15], [30, 0]);
     const headingOpacity = useTransform(scrollYProgress, [0, 0.2], [0.5, 1]);
 
+    const reducedMotion = useReducedMotion();
+
     return (
         <section
             ref={containerRef}
             className="relative min-h-[60vh] sm:min-h-[70vh] overflow-hidden flex items-center pt-16 sm:pt-24 md:pt-28 pb-12 sm:pb-16 md:pb-20 bg-white"
         >
-            {/* Subtle floating orbs - ลูกเล่นพื้นหลัง */}
+            {/* Subtle floating orbs — disabled when prefers-reduced-motion is set */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden>
                 <motion.div
                     className="absolute top-1/4 right-0 w-64 h-64 rounded-full bg-[#7BA9F7]/8 blur-3xl"
-                    animate={{ x: [0, 20, 0], y: [0, -15, 0] }}
+                    animate={reducedMotion ? {} : { x: [0, 20, 0], y: [0, -15, 0] }}
                     transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
                 />
                 <motion.div
                     className="absolute bottom-1/4 left-0 w-48 h-48 rounded-full bg-[#8B5CF6]/10 blur-3xl"
-                    animate={{ x: [0, -15, 0], y: [0, 20, 0] }}
+                    animate={reducedMotion ? {} : { x: [0, -15, 0], y: [0, 20, 0] }}
                     transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
                 />
             </div>
