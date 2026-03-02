@@ -43,4 +43,6 @@ next-env.d.ts
 # allow project videos
 !public/whoweare.mp4
 !public/Cinematic/cinematic.mp4
-            
+            .cursor
+public/3D
+public/video_Featured_innovation
