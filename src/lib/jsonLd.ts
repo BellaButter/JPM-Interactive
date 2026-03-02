@@ -65,7 +65,7 @@ export function getOrganizationJsonLd(): Record<string, unknown> {
         url: siteUrl,
         logo: {
           "@type": "ImageObject",
-          url: `${siteUrl}/icon.png`,
+          url: `${siteUrl}/icon.ico`,
         },
         description:
           "Creative Technology Studio. High-end interactive programs, mini games, graphic design, and motion graphics for innovative brands.",
