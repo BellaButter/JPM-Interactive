@@ -31,7 +31,7 @@ export function getDefaultLocaleMetadata(locale: Locale): Metadata {
     title: L.defaultTitle,
     description: L.defaultDescription,
     locale: ogLocale,
-    iconPath: "/icon.ico",
+    iconPath: "/icon.png",
     url: `${siteUrl}/${locale}`,
     keywords: locale === "en" ? EN_KEYWORDS : TH_KEYWORDS,
     alternates: { "en-US": `${siteUrl}/en`, "th-TH": `${siteUrl}/th` },
