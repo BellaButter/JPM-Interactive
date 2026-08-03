@@ -45,17 +45,19 @@ export default async function LocaleCaseStudiesPage({
     "description": description,
     "mainEntity": {
       "@type": "ItemList",
-      "itemListElement": worksPageData.map((work, index) => ({
-        "@type": "ListItem",
-        "position": index + 1,
-        "item": {
-          "@type": "CreativeWork",
-          "name": work.title,
-          "description": work.description,
-          "url": `https://www.jpmmediaspace.com/${validLocale}/case-studies/${work.slug}`,
-          "image": work.media?.src || ""
-        }
-      }))
+      "itemListElement": worksPageData
+        .filter((work) => work.category !== "graphic_design")
+        .map((work, index) => ({
+          "@type": "ListItem",
+          "position": index + 1,
+          "item": {
+            "@type": "CreativeWork",
+            "name": work.title,
+            "description": work.description,
+            "url": `https://www.jpmmediaspace.com/${validLocale}/case-studies/${work.slug}`,
+            "image": work.media?.src || ""
+          }
+        }))
     }
   };
 

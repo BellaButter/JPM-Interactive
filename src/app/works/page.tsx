@@ -10,18 +10,22 @@ import WorkCardMedia from "@/components/works/WorkCardMedia";
 import { useLocale } from "@/context/LocaleContext";
 import { prefixPath } from "@/i18n/config";
 
+// Multimedia Design (graphic_design) has no real content yet — hide it from the listing until it does.
+const visibleWorks = worksPageData.filter((work) => work.category !== "graphic_design");
+type VisibleCategory = "led" | "touch_screen";
+
 function WorksPageContent() {
     const { t, locale } = useLocale();
     const searchParams = useSearchParams();
     const categoryParam = searchParams.get("category") as Work["category"] | null;
 
-    const [selectedCategory, setSelectedCategory] = useState<Work["category"] | "all">("all");
+    const [selectedCategory, setSelectedCategory] = useState<VisibleCategory | "all">("all");
     const [prevCategoryParam, setPrevCategoryParam] = useState<string | null>(null);
 
     // Sync URL parameter to state synchronously during render
     if (categoryParam !== prevCategoryParam) {
         setPrevCategoryParam(categoryParam);
-        if (categoryParam && ["led", "touch_screen", "graphic_design"].includes(categoryParam)) {
+        if (categoryParam === "led" || categoryParam === "touch_screen") {
             setSelectedCategory(categoryParam);
         } else if (!categoryParam) {
             setSelectedCategory("all");
@@ -30,16 +34,15 @@ function WorksPageContent() {
 
     // Filter works synchronously during render based on selectedCategory
     const filteredWorks = selectedCategory === "all"
-        ? worksPageData
-        : worksPageData.filter((work) => work.category === selectedCategory);
+        ? visibleWorks
+        : visibleWorks.filter((work) => work.category === selectedCategory);
 
-    const categories: Array<Work["category"] | "all"> = ["all", "led", "touch_screen", "graphic_design"];
+    const categories: Array<VisibleCategory | "all"> = ["all", "led", "touch_screen"];
 
     const categoryLabels = {
         all: t("works.all"),
         led: t("works.visualExperience"),
         touch_screen: t("works.interactiveSolutions"),
-        graphic_design: t("works.multimediaDesign"),
     };
 
     return (
