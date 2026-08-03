@@ -2,7 +2,6 @@ import type { Locale } from "@/types/locale";
 
 const VISUAL_EXPERIENCE_IMAGE = "/Image/Visual%20Experience.png";
 const INTERACTIVE_SOLUTIONS_IMAGE = "/Image/Interactive%20Solutions.png";
-const MULTIMEDIA_DESIGN_IMAGE = "/Image/Multimedia%20Design.png";
 
 export interface HomeService {
   key: string;
@@ -43,18 +42,6 @@ const servicesEn: HomeService[] = [
     imageAlt:
       "Interactive Solutions - touch screen and sensor-based applications",
   },
-  {
-    key: "graphic_design",
-    id: "03",
-    title: "Multimedia Design",
-    description:
-      "Comprehensive creative production including 3D assets, mood & tone direction, sound design, and cinematic motion graphics for opening sequences.",
-    gradient: "linear-gradient(135deg, #0ea5e9 0%, #6366f1 100%)",
-    color: "#0ea5e9",
-    href: "/case-studies?category=graphic_design",
-    image: MULTIMEDIA_DESIGN_IMAGE,
-    imageAlt: "Multimedia Design - 3D assets, sound design, and motion graphics",
-  },
 ];
 
 const servicesTh: HomeService[] = [
@@ -81,18 +68,6 @@ const servicesTh: HomeService[] = [
     href: "/case-studies?category=led",
     image: VISUAL_EXPERIENCE_IMAGE,
     imageAlt: "Immersive Experience - projection and wrap-around visuals",
-  },
-  {
-    key: "multimedia_systems",
-    id: "03",
-    title: "Multimedia & Creative Technology",
-    description:
-      "พัฒนา 3D Visual, Motion Graphics และ Multimedia Systems แบบครบวงจร รองรับงานองค์กร งานเปิดตัวสินค้า และพื้นที่แสดงเทคโนโลยี",
-    gradient: "linear-gradient(135deg, #0ea5e9 0%, #6366f1 100%)",
-    color: "#0ea5e9",
-    href: "/case-studies?category=graphic_design",
-    image: MULTIMEDIA_DESIGN_IMAGE,
-    imageAlt: "Multimedia & Creative Technology - 3D and motion graphics",
   },
 ];
 

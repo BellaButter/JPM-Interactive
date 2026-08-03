@@ -197,8 +197,8 @@ export function ServicesOverviewContent({ locale }: { locale: Locale }) {
                     {/* ── SERVICE CARDS ──────────────────────────────────── */}
                     <section className="relative z-10 w-full" style={{ ...SECTION_MARGIN, paddingTop: "clamp(1rem, 3vw, 1.75rem)", paddingBottom: "clamp(2rem, 6vw, 3.5rem)" }}>
                         {/* Tablet (iPad): 1 column to avoid narrow cards + vertical overflow; desktop: 3 columns */}
-                        <div className="grid grid-cols-1 lg:grid-cols-3 lg:items-stretch" style={{ gap: "clamp(2.5rem, 8vw, 5rem)" }}>
-                            {(["interactive", "visual", "multimedia"] as const).map((key) => (
+                        <div className="grid grid-cols-1 lg:grid-cols-2 lg:items-stretch" style={{ gap: "clamp(2.5rem, 8vw, 5rem)" }}>
+                            {(["interactive", "visual"] as const).map((key) => (
                                 <ServiceCard key={key} serviceKey={key} locale={locale} />
                             ))}
                         </div>

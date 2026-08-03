@@ -71,16 +71,6 @@ export default async function ServicesOverviewPage({
                     "description": c.visual.description,
                     "url": `https://www.jpmmediaspace.com/${validLocale}/services/immersive-experience`
                 }
-            },
-            {
-                "@type": "ListItem",
-                "position": 3,
-                "item": {
-                    "@type": "Service",
-                    "name": c.multimedia.title,
-                    "description": c.multimedia.description,
-                    "url": `https://www.jpmmediaspace.com/${validLocale}/services/multimedia-systems`
-                }
             }
         ]
     };

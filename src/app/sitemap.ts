@@ -18,7 +18,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     const contentPosts = getAllPosts();
     const now = new Date();
 
-    const staticPaths = ["", "/about", "/contact", "/faq", "/case-studies", "/content", "/industries", "/services", "/services/interactive-installation", "/services/immersive-experience", "/services/multimedia-systems"];
+    const staticPaths = ["", "/about", "/contact", "/faq", "/case-studies", "/content", "/industries", "/services", "/services/interactive-installation", "/services/immersive-experience"];
     const staticPages: MetadataRoute.Sitemap = [
         { url: siteUrl, lastModified: now, changeFrequency: "weekly", priority: 1 },
         ...locales.flatMap((locale) =>
