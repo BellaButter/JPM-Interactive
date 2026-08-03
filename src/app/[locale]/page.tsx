@@ -5,10 +5,6 @@ import { generatePageMetadata } from "@/lib/seo";
 import type { Locale } from "@/types/locale";
 import { locales } from "@/i18n/config";
 
-const TH_HOME_TITLE = "บริษัทรับทำ Interactive Experience | Immersive Installation | JPM Interactive";
-const TH_HOME_DESCRIPTION =
-  "JPM Interactive บริษัท Creative Technology ในประเทศไทย รับทำ Interactive Installation, Immersive Experience และ Multimedia Systems สำหรับองค์กร งาน Exhibition และ Event ระดับมืออาชีพ";
-
 export async function generateMetadata({
   params,
 }: {
@@ -20,8 +16,8 @@ export async function generateMetadata({
 
   if (validLocale === "th") {
     return generatePageMetadata({
-      title: TH_HOME_TITLE,
-      description: TH_HOME_DESCRIPTION,
+      title: seo.th.home.title,
+      description: seo.th.home.description,
       path,
       locale: "th_TH",
     });
