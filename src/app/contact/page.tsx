@@ -233,11 +233,11 @@ export default function ContactPage() {
                                     <h3 className="text-xl md:text-2xl font-bold text-[var(--color-text-primary)] leading-relaxed">{t("contact.email")}</h3>
                                 </div>
                                 <a
-                                    href="mailto:jpmgroupteam@gmail.com"
+                                    href="mailto:jpmmediaspace@gmail.com"
                                     className="text-[var(--color-accent-blue)] hover:text-[var(--color-accent-purple)] transition-colors font-medium text-lg md:text-xl block ml-16 leading-loose"
                                     style={{ marginTop: "0.5rem", paddingTop: "0.5rem", paddingBottom: "0.5rem", lineHeight: 1.9 }}
                                 >
-                                    jpmgroupteam@gmail.com
+                                    jpmmediaspace@gmail.com
                                 </a>
                             </motion.div>
 
@@ -262,6 +262,20 @@ export default function ContactPage() {
                                 >
                                     082-2941541 (Jha)
                                 </a>
+                                <a
+                                    href="tel:+66962826224"
+                                    className="text-[var(--color-text-secondary)] hover:text-[var(--color-accent-blue)] transition-colors text-lg md:text-xl block ml-16 leading-loose"
+                                    style={{ marginTop: "0.5rem", paddingTop: "0.5rem", paddingBottom: "0.5rem", lineHeight: 1.9 }}
+                                >
+                                    096-282-6224 (May)
+                                </a>
+                                <a
+                                    href="tel:+66873118545"
+                                    className="text-[var(--color-text-secondary)] hover:text-[var(--color-accent-blue)] transition-colors text-lg md:text-xl block ml-16 leading-loose"
+                                    style={{ marginTop: "0.5rem", paddingTop: "0.5rem", paddingBottom: "0.5rem", lineHeight: 1.9 }}
+                                >
+                                    087-311-8545 (Peepo)
+                                </a>
                             </motion.div>
 
                             <div style={{ paddingTop: "1.5rem" }} className="border-t-2 border-[var(--color-dark-border)]">
@@ -275,13 +289,13 @@ export default function ContactPage() {
                                 </div>
                                 <div className="flex flex-wrap items-center gap-4 ml-16" style={{ marginTop: "1rem" }}>
                                     <motion.a
-                                        href="https://line.me/R/ti/p/@jpmgroup"
+                                        href="https://line.me/R/ti/p/@328opglx?oat_content=qr"
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         whileHover={{ scale: 1.1, y: -2 }}
                                         whileTap={{ scale: 0.95 }}
                                         className="w-12 h-12 bg-[#00B900]/10 border-2 border-[#00B900]/40 rounded-full flex items-center justify-center hover:bg-[#00B900] hover:border-[#00B900] hover:text-white transition-all text-[#00B900] shadow-md"
-                                        aria-label="LINE @jpmgroup"
+                                        aria-label="LINE @328opglx"
                                     >
                                         <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                                             <path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63h2.386c.346 0 .627.285.627.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63.346 0 .628.285.628.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.349 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.281.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.039 1.085l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314" />

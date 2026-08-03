@@ -70,11 +70,11 @@ export function getOrganizationJsonLd(): Record<string, unknown> {
         description:
           "Creative Technology Studio. High-end interactive programs, mini games, graphic design, and motion graphics for innovative brands.",
         sameAs: [
-          "https://line.me/R/ti/p/@jpmgroup", // LINE
+          "https://line.me/R/ti/p/@328opglx?oat_content=qr", // LINE
           // Add more social URLs when available: Instagram, LinkedIn, etc.
         ],
-        telephone: "+66-82-294-1541",
-        email: "jpmgroupteam@gmail.com",
+        telephone: "+66-96-282-6224",
+        email: "jpmmediaspace@gmail.com",
         // Optional: เพิ่มเมื่อมีที่อยู่
         // address: { "@type": "PostalAddress", streetAddress: "...", addressLocality: "Bangkok", addressCountry: "TH" },
         // openingHoursSpecification: [{ "@type": "OpeningHoursSpecification", dayOfWeek: ["Monday", "Friday"], opens: "09:00", closes: "18:00" }],
