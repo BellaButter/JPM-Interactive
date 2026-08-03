@@ -41,8 +41,8 @@ export default async function LocaleAboutPage({
     "@context": "https://schema.org",
     "@type": ["Organization", "AboutPage"],
     "name": "JPM Interactive",
-    "url": "https://jpminteractive.com",
-    "logo": "https://jpminteractive.com/logo.png", // Assuming logo path
+    "url": "https://www.jpmmediaspace.com",
+    "logo": "https://www.jpmmediaspace.com/icon.ico",
     "description": c.hero.h1,
     "sameAs": [
       // Links to social profiles could go here

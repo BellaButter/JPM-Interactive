@@ -53,7 +53,7 @@ export default async function LocaleIndustriesPage({
         "provider": {
           "@type": "Organization",
           "name": "JPM Interactive",
-          "url": "https://jpminteractive.com"
+          "url": "https://www.jpmmediaspace.com"
         }
       }
     }))

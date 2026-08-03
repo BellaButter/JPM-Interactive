@@ -59,7 +59,7 @@ export default async function ServicesOverviewPage({
                     "@type": "Service",
                     "name": c.interactive.title,
                     "description": c.interactive.description,
-                    "url": `https://jpminteractive.com/${validLocale}/services/interactive-installation`
+                    "url": `https://www.jpmmediaspace.com/${validLocale}/services/interactive-installation`
                 }
             },
             {
@@ -69,7 +69,7 @@ export default async function ServicesOverviewPage({
                     "@type": "Service",
                     "name": c.visual.title,
                     "description": c.visual.description,
-                    "url": `https://jpminteractive.com/${validLocale}/services/immersive-experience`
+                    "url": `https://www.jpmmediaspace.com/${validLocale}/services/immersive-experience`
                 }
             },
             {
@@ -79,7 +79,7 @@ export default async function ServicesOverviewPage({
                     "@type": "Service",
                     "name": c.multimedia.title,
                     "description": c.multimedia.description,
-                    "url": `https://jpminteractive.com/${validLocale}/services/multimedia-systems`
+                    "url": `https://www.jpmmediaspace.com/${validLocale}/services/multimedia-systems`
                 }
             }
         ]

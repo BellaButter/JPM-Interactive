@@ -52,7 +52,7 @@ export default async function LocaleCaseStudiesPage({
           "@type": "CreativeWork",
           "name": work.title,
           "description": work.description,
-          "url": `https://jpminteractive.com/${validLocale}/case-studies/${work.slug}`,
+          "url": `https://www.jpmmediaspace.com/${validLocale}/case-studies/${work.slug}`,
           "image": work.media?.src || ""
         }
       }))

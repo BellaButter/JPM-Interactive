@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 /** Base URL for the site. Use when building absolute URLs (e.g. cover images). */
 export const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://jpminteractive.com";
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.jpmmediaspace.com";
 
 const SITE_NAME = "JPM Interactive";
 const DEFAULT_OG_IMAGE = `${siteUrl}/og-image.jpg`;
