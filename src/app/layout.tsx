@@ -76,6 +76,7 @@ import PageLoader from "@/components/ui/PageLoader";
 import ScrollToTop from "@/components/utils/ScrollToTop";
 import RouteTransitionOverlay from "@/components/ui/RouteTransitionOverlay";
 import ClientOnlyComponents from "@/components/layout/ClientOnlyComponents";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export default function RootLayout({
   children,
@@ -106,6 +107,7 @@ export default function RootLayout({
             </RouteTransitionProvider>
           </MotionProvider>
         </LocaleProvider>
+        <SpeedInsights />
       </body>
     </html>
   );
